@@ -10,7 +10,7 @@ public class WithAsSql extends QuerySqlWrapper
     private String withName;
     private SqlConstructor asSqlConstructor;
 
-    public WithAsSql(String withName, SqlConstructor asSqlConstructor,
+    public WithAsSql(SqlConstructor asSqlConstructor, String withName,
                      SqlConstructor querySqlConstructor)
     {
         super(querySqlConstructor);

@@ -5,7 +5,7 @@ import com.zincyanide.sqlconstructor.SqlConstructor;
 import java.util.Date;
 import java.util.List;
 
-public class ConditionMannerHandler implements ConditionManner
+public class ConditionMannerExecutor implements ConditionManner
 {
     private String handleObjectVal(Object val)
     {

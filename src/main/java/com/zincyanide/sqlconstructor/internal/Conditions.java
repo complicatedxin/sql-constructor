@@ -10,7 +10,7 @@ public class Conditions
             (ConditionManner) Proxy.newProxyInstance(
                     ConditionManner.class.getClassLoader(),
                     new Class[]{ConditionManner.class},
-                    new ParamValidator(new ConditionMannerHandler())
+                    new ParamValidator(new ConditionMannerExecutor())
             );
 
     public static String LIKE(String column, String keyword)
