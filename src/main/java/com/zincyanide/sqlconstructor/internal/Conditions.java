@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Conditions
 {
-    private static ConditionManner conditionsHandler =
+    private static ConditionManner executor =
             (ConditionManner) Proxy.newProxyInstance(
                     ConditionManner.class.getClassLoader(),
                     new Class[]{ConditionManner.class},
@@ -15,67 +15,72 @@ public class Conditions
 
     public static String LIKE(String column, String keyword)
     {
-        return conditionsHandler.like(column, keyword);
+        return executor.like(column, keyword);
     }
 
     public static String LIKE_START_WITH(String column, String keyword)
     {
-        return conditionsHandler.likeStartWith(column, keyword);
+        return executor.likeStartWith(column, keyword);
     }
 
     public static String LIKE_END_WITH(String column, String keyword)
     {
-        return conditionsHandler.likeEndWith(column, keyword);
+        return executor.likeEndWith(column, keyword);
+    }
+
+    public static String JOINT(String col1, String col2)
+    {
+        return executor.joint(col1, col2);
     }
 
     public static String EQUAL(String column, Object val)
     {
-        return conditionsHandler.equal(column, val);
+        return executor.equal(column, val);
     }
 
     public static String UNEQUAL(String column, Object val)
     {
-        return conditionsHandler.unequal(column, val);
+        return executor.unequal(column, val);
     }
 
     public static String LE(String column, Object val)
     {
-        return conditionsHandler.lessEqual(column, val);
+        return executor.lessEqual(column, val);
     }
 
     public static String LT(String column, Object val)
     {
-        return conditionsHandler.lessThan(column, val);
+        return executor.lessThan(column, val);
     }
 
     public static String GE(String column, Object val)
     {
-        return conditionsHandler.greaterEqual(column, val);
+        return executor.greaterEqual(column, val);
     }
 
     public static String GT(String column, Object val)
     {
-        return conditionsHandler.greaterThan(column, val);
+        return executor.greaterThan(column, val);
     }
 
     public static String IN(String column, List<Object> valList)
     {
-        return conditionsHandler.in(column, valList);
+        return executor.in(column, valList);
     }
 
     public static String IN(String column, SqlConstructor sqlConstructor)
     {
-        return conditionsHandler.in(column, sqlConstructor);
+        return executor.in(column, sqlConstructor);
     }
 
     public static String NOT_IN(String column, List<Object> valList)
     {
-        return conditionsHandler.notIn(column, valList);
+        return executor.notIn(column, valList);
     }
 
     public static String NOT_IN(String column, SqlConstructor sqlConstructor)
     {
-        return conditionsHandler.notIn(column, sqlConstructor);
+        return executor.notIn(column, sqlConstructor);
     }
 
 }

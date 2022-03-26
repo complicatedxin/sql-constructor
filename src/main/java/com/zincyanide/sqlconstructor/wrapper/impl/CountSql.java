@@ -15,6 +15,6 @@ public class CountSql extends QuerySqlWrapper
     {
         return "SELECT count(1) FROM ( "
                     + super.getSql() +
-                " )";
+                " ) cuntbl";
     }
 }

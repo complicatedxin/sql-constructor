@@ -69,6 +69,12 @@ public class ConditionMannerExecutor implements ConditionManner
     }
 
     @Override
+    public String joint(String column1, String column2)
+    {
+        return column1 + " = " + column2;
+    }
+
+    @Override
     public String equal(String column, Object val)
     {
         return column + " = " + handleObjectVal(val);

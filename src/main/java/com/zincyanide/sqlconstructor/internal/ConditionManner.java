@@ -5,6 +5,8 @@ import java.util.List;
 
 public interface ConditionManner
 {
+    String joint(String column1, String column2);
+
     String equal(String column, Object val);
 
     String unequal(String column, Object val);
