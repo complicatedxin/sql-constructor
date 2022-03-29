@@ -18,6 +18,15 @@ package com.zincyanide.sqlconstructor.wrapper;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
 
+/**
+ * An expansion of BaseQuerySql.
+ *
+ * Supporting:
+ *  + count
+ *  + order by
+ *  + limit
+ *  + with as
+ */
 public abstract class QuerySqlWrapper extends SqlConstructor
 {
     protected SqlConstructor sqlConstructor;

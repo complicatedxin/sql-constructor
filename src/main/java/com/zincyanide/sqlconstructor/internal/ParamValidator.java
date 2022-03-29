@@ -19,11 +19,15 @@ package com.zincyanide.sqlconstructor.internal;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
+/**
+ * To validate whether column name, comparing object, ...
+ * is necessary.
+ */
 public class ParamValidator implements InvocationHandler
 {
-    private ConditionManner manner;
+    private Criterion manner;
 
-    public ParamValidator(ConditionManner manner)
+    public ParamValidator(Criterion manner)
     {
         this.manner = manner;
     }

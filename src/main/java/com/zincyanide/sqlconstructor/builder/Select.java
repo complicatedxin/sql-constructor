@@ -16,6 +16,7 @@
 
 package com.zincyanide.sqlconstructor.builder;
 
+import com.zincyanide.sqlconstructor.SqlConstructor;
 import com.zincyanide.sqlconstructor.internal.Separate;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
 import java.util.Objects;
@@ -60,6 +61,17 @@ public class Select
             builder.sqlSB.append(table).append(Separate.COMMA);
         }
         builder.sqlSB.replace(builder.sqlSB.length()-1, builder.sqlSB.length(), Separate.WHITESPACE);
+
+        return new From(this.builder);
+    }
+
+    public From from(SqlConstructor sqlConstructor, String alias)
+    {
+        StringUtil.requireNonWhite(alias, "Derived table should have an alias !");
+
+        builder.sqlSB
+                .append(FROM).append(sqlConstructor).append(Separate.WHITESPACE)
+                .append(alias).append(Separate.WHITESPACE);
 
         return new From(this.builder);
     }

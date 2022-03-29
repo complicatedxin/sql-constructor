@@ -42,7 +42,7 @@ public class BaseQuerySqlBuilder
         return new Select(this);
     }
 
-    public BaseQuerySql build()
+    BaseQuerySql build()
     {
         return new BaseQuerySql(sqlSB.toString());
     }

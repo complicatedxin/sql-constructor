@@ -65,19 +65,19 @@
     
     querySql.getSql();
 ```
-之后可以再结合其他`SqlConstructor`实现类进行扩展。
+之后可以再结合其他`QuerySqlWrapper`实现类进行扩展。
 
-##### 1.3 Conditions
+##### 1.3 Criteria
 为在条件语句的书写上提供的API
 ```java
     SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                    .innerJoin("EMP_INFO", "i").on(Conditions.JOINT("t.eid", "i.eid"))
+                    .innerJoin("EMP_INFO", "i").on(Criteria.JOINT("t.eid", "i.eid"))
                 .where(Where.ANYWHERE)
-                    .and(Conditions.EQUAL("emp_name", "Andy"))
-                    .or(Conditions.LIKE_START_WITH("emp_adr", "上海"))
-                    .and(Conditions.LE("createTime", new Date()))
+                    .and(Criteria.EQUAL("emp_name", "Andy"))
+                    .or(Criteria.LIKE_START_WITH("emp_adr", "上海"))
+                    .and(Criteria.LE("createTime", new Date()))
                 .build();
 ```
 可以不再手动填加`'`，或者`%`。
@@ -89,11 +89,11 @@
     SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                    .innerJoin("EMP_INFO", "i").on(Conditions.JOINT("t.eid", "i.eid"))
+                    .innerJoin("EMP_INFO", "i").on(Criteria.JOINT("t.eid", "i.eid"))
                 .where("")
-                    .and(Conditions.EQUAL("emp_name", null))
-                    .or(Conditions.LIKE("emp_adr", " "))
-                    .and(Conditions.NOT_IN("emp_status", emptyList))
+                    .and(Criteria.EQUAL("emp_name", null))
+                    .or(Criteria.LIKE("emp_adr", " "))
+                    .and(Criteria.NOT_IN("emp_status", emptyList))
                 .build();
 ```
 
@@ -104,12 +104,12 @@
                 .select("*")
                 .from("EMP")
                 .where(Where.ANYWHERE)
-                .and(Conditions.EQUAL("emp_name", new BaseQuerySqlBuilder()
+                .and(Criteria.EQUAL("emp_name", new BaseQuerySqlBuilder()
                                                     .select("ename")
                                                     .from("USER")
                                                     .where("uid = 1")
                                                     .build()))
-                .or(Conditions.IN("emp_adr", new LimitSql(
+                .or(Criteria.IN("emp_adr", new LimitSql(
                                                 new BaseQuerySqlBuilder()
                                                     .select("eadr")
                                                     .from("ADDRESS")

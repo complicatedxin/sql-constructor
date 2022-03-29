@@ -20,7 +20,7 @@ import com.zincyanide.sqlconstructor.SqlConstructor;
 import java.util.Date;
 import java.util.List;
 
-public class ConditionMannerExecutor implements ConditionManner
+public class CriterionExecutor implements Criterion
 {
     private String handleObjectVal(Object val)
     {

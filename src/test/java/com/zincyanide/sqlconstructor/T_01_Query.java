@@ -1,7 +1,7 @@
 package com.zincyanide.sqlconstructor;
 
 import com.zincyanide.sqlconstructor.builder.BaseQuerySqlBuilder;
-import com.zincyanide.sqlconstructor.internal.Conditions;
+import com.zincyanide.sqlconstructor.internal.Criteria;
 import com.zincyanide.sqlconstructor.builder.Where;
 import com.zincyanide.sqlconstructor.wrapper.impl.CountSql;
 import com.zincyanide.sqlconstructor.wrapper.impl.LimitSql;
@@ -72,11 +72,11 @@ public class T_01_Query
         SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                    .innerJoin("EMP_INFO", "i").on(Conditions.JOINT("t.eid", "i.eid"))
+                    .innerJoin("EMP_INFO", "i").on(Criteria.JOINT("t.eid", "i.eid"))
                 .where(Where.ANYWHERE)
-                    .and(Conditions.EQUAL("emp_name", "Andy"))
-                    .or(Conditions.LIKE_START_WITH("emp_adr", "上海"))
-                    .and(Conditions.LE("createTime", new Date()))
+                    .and(Criteria.EQUAL("emp_name", "Andy"))
+                    .or(Criteria.LIKE_START_WITH("emp_adr", "上海"))
+                    .and(Criteria.LE("createTime", new Date()))
                 .build();
 
         System.out.println(querySql.getSql());
@@ -101,11 +101,11 @@ public class T_01_Query
         SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                    .innerJoin("EMP_INFO", "i").on(Conditions.JOINT("t.ei", "i.eid"))
+                    .innerJoin("EMP_INFO", "i").on(Criteria.JOINT("t.ei", "i.eid"))
                 .where("")
-                    .and(Conditions.EQUAL("emp_name", null))
-                    .or(Conditions.LIKE("emp_adr", " "))
-                    .and(Conditions.NOT_IN("emp_status", emptyList))
+                    .and(Criteria.EQUAL("emp_name", null))
+                    .or(Criteria.LIKE("emp_adr", " "))
+                    .and(Criteria.NOT_IN("emp_status", emptyList))
                 .build();
 
         System.out.println(querySql.getSql());
@@ -119,12 +119,12 @@ public class T_01_Query
                     .select("*")
                     .from("EMP")
                     .where(Where.ANYWHERE)
-                    .and(Conditions.EQUAL("emp_name", new BaseQuerySqlBuilder()
+                    .and(Criteria.EQUAL("emp_name", new BaseQuerySqlBuilder()
                                                                 .select("ename")
                                                                 .from("USER")
                                                                 .where("uid = 1")
                                                                 .build()))
-                    .or(Conditions.IN("emp_adr", new LimitSql(new BaseQuerySqlBuilder()
+                    .or(Criteria.IN("emp_adr", new LimitSql(new BaseQuerySqlBuilder()
                                                             .select("eadr")
                                                             .from("ADDRESS")
                                                             .build(), 25, 8)))

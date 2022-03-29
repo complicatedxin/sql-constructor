@@ -19,7 +19,7 @@ package com.zincyanide.sqlconstructor.internal;
 import com.zincyanide.sqlconstructor.SqlConstructor;
 import java.util.List;
 
-public interface ConditionManner
+public interface Criterion
 {
     String joint(String column1, String column2);
 

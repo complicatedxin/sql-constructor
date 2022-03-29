@@ -17,7 +17,12 @@
 package com.zincyanide.sqlconstructor;
 
 /**
- *  is used to validate the format of sql
+ *  A base query sql in this project
+ *  is defined as a sql only including
+ *  select, from, join and/or where statement.
+ *
+ *  To build a BaseQuerySql, a builder is recommended.
+ * @see com.zincyanide.sqlconstructor.builder.BaseQuerySqlBuilder
  */
 public class BaseQuerySql extends SqlConstructor
 {
@@ -28,6 +33,10 @@ public class BaseQuerySql extends SqlConstructor
         this.sql = sql;
     }
 
+    /**
+     * is used to validate the format of sql
+     * @return sqlStr
+     */
     @Override
     public String getSql()
     {

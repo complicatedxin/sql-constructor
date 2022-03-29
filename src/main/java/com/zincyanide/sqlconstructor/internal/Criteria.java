@@ -20,30 +20,45 @@ import com.zincyanide.sqlconstructor.SqlConstructor;
 import java.lang.reflect.Proxy;
 import java.util.List;
 
-public class Conditions
+public class Criteria
 {
-    private static ConditionManner executor =
-            (ConditionManner) Proxy.newProxyInstance(
-                    ConditionManner.class.getClassLoader(),
-                    new Class[]{ConditionManner.class},
-                    new ParamValidator(new ConditionMannerExecutor())
+    private static Criterion executor =
+            (Criterion) Proxy.newProxyInstance(
+                    Criterion.class.getClassLoader(),
+                    new Class[]{Criterion.class},
+                    new ParamValidator(new CriterionExecutor())
             );
 
+    /**
+     * all fuzzy query
+     */
     public static String LIKE(String column, String keyword)
     {
         return executor.like(column, keyword);
     }
 
+    /**
+     * prefix fuzzy query
+     */
     public static String LIKE_START_WITH(String column, String keyword)
     {
         return executor.likeStartWith(column, keyword);
     }
 
+    /**
+     * suffix fuzzy query
+     */
     public static String LIKE_END_WITH(String column, String keyword)
     {
         return executor.likeEndWith(column, keyword);
     }
 
+    /**
+     * for join on
+     * @param col1 columnName
+     * @param col2 another columnName
+     * @return [col1] = [col2]
+     */
     public static String JOINT(String col1, String col2)
     {
         return executor.joint(col1, col2);

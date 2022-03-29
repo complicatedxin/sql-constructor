@@ -18,6 +18,14 @@ package com.zincyanide.sqlconstructor;
 
 import com.zincyanide.sqlconstructor.internal.Separate;
 
+/**
+ * a constructor of sql
+ *
+ * currently supporting
+ *  + query sql:
+ * @see com.zincyanide.sqlconstructor.BaseQuerySql
+ * @see com.zincyanide.sqlconstructor.wrapper.QuerySqlWrapper
+ */
 public abstract class SqlConstructor
 {
     public abstract String getSql();
