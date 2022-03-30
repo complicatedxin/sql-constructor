@@ -94,6 +94,11 @@ public class Criteria
         return executor.greaterThan(column, val);
     }
 
+    public static String BETWEEN(String column, Object leftBound, Object rightBound)
+    {
+        return executor.between(column, leftBound, rightBound);
+    }
+
     public static String IN(String column, List<Object> valList)
     {
         return executor.in(column, valList);

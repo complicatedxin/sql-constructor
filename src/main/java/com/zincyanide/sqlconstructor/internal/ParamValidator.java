@@ -35,23 +35,27 @@ public class ParamValidator implements InvocationHandler
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
     {
-        if(!validateColumnName(args[0])
-                || !validateConstraint(args[1]))
+        if(!validateColumnName(args)
+                || !validateConstraint(args))
             return null;
 
         return method.invoke(manner, args);
     }
 
-    private boolean validateColumnName(Object col)
+    private boolean validateColumnName(Object[] args)
     {
+        Object col = args[0];
         return col instanceof String
                 && !StringUtil.isWhite((String) col);
     }
 
-    private boolean validateConstraint(Object cons)
+    private boolean validateConstraint(Object[] args)
     {
-        return cons != null
-                && !(cons instanceof String && StringUtil.isWhite((String) cons));
+        boolean res = true;
+        for(int i = 1; i < args.length ; i++)
+            res &= (args[i] != null
+                    && !(args[i] instanceof String && StringUtil.isWhite((String) args[i])));
+        return res;
     }
 
 }

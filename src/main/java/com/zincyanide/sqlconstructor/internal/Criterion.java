@@ -35,6 +35,8 @@ public interface Criterion
 
     String greaterThan(String column, Object val);
 
+    String between(String column, Object leftBound, Object rightBound);
+
     String in(String column, List<Object> valList);
 
     String in(String column, SqlConstructor sqlConstructor);

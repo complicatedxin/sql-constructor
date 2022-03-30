@@ -126,6 +126,14 @@ public class CriterionExecutor implements Criterion
     }
 
     @Override
+    public String between(String column, Object leftBound, Object rightBound)
+    {
+        return column
+                + " BETWEEN " + handleObjectVal(leftBound)
+                + " AND " + handleObjectVal(rightBound);
+    }
+
+    @Override
     public String in(String column, List<Object> valList)
     {
         if(valList.size() == 0)
