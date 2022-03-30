@@ -17,27 +17,59 @@
 package com.zincyanide.sqlconstructor.wrapper.impl;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.internal.Separate;
 import com.zincyanide.sqlconstructor.wrapper.QuerySqlWrapper;
+
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class OrderSql extends QuerySqlWrapper
 {
     private static final String ASC = "ASC";
     private static final String DESC = "DESC";
 
-    private String orderColumn;
-    private boolean isDesc = false;
+    private Map<String, Boolean> orderMap = new LinkedHashMap<>();
 
+    public OrderSql(SqlConstructor sqlConstructor)
+    {
+        super(sqlConstructor);
+    }
     public OrderSql(SqlConstructor sqlConstructor, String orderColumn, boolean isDesc)
     {
         super(sqlConstructor);
-        this.orderColumn = orderColumn;
-        this.isDesc = isDesc;
+        orderMap.put(orderColumn, isDesc);
+    }
+
+    public OrderSql orderBy(String orderColumn, boolean isDesc)
+    {
+        orderMap.put(orderColumn, isDesc);
+        return this;
     }
 
     @Override
     public String getSql()
     {
-        return super.getSql()
-                + " ORDER BY " + orderColumn + " " + (isDesc ? DESC : ASC);
+        if(orderMap.size() == 0)
+            return super.getSql();
+
+        StringBuilder sb = new StringBuilder(super.getSql() + " ORDER BY ");
+        Iterator<Map.Entry<String, Boolean>> iterator =
+                orderMap.entrySet().iterator();
+        do {
+            Map.Entry<String, Boolean> entry = iterator.next();
+            sb.append(entry.getKey())
+                    .append(Separate.WHITESPACE)
+                    .append(isDesc(entry.getValue()))
+                    .append(Separate.COMMA);
+        } while (iterator.hasNext());
+        sb.replace(sb.length()-1, sb.length(), Separate.WHITESPACE);
+
+        return sb.toString();
+    }
+
+    private String isDesc(boolean isDesc)
+    {
+        return isDesc ? DESC : ASC;
     }
 }
