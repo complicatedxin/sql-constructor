@@ -17,28 +17,34 @@
 package com.zincyanide.sqlconstructor.builder;
 
 import com.zincyanide.sqlconstructor.BaseQuerySql;
+import com.zincyanide.sqlconstructor.internal.Separate;
+import com.zincyanide.sqlconstructor.internal.StringUtil;
 
 public abstract class Condition
 {
-    BaseQuerySqlBuilder builder;
+    StringBuilder sb;
 
-    public Condition(BaseQuerySqlBuilder builder)
+    public Condition(StringBuilder sb)
     {
-        this.builder = builder;
+        this.sb = sb;
     }
 
-    public Condition and(String condition)
-    {
-        return new Where(this.builder).and(condition);
-    }
+    public abstract Condition and(String condition);
 
-    public Condition or(String condition)
-    {
-        return new Where(this.builder).or(condition);
-    }
+    public abstract Condition or(String condition);
+
+    /**
+     * 组合条件的结束符，用于生成组合条件字符串。
+     * @see MultiCondition#finish()
+     * 单条件不适用此方法
+     *
+     * @return 组合条件字符串
+     */
+    public abstract String finish();
 
     public BaseQuerySql build()
     {
-        return this.builder.build();
+        return new BaseQuerySql(this.sb.toString());
     }
+
 }

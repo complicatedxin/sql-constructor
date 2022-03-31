@@ -39,11 +39,7 @@ public class BaseQuerySqlBuilder
         }
         sqlSB.replace(sqlSB.length() - 1, sqlSB.length(), Separate.WHITESPACE);
 
-        return new Select(this);
+        return new Select(sqlSB);
     }
 
-    BaseQuerySql build()
-    {
-        return new BaseQuerySql(sqlSB.toString());
-    }
 }

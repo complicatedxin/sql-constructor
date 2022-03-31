@@ -118,3 +118,20 @@
                 .build();
 ```
 
+##### 1.5 MultiCondition
+为组合条件提供的API
+```java
+    String sql =
+             new BaseQuerySqlBuilder()
+                .select("*")
+                .from("emp")
+                .where(MultiCondition
+                        .first(Criteria.EQUAL("ename", "SMITH"))
+                        .or(Criteria.EQUAL("job", "SALESMAN"))
+                        .finish())
+                .and(Criteria.GE("sal", 1500))
+                .build()
+                .getSql();
+```
+
+

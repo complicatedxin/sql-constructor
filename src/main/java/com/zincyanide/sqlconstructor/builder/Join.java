@@ -21,25 +21,24 @@ import com.zincyanide.sqlconstructor.internal.StringUtil;
 
 public class Join
 {
-    BaseQuerySqlBuilder builder;
+    StringBuilder sb;
 
     private static final String ON = "ON ";
 
-    public Join(BaseQuerySqlBuilder builder)
+    public Join(StringBuilder sb)
     {
-        this.builder = builder;
+        this.sb = sb;
     }
 
     public JoinCondition on(String joinCondition)
     {
         StringUtil.requireNonWhite(joinCondition);
 
-        builder.sqlSB
-                .append(ON)
+        sb.append(ON)
                 .append(joinCondition)
                 .append(Separate.WHITESPACE);
 
-        return new JoinCondition(this.builder);
+        return new JoinCondition(this.sb);
     }
 
 }

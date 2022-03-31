@@ -1,6 +1,7 @@
 package com.zincyanide.sqlconstructor;
 
 import com.zincyanide.sqlconstructor.builder.BaseQuerySqlBuilder;
+import com.zincyanide.sqlconstructor.builder.MultiCondition;
 import com.zincyanide.sqlconstructor.internal.Criteria;
 import com.zincyanide.sqlconstructor.builder.Where;
 import com.zincyanide.sqlconstructor.wrapper.impl.CountSql;
@@ -131,6 +132,23 @@ public class T_01_Query
                     .build();
 
         System.out.println(querySql.getSql());
+    }
+
+    @Test
+    public void t_07_multiCondition()
+    {
+        String sql = new BaseQuerySqlBuilder()
+                .select("*")
+                .from("emp")
+                .where(MultiCondition
+                        .first(Criteria.EQUAL("ename", "SMITH"))
+                        .or(Criteria.EQUAL("job", "SALESMAN"))
+                        .finish())
+                .and(Criteria.GE("sal", 1500))
+                .build()
+                .getSql();
+
+        System.out.println(sql);
     }
 
 }

@@ -22,45 +22,39 @@ import com.zincyanide.sqlconstructor.internal.StringUtil;
 
 public class Where
 {
-    BaseQuerySqlBuilder builder;
+    StringBuilder sb;
 
     public static final String ANYWHERE = "1 = 1";
     private static final String AND = "AND ";
     private static final String OR = "OR ";
 
-    public Where(BaseQuerySqlBuilder builder)
+    public Where(StringBuilder sb)
     {
-        this.builder = builder;
+        this.sb = sb;
     }
 
     public BaseQuerySql build()
     {
-        return this.builder.build();
+        return new BaseQuerySql(this.sb.toString());
     }
 
     public Condition and(String condition)
     {
-        if (StringUtil.isEmpty(condition))
-            return new And(this.builder);
+        if (!StringUtil.isEmpty(condition))
+            sb.append(AND)
+                    .append(condition)
+                    .append(Separate.WHITESPACE);
 
-        builder.sqlSB
-                .append(AND)
-                .append(condition)
-                .append(Separate.WHITESPACE);
-
-        return new And(this.builder);
+        return new SingleCondition(this.sb);
     }
 
     public Condition or(String condition)
     {
-        if (StringUtil.isEmpty(condition))
-            return new And(this.builder);
+        if (!StringUtil.isEmpty(condition))
+            sb.append(OR)
+                    .append(condition)
+                    .append(Separate.WHITESPACE);
 
-        builder.sqlSB
-                .append(OR)
-                .append(condition)
-                .append(Separate.WHITESPACE);
-
-        return new Or(this.builder);
+        return new SingleCondition(this.sb);
     }
 }

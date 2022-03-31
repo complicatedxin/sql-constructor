@@ -22,7 +22,7 @@ import com.zincyanide.sqlconstructor.internal.StringUtil;
 
 public class From
 {
-    BaseQuerySqlBuilder builder;
+    StringBuilder sb;
 
     private static final String WHERE = "WHERE ";
     private static final String INNER = "INNER";
@@ -30,14 +30,14 @@ public class From
     private static final String RIGHT = "RIGHT";
     private static final String JOIN = " JOIN ";
 
-    public From(BaseQuerySqlBuilder builder)
+    public From(StringBuilder sb)
     {
-        this.builder = builder;
+        this.sb = sb;
     }
 
     public BaseQuerySql build()
     {
-        return this.builder.build();
+        return new BaseQuerySql(this.sb.toString());
     }
 
     public Where where(String condition)
@@ -45,12 +45,11 @@ public class From
         if(StringUtil.isWhite(condition))
             condition = Where.ANYWHERE;
 
-        builder.sqlSB
-                .append(WHERE)
+        sb.append(WHERE)
                 .append(condition)
                 .append(Separate.WHITESPACE);
 
-        return new Where(this.builder);
+        return new Where(this.sb);
     }
 
     public Join innerJoin(String table, String alias)
@@ -72,13 +71,14 @@ public class From
     {
         StringUtil.requireNonWhite(table);
 
-        builder.sqlSB
-                .append(joinManner).append(JOIN).append(table).append(Separate.WHITESPACE);
+        sb.append(joinManner).append(JOIN)
+                .append(table)
+                .append(Separate.WHITESPACE);
 
         if(!StringUtil.isEmpty(alias)
                 && !table.contains(Separate.WHITESPACE))
-            builder.sqlSB.append(alias).append(Separate.WHITESPACE);
+            sb.append(alias).append(Separate.WHITESPACE);
 
-        return new Join(this.builder);
+        return new Join(this.sb);
     }
 }

@@ -16,31 +16,31 @@
 
 package com.zincyanide.sqlconstructor.builder;
 
-public class JoinCondition extends Condition
+public class JoinCondition extends SingleCondition
 {
-    public JoinCondition(BaseQuerySqlBuilder builder)
+    public JoinCondition(StringBuilder sb)
     {
-        super(builder);
+        super(sb);
     }
 
     public Join innerJoin(String table, String alias)
     {
-        return new From(this.builder).innerJoin(table, alias);
+        return new From(this.sb).innerJoin(table, alias);
     }
 
     public Join leftJoin(String table, String alias)
     {
-        return new From(this.builder).leftJoin(table, alias);
+        return new From(this.sb).leftJoin(table, alias);
     }
 
     public Join rightJoin(String table, String alias)
     {
-        return new From(this.builder).rightJoin(table, alias);
+        return new From(this.sb).rightJoin(table, alias);
     }
 
     public Where where(String condition)
     {
-        return new From(builder).where(condition);
+        return new From(sb).where(condition);
     }
 
 }

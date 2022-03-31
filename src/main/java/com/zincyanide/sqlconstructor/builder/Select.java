@@ -23,13 +23,13 @@ import java.util.Objects;
 
 public class Select
 {
-    BaseQuerySqlBuilder builder;
+    StringBuilder sb;
 
     private static final String FROM = "FROM ";
 
-    public Select(BaseQuerySqlBuilder builder)
+    public Select(StringBuilder sb)
     {
-        this.builder = builder;
+        this.sb = sb;
     }
 
     public From from(String table)
@@ -41,38 +41,37 @@ public class Select
     {
         StringUtil.requireNonWhite(table);
 
-        builder.sqlSB.append(FROM).append(table).append(Separate.WHITESPACE);
+        sb.append(FROM).append(table).append(Separate.WHITESPACE);
 
         if(!StringUtil.isEmpty(alias)
                 && !table.contains(Separate.WHITESPACE))
-            builder.sqlSB.append(alias).append(Separate.WHITESPACE);
+            sb.append(alias).append(Separate.WHITESPACE);
 
-        return new From(this.builder);
+        return new From(this.sb);
     }
 
     public From from(String... tables)
     {
         Objects.requireNonNull(tables);
 
-        builder.sqlSB.append(FROM);
+        sb.append(FROM);
         for(String table : tables)
         {
             StringUtil.requireNonEmpty(table, "table do not be null or empty");
-            builder.sqlSB.append(table).append(Separate.COMMA);
+            sb.append(table).append(Separate.COMMA);
         }
-        builder.sqlSB.replace(builder.sqlSB.length()-1, builder.sqlSB.length(), Separate.WHITESPACE);
+        sb.replace(sb.length()-1, sb.length(), Separate.WHITESPACE);
 
-        return new From(this.builder);
+        return new From(this.sb);
     }
 
     public From from(SqlConstructor sqlConstructor, String alias)
     {
         StringUtil.requireNonWhite(alias, "Derived table should have an alias !");
 
-        builder.sqlSB
-                .append(FROM).append(sqlConstructor).append(Separate.WHITESPACE)
+        sb.append(FROM).append(sqlConstructor).append(Separate.WHITESPACE)
                 .append(alias).append(Separate.WHITESPACE);
 
-        return new From(this.builder);
+        return new From(this.sb);
     }
 }
