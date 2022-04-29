@@ -18,29 +18,29 @@ package com.zincyanide.sqlconstructor.builder;
 
 public class JoinCondition extends SingleCondition
 {
-    public JoinCondition(StringBuilder sb)
+    public JoinCondition(BaseQuerySqlBuilder builder)
     {
-        super(sb);
+        super(builder);
     }
 
     public Join innerJoin(String table, String alias)
     {
-        return new From(this.sb).innerJoin(table, alias);
+        return ((From) builder.getMinion(From.class)).innerJoin(table, alias);
     }
 
     public Join leftJoin(String table, String alias)
     {
-        return new From(this.sb).leftJoin(table, alias);
+        return ((From) builder.getMinion(From.class)).leftJoin(table, alias);
     }
 
     public Join rightJoin(String table, String alias)
     {
-        return new From(this.sb).rightJoin(table, alias);
+        return ((From) builder.getMinion(From.class)).rightJoin(table, alias);
     }
 
     public Where where(String condition)
     {
-        return new From(sb).where(condition);
+        return ((From) builder.getMinion(From.class)).where(condition);
     }
 
 }

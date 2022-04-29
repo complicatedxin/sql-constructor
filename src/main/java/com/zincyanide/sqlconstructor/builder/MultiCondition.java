@@ -1,6 +1,6 @@
 package com.zincyanide.sqlconstructor.builder;
 
-import com.zincyanide.sqlconstructor.internal.Separate;
+import com.zincyanide.sqlconstructor.internal.Symbol;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
 
 public class MultiCondition extends Condition
@@ -8,17 +8,24 @@ public class MultiCondition extends Condition
     private static final String AND = "AND ";
     private static final String OR = "OR ";
 
+    private StringBuilder sB;
+
+    public MultiCondition(BaseQuerySqlBuilder builder)
+    {
+        super(builder);
+    }
     public MultiCondition(StringBuilder sb)
     {
-        super(sb);
+        this((BaseQuerySqlBuilder) null);
+        this.sB = sb;
     }
 
     public static Condition first(String criterion)
     {
-        StringBuilder sb = new StringBuilder(Separate.BRACKET_LEFT)
-                .append(Separate.WHITESPACE)
+        StringBuilder sb = new StringBuilder(Symbol.BRACKET_LEFT)
+                .append(Symbol.WHITESPACE)
                 .append(criterion)
-                .append(Separate.WHITESPACE);
+                .append(Symbol.WHITESPACE);
 
         return new MultiCondition(sb);
     }
@@ -27,9 +34,9 @@ public class MultiCondition extends Condition
     public Condition and(String condition)
     {
         if (!StringUtil.isEmpty(condition))
-            sb.append(AND)
+            sB.append(AND)
                     .append(condition)
-                    .append(Separate.WHITESPACE);
+                    .append(Symbol.WHITESPACE);
 
         return this;
     }
@@ -38,9 +45,9 @@ public class MultiCondition extends Condition
     public Condition or(String condition)
     {
         if (!StringUtil.isEmpty(condition))
-            sb.append(OR)
+            sB.append(OR)
                     .append(condition)
-                    .append(Separate.WHITESPACE);
+                    .append(Symbol.WHITESPACE);
 
         return this;
     }
@@ -48,7 +55,7 @@ public class MultiCondition extends Condition
     @Override
     public String finish()
     {
-        return sb.append(Separate.BRACKET_RIGHT).toString();
+        return sB.append(Symbol.BRACKET_RIGHT).toString();
     }
 
 }

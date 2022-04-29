@@ -4,6 +4,7 @@ import com.zincyanide.sqlconstructor.builder.BaseQuerySqlBuilder;
 import com.zincyanide.sqlconstructor.builder.MultiCondition;
 import com.zincyanide.sqlconstructor.internal.Criteria;
 import com.zincyanide.sqlconstructor.builder.Where;
+import com.zincyanide.sqlconstructor.internal.Essential;
 import com.zincyanide.sqlconstructor.wrapper.impl.CountSql;
 import com.zincyanide.sqlconstructor.wrapper.impl.LimitSql;
 import com.zincyanide.sqlconstructor.wrapper.impl.OrderSql;
@@ -149,6 +150,34 @@ public class T_01_Query
                 .getSql();
 
         System.out.println(sql);
+    }
+
+    @Test
+    public void t_08_essential()
+    {
+        List<Object> longList = new ArrayList<>();
+        longList.add(1L);
+        longList.add(2L);
+        longList.add(3L);
+
+        List<Object> stringList = new ArrayList<>();
+        stringList.add("w");
+        stringList.add("t");
+        stringList.add("f");
+
+        List<Object> emptyList = Collections.emptyList();
+
+        SqlConstructor querySql = new BaseQuerySqlBuilder()
+                .select("*")
+                .from("EMP_TASK", "t")
+                    .innerJoin("EMP_INFO", "i").on(Criteria.JOINT("t.ei", "i.eid"))
+                .where("")
+                    .and(Essential.EQUAL("emp_name", null))
+                    .or(Essential.LIKE("emp_adr", " "))
+                    .and(Essential.NOT_IN("emp_status", emptyList))
+                .build();
+
+        System.out.println(querySql.getSql());
     }
 
 }

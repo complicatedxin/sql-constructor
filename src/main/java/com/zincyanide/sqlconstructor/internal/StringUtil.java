@@ -41,7 +41,7 @@ public class StringUtil
 
     public static void requireNonWhite(String str)
     {
-        requireNonEmpty(str, "a string is empty or filled with whitespace");
+        requireNonWhite(str, "a string is empty or filled with whitespace");
     }
 
     public static void requireNonWhite(String str, String errorMsg)

@@ -28,12 +28,12 @@ public class CriterionExecutor implements Criterion
         {
             String str = (String) val;
             if(isSql(str))
-                return Separate.BRACKET_LEFT + str + Separate.BRACKET_RIGHT;
+                return Symbol.BRACKET_LEFT + str + Symbol.BRACKET_RIGHT;
             else
-                return Separate.QUOTE_SINGLE + str + Separate.QUOTE_SINGLE;
+                return Symbol.QUOTE_SINGLE + str + Symbol.QUOTE_SINGLE;
         }
         else if(isDateClass(val))
-            return Separate.QUOTE_SINGLE + val + Separate.QUOTE_SINGLE;
+            return Symbol.QUOTE_SINGLE + val + Symbol.QUOTE_SINGLE;
         else
             return val.toString();
     }
@@ -51,7 +51,7 @@ public class CriterionExecutor implements Criterion
     private boolean isSql(String str)
     {
         str = str.trim();
-        if(str.startsWith(Separate.BRACKET_LEFT))
+        if(str.startsWith(Symbol.BRACKET_LEFT))
             str = str.substring(1).trim();
 
         return str.length()>=15
@@ -60,26 +60,26 @@ public class CriterionExecutor implements Criterion
 
     private String handleListVal(List<Object> valList)
     {
-        StringBuilder sb = new StringBuilder(Separate.BRACKET_LEFT);
+        StringBuilder sb = new StringBuilder(Symbol.BRACKET_LEFT);
         if(isStringClass(valList.get(0).getClass())
                 || isDateClass(valList.get(0)))
         {
             for(Object o : valList)
             {
-                sb.append(Separate.QUOTE_SINGLE)
+                sb.append(Symbol.QUOTE_SINGLE)
                         .append(o)
-                        .append(Separate.QUOTE_SINGLE)
-                        .append(Separate.COMMA);
+                        .append(Symbol.QUOTE_SINGLE)
+                        .append(Symbol.COMMA);
             }
         }
         else
         {
             for(Object o : valList)
             {
-                sb.append(o).append(Separate.COMMA);
+                sb.append(o).append(Symbol.COMMA);
             }
         }
-        sb.replace(sb.length()-1, sb.length(), Separate.BRACKET_RIGHT);
+        sb.replace(sb.length()-1, sb.length(), Symbol.BRACKET_RIGHT);
         return sb.toString();
     }
 
@@ -177,5 +177,17 @@ public class CriterionExecutor implements Criterion
     public String likeEndWith(String column, String val)
     {
         return column + " LIKE '%" + val + "'";
+    }
+
+    @Override
+    public String exists(String column, SqlConstructor sqlConstructor)
+    {
+        return "EXISTS " + sqlConstructor;
+    }
+
+    @Override
+    public String notExists(String column, SqlConstructor sqlConstructor)
+    {
+        return "NOT EXISTS " + sqlConstructor;
     }
 }

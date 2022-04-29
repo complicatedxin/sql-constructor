@@ -17,18 +17,18 @@
 package com.zincyanide.sqlconstructor.internal;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
-import com.zincyanide.sqlconstructor.internal.param.validator.NotStrictValidator;
 import com.zincyanide.sqlconstructor.internal.param.validator.ParamValidator;
+import com.zincyanide.sqlconstructor.internal.param.validator.StrictValidator;
 import java.lang.reflect.Proxy;
 import java.util.List;
 
-public class Criteria
+public class Essential
 {
     private static Criterion executor =
             (Criterion) Proxy.newProxyInstance(
                     Criterion.class.getClassLoader(),
                     new Class[]{Criterion.class},
-                    new ParamValidator(new CriterionExecutor(), new NotStrictValidator())
+                    new ParamValidator(new CriterionExecutor(), new StrictValidator())
             );
 
     /**

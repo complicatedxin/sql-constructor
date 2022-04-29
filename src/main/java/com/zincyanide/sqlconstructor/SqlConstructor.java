@@ -16,7 +16,7 @@
 
 package com.zincyanide.sqlconstructor;
 
-import com.zincyanide.sqlconstructor.internal.Separate;
+import com.zincyanide.sqlconstructor.internal.Symbol;
 
 /**
  * a constructor of sql
@@ -33,8 +33,10 @@ public abstract class SqlConstructor
     @Override
     public String toString()
     {
-        return Separate.BRACKET_LEFT + " "
-                + getSql()
-                + " " + Separate.BRACKET_RIGHT;
+        return new StringBuilder()
+                .append(Symbol.BRACKET_LEFT).append(Symbol.WHITESPACE)
+                .append(getSql())
+                .append(Symbol.WHITESPACE).append(Symbol.BRACKET_RIGHT)
+                .toString();
     }
 }

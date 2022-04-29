@@ -17,16 +17,12 @@
 package com.zincyanide.sqlconstructor.builder;
 
 import com.zincyanide.sqlconstructor.BaseQuerySql;
-import com.zincyanide.sqlconstructor.internal.Separate;
-import com.zincyanide.sqlconstructor.internal.StringUtil;
 
-public abstract class Condition
+public abstract class Condition extends BuilderMinion
 {
-    StringBuilder sb;
-
-    public Condition(StringBuilder sb)
+    public Condition(BaseQuerySqlBuilder builder)
     {
-        this.sb = sb;
+        super(builder);
     }
 
     public abstract Condition and(String condition);
@@ -44,7 +40,7 @@ public abstract class Condition
 
     public BaseQuerySql build()
     {
-        return new BaseQuerySql(this.sb.toString());
+        return builder.build();
     }
 
 }

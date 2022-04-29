@@ -16,29 +16,27 @@
 
 package com.zincyanide.sqlconstructor.builder;
 
-import com.zincyanide.sqlconstructor.internal.Separate;
+import com.zincyanide.sqlconstructor.internal.Symbol;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
 
-public class Join
+public class Join extends BuilderMinion
 {
-    StringBuilder sb;
-
     private static final String ON = "ON ";
 
-    public Join(StringBuilder sb)
+    public Join(BaseQuerySqlBuilder builder)
     {
-        this.sb = sb;
+        super(builder);
     }
 
     public JoinCondition on(String joinCondition)
     {
         StringUtil.requireNonWhite(joinCondition);
 
-        sb.append(ON)
+        builder.sqlSB.append(ON)
                 .append(joinCondition)
-                .append(Separate.WHITESPACE);
+                .append(Symbol.WHITESPACE);
 
-        return new JoinCondition(this.sb);
+        return builder.getMinion(JoinCondition.class);
     }
 
 }

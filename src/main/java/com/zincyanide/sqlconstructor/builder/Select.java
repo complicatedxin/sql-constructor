@@ -17,19 +17,19 @@
 package com.zincyanide.sqlconstructor.builder;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
-import com.zincyanide.sqlconstructor.internal.Separate;
+import com.zincyanide.sqlconstructor.internal.Symbol;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
-import java.util.Objects;
 
-public class Select
+public class Select extends BuilderMinion
 {
-    StringBuilder sb;
+    public static final String ALL_COLS = "*";
+    public static final String COUNT = "count(1)";
 
     private static final String FROM = "FROM ";
 
-    public Select(StringBuilder sb)
+    public Select(BaseQuerySqlBuilder builder)
     {
-        this.sb = sb;
+        super(builder);
     }
 
     public From from(String table)
@@ -41,37 +41,22 @@ public class Select
     {
         StringUtil.requireNonWhite(table);
 
-        sb.append(FROM).append(table).append(Separate.WHITESPACE);
+        builder.sqlSB.append(FROM).append(table).append(Symbol.WHITESPACE);
 
-        if(!StringUtil.isEmpty(alias)
-                && !table.contains(Separate.WHITESPACE))
-            sb.append(alias).append(Separate.WHITESPACE);
+        if(!StringUtil.isEmpty(alias))
+            builder.sqlSB.append(alias)
+                    .append(Symbol.WHITESPACE);
 
-        return new From(this.sb);
-    }
-
-    public From from(String... tables)
-    {
-        Objects.requireNonNull(tables);
-
-        sb.append(FROM);
-        for(String table : tables)
-        {
-            StringUtil.requireNonEmpty(table, "table do not be null or empty");
-            sb.append(table).append(Separate.COMMA);
-        }
-        sb.replace(sb.length()-1, sb.length(), Separate.WHITESPACE);
-
-        return new From(this.sb);
+        return builder.getMinion(From.class);
     }
 
     public From from(SqlConstructor sqlConstructor, String alias)
     {
         StringUtil.requireNonWhite(alias, "Derived table should have an alias !");
 
-        sb.append(FROM).append(sqlConstructor).append(Separate.WHITESPACE)
-                .append(alias).append(Separate.WHITESPACE);
+        builder.sqlSB.append(FROM).append(sqlConstructor).append(Symbol.WHITESPACE)
+                .append(alias).append(Symbol.WHITESPACE);
 
-        return new From(this.sb);
+        return builder.getMinion(From.class);
     }
 }

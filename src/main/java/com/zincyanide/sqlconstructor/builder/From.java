@@ -17,27 +17,25 @@
 package com.zincyanide.sqlconstructor.builder;
 
 import com.zincyanide.sqlconstructor.BaseQuerySql;
-import com.zincyanide.sqlconstructor.internal.Separate;
+import com.zincyanide.sqlconstructor.internal.Symbol;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
 
-public class From
+public class From extends BuilderMinion
 {
-    StringBuilder sb;
-
     private static final String WHERE = "WHERE ";
     private static final String INNER = "INNER";
     private static final String LEFT = "LEFT";
     private static final String RIGHT = "RIGHT";
     private static final String JOIN = " JOIN ";
 
-    public From(StringBuilder sb)
+    public From(BaseQuerySqlBuilder builder)
     {
-        this.sb = sb;
+        super(builder);
     }
 
     public BaseQuerySql build()
     {
-        return new BaseQuerySql(this.sb.toString());
+        return new BaseQuerySql(builder.toString());
     }
 
     public Where where(String condition)
@@ -45,11 +43,11 @@ public class From
         if(StringUtil.isWhite(condition))
             condition = Where.ANYWHERE;
 
-        sb.append(WHERE)
+        builder.sqlSB.append(WHERE)
                 .append(condition)
-                .append(Separate.WHITESPACE);
+                .append(Symbol.WHITESPACE);
 
-        return new Where(this.sb);
+        return builder.getMinion(Where.class);
     }
 
     public Join innerJoin(String table, String alias)
@@ -71,14 +69,13 @@ public class From
     {
         StringUtil.requireNonWhite(table);
 
-        sb.append(joinManner).append(JOIN)
+        builder.sqlSB.append(joinManner).append(JOIN)
                 .append(table)
-                .append(Separate.WHITESPACE);
+                .append(Symbol.WHITESPACE);
 
-        if(!StringUtil.isEmpty(alias)
-                && !table.contains(Separate.WHITESPACE))
-            sb.append(alias).append(Separate.WHITESPACE);
+        if(!StringUtil.isEmpty(alias))
+            builder.sqlSB.append(alias).append(Symbol.WHITESPACE);
 
-        return new Join(this.sb);
+        return builder.getMinion(Join.class);
     }
 }

@@ -14,14 +14,24 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.internal;
+package com.zincyanide.sqlconstructor.builder;
 
-public interface Separate
+public abstract class BuilderMinion
 {
-    String WHITESPACE = " ";
-    String COMMA = ",";
-    String SEMICOLON = ";";
-    String BRACKET_LEFT = "(";
-    String BRACKET_RIGHT = ")";
-    String QUOTE_SINGLE = "'";
+    BaseQuerySqlBuilder builder;
+
+    public BuilderMinion(BaseQuerySqlBuilder builder)
+    {
+        this.builder = builder;
+    }
+
+    public BaseQuerySqlBuilder getBuilder()
+    {
+        return builder;
+    }
+
+    public void setBuilder(BaseQuerySqlBuilder builder)
+    {
+        this.builder = builder;
+    }
 }

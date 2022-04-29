@@ -97,7 +97,21 @@
                 .build();
 ```
 
-##### 1.4 嵌套查询
+##### 1.4 Essential
+相对于`Criteria`使得空参条件不拼接，`Essential`会严格校验参数，如果参数为空则抛出异常。
+```java
+    SqlConstructor querySql = new BaseQuerySqlBuilder()
+                .select("*")
+                .from("EMP_TASK", "t")
+                    .innerJoin("EMP_INFO", "i").on(Criteria.JOINT("t.ei", "i.eid"))
+                .where("")
+                    .and(Essential.EQUAL("emp_name", null))
+                    .or(Essential.LIKE("emp_adr", " "))
+                    .and(Essential.NOT_IN("emp_status", emptyList))
+                .build();
+```
+
+##### 1.5 嵌套查询
 ```java
     SqlConstructor querySql =
             new BaseQuerySqlBuilder()
@@ -118,7 +132,7 @@
                 .build();
 ```
 
-##### 1.5 MultiCondition
+##### 1.6 MultiCondition
 为组合条件提供的API
 ```java
     String sql =

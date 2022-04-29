@@ -17,7 +17,7 @@
 package com.zincyanide.sqlconstructor.wrapper.impl;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
-import com.zincyanide.sqlconstructor.internal.Separate;
+import com.zincyanide.sqlconstructor.internal.Symbol;
 import com.zincyanide.sqlconstructor.wrapper.QuerySqlWrapper;
 
 import java.util.Iterator;
@@ -59,11 +59,11 @@ public class OrderSql extends QuerySqlWrapper
         do {
             Map.Entry<String, Boolean> entry = iterator.next();
             sb.append(entry.getKey())
-                    .append(Separate.WHITESPACE)
+                    .append(Symbol.WHITESPACE)
                     .append(isDesc(entry.getValue()))
-                    .append(Separate.COMMA);
+                    .append(Symbol.COMMA);
         } while (iterator.hasNext());
-        sb.replace(sb.length()-1, sb.length(), Separate.WHITESPACE);
+        sb.replace(sb.length()-1, sb.length(), Symbol.WHITESPACE);
 
         return sb.toString();
     }

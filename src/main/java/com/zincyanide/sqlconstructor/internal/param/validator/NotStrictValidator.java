@@ -14,42 +14,22 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.internal;
+package com.zincyanide.sqlconstructor.internal.param.validator;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
+import com.zincyanide.sqlconstructor.internal.StringUtil;
 
-/**
- * To validate whether column name, comparing object, ...
- * is necessary.
- */
-public class ParamValidator implements InvocationHandler
+public class NotStrictValidator implements ValidateStrategy
 {
-    private Criterion manner;
-
-    public ParamValidator(Criterion manner)
-    {
-        this.manner = manner;
-    }
-
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
-    {
-        if(!validateColumnName(args)
-                || !validateConstraint(args))
-            return null;
-
-        return method.invoke(manner, args);
-    }
-
-    private boolean validateColumnName(Object[] args)
+    public boolean validateColumnName(Object[] args)
     {
         Object col = args[0];
         return col instanceof String
                 && !StringUtil.isWhite((String) col);
     }
 
-    private boolean validateConstraint(Object[] args)
+    @Override
+    public boolean validateConstraint(Object[] args)
     {
         boolean res = true;
         for(int i = 1; i < args.length ; i++)
@@ -57,5 +37,4 @@ public class ParamValidator implements InvocationHandler
                     && !(args[i] instanceof String && StringUtil.isWhite((String) args[i])));
         return res;
     }
-
 }

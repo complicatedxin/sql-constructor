@@ -2,21 +2,21 @@ package com.zincyanide.sqlconstructor.builder;
 
 public class SingleCondition extends Condition
 {
-    public SingleCondition(StringBuilder sb)
+    public SingleCondition(BaseQuerySqlBuilder builder)
     {
-        super(sb);
+        super(builder);
     }
 
     @Override
     public Condition and(String condition)
     {
-        return new Where(this.sb).and(condition);
+        return ((Where) builder.getMinion(Where.class)).and(condition);
     }
 
     @Override
     public Condition or(String condition)
     {
-        return new Where(this.sb).or(condition);
+        return  ((Where) builder.getMinion(Where.class)).or(condition);
     }
 
     @Override

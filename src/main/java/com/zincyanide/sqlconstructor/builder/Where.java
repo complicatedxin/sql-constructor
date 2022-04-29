@@ -17,44 +17,42 @@
 package com.zincyanide.sqlconstructor.builder;
 
 import com.zincyanide.sqlconstructor.BaseQuerySql;
-import com.zincyanide.sqlconstructor.internal.Separate;
+import com.zincyanide.sqlconstructor.internal.Symbol;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
 
-public class Where
+public class Where extends BuilderMinion
 {
-    StringBuilder sb;
-
     public static final String ANYWHERE = "1 = 1";
     private static final String AND = "AND ";
     private static final String OR = "OR ";
 
-    public Where(StringBuilder sb)
+    public Where(BaseQuerySqlBuilder builder)
     {
-        this.sb = sb;
+        super(builder);
     }
 
     public BaseQuerySql build()
     {
-        return new BaseQuerySql(this.sb.toString());
+        return builder.build();
     }
 
     public Condition and(String condition)
     {
         if (!StringUtil.isEmpty(condition))
-            sb.append(AND)
+            builder.sqlSB.append(AND)
                     .append(condition)
-                    .append(Separate.WHITESPACE);
+                    .append(Symbol.WHITESPACE);
 
-        return new SingleCondition(this.sb);
+        return builder.getMinion(SingleCondition.class);
     }
 
     public Condition or(String condition)
     {
         if (!StringUtil.isEmpty(condition))
-            sb.append(OR)
+            builder.sqlSB.append(OR)
                     .append(condition)
-                    .append(Separate.WHITESPACE);
+                    .append(Symbol.WHITESPACE);
 
-        return new SingleCondition(this.sb);
+        return builder.getMinion(SingleCondition.class);
     }
 }
