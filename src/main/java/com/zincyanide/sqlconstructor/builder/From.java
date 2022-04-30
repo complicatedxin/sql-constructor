@@ -35,7 +35,7 @@ public class From extends BuilderMinion
 
     public BaseQuerySql build()
     {
-        return new BaseQuerySql(builder.toString());
+        return builder.build();
     }
 
     public Where where(String condition)

@@ -22,9 +22,6 @@ import com.zincyanide.sqlconstructor.internal.StringUtil;
 
 public class Select extends BuilderMinion
 {
-    public static final String ALL_COLS = "*";
-    public static final String COUNT = "count(1)";
-
     private static final String FROM = "FROM ";
 
     public Select(BaseQuerySqlBuilder builder)

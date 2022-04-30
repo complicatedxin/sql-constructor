@@ -28,24 +28,22 @@ public class BaseQuerySqlBuilder
 {
     StringBuilder sqlSB = new StringBuilder();
 
-    Map<Class<? extends BuilderMinion>, BuilderMinion> minionMap = new HashMap<>();
+    Map<Class<? extends BuilderMinion>, BuilderMinion> minions = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     <T> T getMinion(Class<? extends BuilderMinion> clazz)
     {
-        return (T) minionMap.get(clazz);
+        return (T) minions.get(clazz);
     }
 
     //TODO: develop into factory pattern
     {
-        minionMap.put(Select.class, new Select(this));
-        minionMap.put(From.class, new From(this));
-        minionMap.put(Join.class, new Join(this));
-        minionMap.put(Where.class, new Where(this));
-        minionMap.put(JoinCondition.class, new JoinCondition(this));
-        minionMap.put(SingleCondition.class, new SingleCondition(this));
-
-        new InheritableThreadLocal<BaseQuerySqlBuilder>().set(this);
+        minions.put(Select.class, new Select(this));
+        minions.put(From.class, new From(this));
+        minions.put(Join.class, new Join(this));
+        minions.put(Where.class, new Where(this));
+        minions.put(JoinCondition.class, new JoinCondition(this));
+        minions.put(SingleCondition.class, new SingleCondition(this));
     }
 
     public BaseQuerySql build()
@@ -54,11 +52,6 @@ public class BaseQuerySqlBuilder
     }
 
     private static final String SELECT = "SELECT ";
-
-    public Select selectAllCols()
-    {
-        return select(Select.ALL_COLS);
-    }
 
     public Select select(String... columns)
     {
@@ -74,5 +67,32 @@ public class BaseQuerySqlBuilder
 
         return getMinion(Select.class);
     }
+
+    public Select selectAllCols()
+    {
+        return select("*");
+    }
+
+    public Select selectCount(String in)
+    {
+        return select("count(" + in + ")");
+    }
+
+    public Select selectDistinct(String... columns)
+    {
+        Objects.requireNonNull(columns);
+
+        sqlSB.append(SELECT).append("DISTINCT ");
+        for(String column : columns)
+        {
+            StringUtil.requireNonWhite(column);
+            sqlSB.append(column).append(Symbol.COMMA);
+        }
+        sqlSB.replace(sqlSB.length() - 1, sqlSB.length(), Symbol.WHITESPACE);
+
+        return getMinion(Select.class);
+    }
+
+    //TODO:  sum(), case when, ...
 
 }
