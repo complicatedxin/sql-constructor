@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.wrapper.impl;
+package com.zincyanide.sqlconstructor.dml.query.wrapper.impl;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
-import com.zincyanide.sqlconstructor.wrapper.QuerySqlWrapper;
+import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
+
 import java.util.LinkedList;
 import java.util.List;
 

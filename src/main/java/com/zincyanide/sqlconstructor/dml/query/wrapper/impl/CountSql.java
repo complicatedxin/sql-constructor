@@ -14,30 +14,23 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.wrapper;
+package com.zincyanide.sqlconstructor.dml.query.wrapper.impl;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
 
-/**
- * An expansion of BaseQuerySql.
- *
- * Supporting:
- *  + count
- *  + order by
- *  + limit
- *  + with as
- */
-public abstract class QuerySqlWrapper extends SqlConstructor
+public class CountSql extends QuerySqlWrapper
 {
-    protected SqlConstructor sqlConstructor;
-
-    public QuerySqlWrapper(SqlConstructor sqlConstructor)
+    public CountSql(SqlConstructor sqlConstructor)
     {
-        this.sqlConstructor = sqlConstructor;
+        super(sqlConstructor);
     }
 
+    @Override
     public String getSql()
     {
-        return this.sqlConstructor.getSql();
+        return "SELECT count(1) FROM ( "
+                    + super.getSql() +
+                " ) cuntbl";
     }
 }

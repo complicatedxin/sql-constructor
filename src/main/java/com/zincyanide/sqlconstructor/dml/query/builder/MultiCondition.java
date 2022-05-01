@@ -1,4 +1,4 @@
-package com.zincyanide.sqlconstructor.builder;
+package com.zincyanide.sqlconstructor.dml.query.builder;
 
 import com.zincyanide.sqlconstructor.internal.Symbol;
 import com.zincyanide.sqlconstructor.internal.StringUtil;

@@ -29,7 +29,7 @@ public class StrictValidator implements ValidateStrategy
         if(!(col instanceof String)
                 || StringUtil.isWhite((String) col))
             throw new InvalidParameterException(
-                    String.format("There is invalid column name: it may be null"));
+                    "There is invalid column name, it might be null");
         return true;
     }
 

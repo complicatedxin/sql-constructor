@@ -14,23 +14,27 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.wrapper.impl;
+package com.zincyanide.sqlconstructor.dml.query.wrapper.impl;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
-import com.zincyanide.sqlconstructor.wrapper.QuerySqlWrapper;
+import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
 
-public class CountSql extends QuerySqlWrapper
+public class LimitSql extends QuerySqlWrapper
 {
-    public CountSql(SqlConstructor sqlConstructor)
+    private int queryOffset = 0;
+    private int queryNum = 0;
+
+    public LimitSql(SqlConstructor sqlConstructor, int queryOffset, int queryNum)
     {
         super(sqlConstructor);
+        this.queryOffset = queryOffset;
+        this.queryNum = queryNum;
     }
 
     @Override
     public String getSql()
     {
-        return "SELECT count(1) FROM ( "
-                    + super.getSql() +
-                " ) cuntbl";
+        return super.getSql()
+                + " LIMIT " + queryOffset + "," + queryNum;
     }
 }

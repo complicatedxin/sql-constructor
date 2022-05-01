@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.builder;
+package com.zincyanide.sqlconstructor.dml.query.builder;
 
 public class JoinCondition extends SingleCondition
 {

@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Criteria
 {
-    private static Criterion executor =
+    private static final Criterion executor =
             (Criterion) Proxy.newProxyInstance(
                     Criterion.class.getClassLoader(),
                     new Class[]{Criterion.class},

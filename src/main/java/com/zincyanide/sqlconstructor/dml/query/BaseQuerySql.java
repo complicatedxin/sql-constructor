@@ -14,27 +14,37 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.wrapper.impl;
+package com.zincyanide.sqlconstructor.dml.query;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
-import com.zincyanide.sqlconstructor.wrapper.QuerySqlWrapper;
 
-public class LimitSql extends QuerySqlWrapper
+/**
+ *  A base query sql in this project
+ *  is defined as a sql only including
+ *  select, from, join and/or where statement.
+ *
+ *  To build a BaseQuerySql, a builder is recommended.
+ * @see com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder
+ */
+public class BaseQuerySql extends SqlConstructor
 {
-    private int queryOffset = 0;
-    private int queryNum = 0;
+    private String sql;
 
-    public LimitSql(SqlConstructor sqlConstructor, int queryOffset, int queryNum)
+    public BaseQuerySql(String sql)
     {
-        super(sqlConstructor);
-        this.queryOffset = queryOffset;
-        this.queryNum = queryNum;
+        this.sql = sql;
     }
 
+    /**
+     * is used to validate the format of sql
+     * @return sqlStr
+     */
     @Override
     public String getSql()
     {
-        return super.getSql()
-                + " LIMIT " + queryOffset + "," + queryNum;
+        //TODO validate the format of sql
+
+        return sql;
     }
+
 }

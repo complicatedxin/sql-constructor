@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.builder;
+package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.BaseQuerySql;
+import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.internal.Symbol;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
-
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class BaseQuerySqlBuilder
+public class BaseQuerySqlBuilder implements Serializable
 {
-    StringBuilder sqlSB = new StringBuilder();
+    protected StringBuilder sqlSB = new StringBuilder();
 
     Map<Class<? extends BuilderMinion>, BuilderMinion> minions = new HashMap<>();
 
-    @SuppressWarnings("unchecked")
-    <T> T getMinion(Class<? extends BuilderMinion> clazz)
+    public BaseQuerySqlBuilder()
     {
-        return (T) minions.get(clazz);
+        summonMinions();
     }
 
-    //TODO: develop into factory pattern
+    private void summonMinions()
     {
         minions.put(Select.class, new Select(this));
         minions.put(From.class, new From(this));
@@ -44,6 +43,17 @@ public class BaseQuerySqlBuilder
         minions.put(Where.class, new Where(this));
         minions.put(JoinCondition.class, new JoinCondition(this));
         minions.put(SingleCondition.class, new SingleCondition(this));
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getMinion(Class<? extends BuilderMinion> clazz)
+    {
+        return (T) minions.get(clazz);
+    }
+
+    public StringBuilder getSqlSB()
+    {
+        return sqlSB;
     }
 
     public BaseQuerySql build()
@@ -92,7 +102,5 @@ public class BaseQuerySqlBuilder
 
         return getMinion(Select.class);
     }
-
-    //TODO:  sum(), case when, ...
 
 }

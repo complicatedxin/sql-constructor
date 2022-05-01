@@ -14,35 +14,28 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor;
+package com.zincyanide.sqlconstructor.dml.query.builder;
 
-/**
- *  A base query sql in this project
- *  is defined as a sql only including
- *  select, from, join and/or where statement.
- *
- *  To build a BaseQuerySql, a builder is recommended.
- * @see com.zincyanide.sqlconstructor.builder.BaseQuerySqlBuilder
- */
-public class BaseQuerySql extends SqlConstructor
+import com.zincyanide.sqlconstructor.internal.StringUtil;
+import com.zincyanide.sqlconstructor.internal.Symbol;
+
+public class Join extends BuilderMinion
 {
-    private String sql;
+    private static final String ON = "ON ";
 
-    public BaseQuerySql(String sql)
+    public Join(BaseQuerySqlBuilder builder)
     {
-        this.sql = sql;
+        super(builder);
     }
 
-    /**
-     * is used to validate the format of sql
-     * @return sqlStr
-     */
-    @Override
-    public String getSql()
+    public JoinCondition on(String joinCondition)
     {
-        //TODO validate the format of sql
+        StringUtil.requireNonWhite(joinCondition);
 
-        return sql;
+        builder.getSqlSB().append(ON)
+                .append(joinCondition)
+                .append(Symbol.WHITESPACE);
+
+        return builder.getMinion(JoinCondition.class);
     }
-
 }

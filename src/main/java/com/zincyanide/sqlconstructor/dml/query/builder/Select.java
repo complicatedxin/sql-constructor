@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.builder;
+package com.zincyanide.sqlconstructor.dml.query.builder;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
-import com.zincyanide.sqlconstructor.internal.Symbol;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
+import com.zincyanide.sqlconstructor.internal.Symbol;
 
 public class Select extends BuilderMinion
 {
@@ -38,10 +38,10 @@ public class Select extends BuilderMinion
     {
         StringUtil.requireNonWhite(table);
 
-        builder.sqlSB.append(FROM).append(table).append(Symbol.WHITESPACE);
+        builder.getSqlSB().append(FROM).append(table).append(Symbol.WHITESPACE);
 
         if(!StringUtil.isEmpty(alias))
-            builder.sqlSB.append(alias)
+            builder.getSqlSB().append(alias)
                     .append(Symbol.WHITESPACE);
 
         return builder.getMinion(From.class);
@@ -51,7 +51,7 @@ public class Select extends BuilderMinion
     {
         StringUtil.requireNonWhite(alias, "Derived table should have an alias !");
 
-        builder.sqlSB.append(FROM).append(sqlConstructor).append(Symbol.WHITESPACE)
+        builder.getSqlSB().append(FROM).append(sqlConstructor).append(Symbol.WHITESPACE)
                 .append(alias).append(Symbol.WHITESPACE);
 
         return builder.getMinion(From.class);

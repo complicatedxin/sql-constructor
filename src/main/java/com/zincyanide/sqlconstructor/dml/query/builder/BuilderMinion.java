@@ -14,29 +14,26 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.builder;
+package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.internal.Symbol;
-import com.zincyanide.sqlconstructor.internal.StringUtil;
+import java.io.Serializable;
 
-public class Join extends BuilderMinion
+public abstract class BuilderMinion implements Serializable
 {
-    private static final String ON = "ON ";
+    protected BaseQuerySqlBuilder builder;
 
-    public Join(BaseQuerySqlBuilder builder)
+    public BuilderMinion(BaseQuerySqlBuilder builder)
     {
-        super(builder);
+        this.builder = builder;
     }
 
-    public JoinCondition on(String joinCondition)
+    public BaseQuerySqlBuilder getBuilder()
     {
-        StringUtil.requireNonWhite(joinCondition);
-
-        builder.sqlSB.append(ON)
-                .append(joinCondition)
-                .append(Symbol.WHITESPACE);
-
-        return builder.getMinion(JoinCondition.class);
+        return builder;
     }
 
+    public void setBuilder(BaseQuerySqlBuilder builder)
+    {
+        this.builder = builder;
+    }
 }

@@ -16,6 +16,7 @@
 
 package com.zincyanide.sqlconstructor;
 
+import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
 import com.zincyanide.sqlconstructor.internal.Symbol;
 
 /**
@@ -23,8 +24,8 @@ import com.zincyanide.sqlconstructor.internal.Symbol;
  *
  * currently supporting
  *  + query sql:
- * @see com.zincyanide.sqlconstructor.BaseQuerySql
- * @see com.zincyanide.sqlconstructor.wrapper.QuerySqlWrapper
+ * @see com.zincyanide.sqlconstructor.dml.query.BaseQuerySql
+ * @see QuerySqlWrapper
  */
 public abstract class SqlConstructor
 {

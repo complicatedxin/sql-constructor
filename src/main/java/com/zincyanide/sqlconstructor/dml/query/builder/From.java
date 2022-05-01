@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.builder;
+package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.BaseQuerySql;
-import com.zincyanide.sqlconstructor.internal.Symbol;
+import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
+import com.zincyanide.sqlconstructor.internal.Symbol;
 
 public class From extends BuilderMinion
 {
@@ -43,7 +43,7 @@ public class From extends BuilderMinion
         if(StringUtil.isWhite(condition))
             condition = Where.ANYWHERE;
 
-        builder.sqlSB.append(WHERE)
+        builder.getSqlSB().append(WHERE)
                 .append(condition)
                 .append(Symbol.WHITESPACE);
 
@@ -65,16 +65,16 @@ public class From extends BuilderMinion
         return join(RIGHT, table, alias);
     }
 
-    private Join join(String joinManner, String table, String alias)
+    protected Join join(String joinManner, String table, String alias)
     {
         StringUtil.requireNonWhite(table);
 
-        builder.sqlSB.append(joinManner).append(JOIN)
+        builder.getSqlSB().append(joinManner).append(JOIN)
                 .append(table)
                 .append(Symbol.WHITESPACE);
 
         if(!StringUtil.isEmpty(alias))
-            builder.sqlSB.append(alias).append(Symbol.WHITESPACE);
+            builder.getSqlSB().append(alias).append(Symbol.WHITESPACE);
 
         return builder.getMinion(Join.class);
     }

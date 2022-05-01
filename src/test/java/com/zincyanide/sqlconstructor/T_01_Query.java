@@ -1,14 +1,15 @@
 package com.zincyanide.sqlconstructor;
 
-import com.zincyanide.sqlconstructor.builder.BaseQuerySqlBuilder;
-import com.zincyanide.sqlconstructor.builder.MultiCondition;
+import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
+import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
+import com.zincyanide.sqlconstructor.dml.query.builder.MultiCondition;
 import com.zincyanide.sqlconstructor.internal.Criteria;
-import com.zincyanide.sqlconstructor.builder.Where;
+import com.zincyanide.sqlconstructor.dml.query.builder.Where;
 import com.zincyanide.sqlconstructor.internal.Essential;
-import com.zincyanide.sqlconstructor.wrapper.impl.CountSql;
-import com.zincyanide.sqlconstructor.wrapper.impl.LimitSql;
-import com.zincyanide.sqlconstructor.wrapper.impl.OrderSql;
-import com.zincyanide.sqlconstructor.wrapper.impl.WithAsSql;
+import com.zincyanide.sqlconstructor.dml.query.wrapper.impl.CountSql;
+import com.zincyanide.sqlconstructor.dml.query.wrapper.impl.LimitSql;
+import com.zincyanide.sqlconstructor.dml.query.wrapper.impl.OrderSql;
+import com.zincyanide.sqlconstructor.dml.query.wrapper.impl.WithAsSql;
 import org.junit.Test;
 
 import java.util.ArrayList;

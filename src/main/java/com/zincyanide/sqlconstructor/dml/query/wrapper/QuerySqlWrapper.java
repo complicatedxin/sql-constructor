@@ -14,24 +14,30 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.builder;
+package com.zincyanide.sqlconstructor.dml.query.wrapper;
 
-public abstract class BuilderMinion
+import com.zincyanide.sqlconstructor.SqlConstructor;
+
+/**
+ * An expansion of BaseQuerySql.
+ *
+ * Supporting:
+ *  + count
+ *  + order by
+ *  + limit
+ *  + with as
+ */
+public abstract class QuerySqlWrapper extends SqlConstructor
 {
-    BaseQuerySqlBuilder builder;
+    protected SqlConstructor sqlConstructor;
 
-    public BuilderMinion(BaseQuerySqlBuilder builder)
+    public QuerySqlWrapper(SqlConstructor sqlConstructor)
     {
-        this.builder = builder;
+        this.sqlConstructor = sqlConstructor;
     }
 
-    public BaseQuerySqlBuilder getBuilder()
+    public String getSql()
     {
-        return builder;
-    }
-
-    public void setBuilder(BaseQuerySqlBuilder builder)
-    {
-        this.builder = builder;
+        return this.sqlConstructor.getSql();
     }
 }

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.builder;
+package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.BaseQuerySql;
+import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.internal.Symbol;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
 
