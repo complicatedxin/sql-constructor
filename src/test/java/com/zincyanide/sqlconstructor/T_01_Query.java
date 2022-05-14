@@ -33,11 +33,11 @@ public class T_01_Query
         System.out.println("limitSql: " + limit.getSql());
         System.out.println("orderSql: " + order.getSql());
 
-        SqlConstructor orderAndLimit = new OrderSql(limit, "UPDATE_TIME", true);
-        System.out.println("orderAndLimitSql: " + orderAndLimit.getSql());
+        SqlConstructor orderThenLimit = new LimitSql(order, 5, 25);
+        System.out.println("orderThenLimitSql: " + orderThenLimit.getSql());
 
         //================================
-        WithAsSql withAsSql = new WithAsSql(orderAndLimit, "OAL",
+        WithAsSql withAsSql = new WithAsSql(orderThenLimit, "OAL",
                 new BaseQuerySql("select a from OAL where id = 1"));
         System.out.println("withAsSql: " + withAsSql.getSql());
     }

@@ -40,7 +40,7 @@ public class WithAsSql extends QuerySqlWrapper
         try {
             validatePremise();
 
-            return "WITH " + withName + " AS " + asSqlConstructor
+            return "WITH " + withName + " AS " + asSqlConstructor + " "
                     + super.getSql();
         } catch (SQLException e) {
             e.printStackTrace();
