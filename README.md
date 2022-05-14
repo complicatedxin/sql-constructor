@@ -45,8 +45,8 @@
 
 所以，包装器可以作为参数被传入其他包装器，比如用来当构建`... order by xxx limit y,z`：
 ```java
-    SqlConstructor orderAndLimit = new OrderSql(limit, "UPDATE_TIME", true);
-    orderAndLimit.getSql()
+    SqlConstructor orderThenLimit = new LimitSql(order, 5, 25);
+    orderThenLimit.getSql();
 ```
 
 ##### 1.2 BaseQuerySqlBuilder
