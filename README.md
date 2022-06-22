@@ -67,17 +67,17 @@
 ```
 之后可以再结合其他`QuerySqlWrapper`实现类进行扩展。
 
-##### 1.3 Criteria
+##### 1.3 Omissibl
 为在条件语句的书写上提供的API
 ```java
     SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                    .innerJoin("EMP_INFO", "i").on(Criteria.JOINT("t.eid", "i.eid"))
+                    .innerJoin("EMP_INFO", "i").on(Omissibl.JOINT("t.eid", "i.eid"))
                 .where(Where.ANYWHERE)
-                    .and(Criteria.EQUAL("emp_name", "Andy"))
-                    .or(Criteria.LIKE_START_WITH("emp_adr", "上海"))
-                    .and(Criteria.LE("createTime", new Date()))
+                    .and(Omissibl.EQUAL("emp_name", "Andy"))
+                    .or(Omissibl.LIKE_START_WITH("emp_adr", "上海"))
+                    .and(Omissibl.LE("createTime", new Date()))
                 .build();
 ```
 可以不再手动填加`'`，或者`%`。
@@ -89,21 +89,21 @@
     SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                    .innerJoin("EMP_INFO", "i").on(Criteria.JOINT("t.eid", "i.eid"))
+                    .innerJoin("EMP_INFO", "i").on(Omissibl.JOINT("t.eid", "i.eid"))
                 .where("")
-                    .and(Criteria.EQUAL("emp_name", null))
-                    .or(Criteria.LIKE("emp_adr", " "))
-                    .and(Criteria.NOT_IN("emp_status", emptyList))
+                    .and(Omissibl.EQUAL("emp_name", null))
+                    .or(Omissibl.LIKE("emp_adr", " "))
+                    .and(Omissibl.NOT_IN("emp_status", emptyList))
                 .build();
 ```
 
 ##### 1.4 Essential
-相对于`Criteria`使得空参条件不拼接，`Essential`会严格校验参数，如果参数为空则抛出异常。
+相对于`Omissibl`使得空参条件不拼接，`Essential`会严格校验参数，如果参数为空则抛出异常。
 ```java
     SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                    .innerJoin("EMP_INFO", "i").on(Criteria.JOINT("t.ei", "i.eid"))
+                    .innerJoin("EMP_INFO", "i").on(Omissibl.JOINT("t.ei", "i.eid"))
                 .where("")
                     .and(Essential.EQUAL("emp_name", null))
                     .or(Essential.LIKE("emp_adr", " "))
@@ -118,12 +118,12 @@
                 .select("*")
                 .from("EMP")
                 .where(Where.ANYWHERE)
-                .and(Criteria.EQUAL("emp_name", new BaseQuerySqlBuilder()
+                .and(Omissibl.EQUAL("emp_name", new BaseQuerySqlBuilder()
                                                     .select("ename")
                                                     .from("USER")
                                                     .where("uid = 1")
                                                     .build()))
-                .or(Criteria.IN("emp_adr", new LimitSql(
+                .or(Omissibl.IN("emp_adr", new LimitSql(
                                                 new BaseQuerySqlBuilder()
                                                     .select("eadr")
                                                     .from("ADDRESS")
@@ -132,18 +132,18 @@
                 .build();
 ```
 
-##### 1.6 MultiCondition
+##### 1.6 Conditions
 为组合条件提供的API
 ```java
     String sql =
              new BaseQuerySqlBuilder()
                 .select("*")
                 .from("emp")
-                .where(MultiCondition
-                        .first(Criteria.EQUAL("ename", "SMITH"))
-                        .or(Criteria.EQUAL("job", "SALESMAN"))
+                .where(Conditions
+                        .first(Omissibl.EQUAL("ename", "SMITH"))
+                        .or(Omissibl.EQUAL("job", "SALESMAN"))
                         .finish())
-                .and(Criteria.GE("sal", 1500))
+                .and(Omissibl.GE("sal", 1500))
                 .build()
                 .getSql();
 ```

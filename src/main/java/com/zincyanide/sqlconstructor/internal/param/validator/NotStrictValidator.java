@@ -16,25 +16,35 @@
 
 package com.zincyanide.sqlconstructor.internal.param.validator;
 
+import com.zincyanide.sqlconstructor.SqlConstructor;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
+
+import java.util.List;
 
 public class NotStrictValidator implements ValidateStrategy
 {
     @Override
-    public boolean validateColumnName(Object[] args)
+    public Boolean validateColumn(String col)
     {
-        Object col = args[0];
-        return col instanceof String
-                && !StringUtil.isWhite((String) col);
+        return !StringUtil.isBlank(col);
     }
 
     @Override
-    public boolean validateConstraint(Object[] args)
+    public Boolean validateArg(Object arg)
     {
-        boolean res = true;
-        for(int i = 1; i < args.length ; i++)
-            res &= (args[i] != null
-                    && !(args[i] instanceof String && StringUtil.isWhite((String) args[i])));
-        return res;
+        return (arg != null
+                && !(arg instanceof String && StringUtil.isBlank((String) arg)));
+    }
+
+    @Override
+    public Boolean validateArgs(List<Object> args)
+    {
+        return args != null && args.size() > 0;
+    }
+
+    @Override
+    public Boolean validateSubSql(SqlConstructor subSql)
+    {
+        return subSql != null;
     }
 }

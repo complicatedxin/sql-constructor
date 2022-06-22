@@ -18,7 +18,7 @@ package com.zincyanide.sqlconstructor.internal;
 
 public class StringUtil
 {
-    public static boolean isEmpty(String str)
+    public static Boolean isEmpty(String str)
     {
         return str == null || str.isEmpty();
     }
@@ -34,7 +34,7 @@ public class StringUtil
             throw new IllegalArgumentException(errorMsg);
     }
 
-    public static boolean isWhite(String str)
+    public static Boolean isBlank(String str)
     {
         return str == null || str.trim().isEmpty();
     }
@@ -46,7 +46,7 @@ public class StringUtil
 
     public static void requireNonWhite(String str, String errorMsg)
     {
-        if(isWhite(str))
+        if(isBlank(str))
             throw new IllegalArgumentException(errorMsg);
     }
 }

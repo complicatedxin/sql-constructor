@@ -14,54 +14,49 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.dml.query.builder;
+package com.zincyanide.sqlconstructor.internal;
 
-import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 
-public class Condition
+public class Conditions
 {
     private PredicateNode root;
 
-    protected final Conditional belongs;
-
-    public Condition(Conditional belongs)
+    public Conditions(PredicateNode root)
     {
-        this.belongs = belongs;
-        this.root = new PredicateNode();
+        this.root = root;
     }
 
-    public Condition and(String condition)
+    public static Conditions first(String condition)
     {
-        root = root.add(condition, false);
-        return this;
+        return new Conditions(new PredicateNode(condition));
     }
 
-    public Condition and(PredicateNode predicate)
+    public Conditions and(String condition)
+    {
+        return and(new PredicateNode(condition));
+    }
+
+    public Conditions and(PredicateNode predicate)
     {
         root = root.add(predicate, false);
         return this;
     }
 
-    public Condition or(String condition)
+    public Conditions or(String condition)
     {
-        root = root.add(condition, true);
-        return this;
+        return or(new PredicateNode(condition));
     }
 
-    public Condition or(PredicateNode predicate)
+    public Conditions or(PredicateNode predicate)
     {
         root = root.add(predicate, true);
         return this;
     }
 
-    protected String getConditions()
+    public PredicateNode finish()
     {
-        return root.ignite();
+        return root;
     }
 
-    public BaseQuerySql build()
-    {
-        return belongs.incarnation().chief.build();
-    }
 }

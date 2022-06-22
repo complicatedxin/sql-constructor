@@ -17,13 +17,13 @@
 package com.zincyanide.sqlconstructor.internal;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
-import com.zincyanide.sqlconstructor.internal.param.validator.StrictValidator;
+import com.zincyanide.sqlconstructor.internal.param.validator.NotStrictValidator;
 import com.zincyanide.sqlconstructor.internal.param.validator.ValidateStrategy;
 import java.util.List;
 
-public class Essential
+public class Omissibl
 {
-    private static final ValidateStrategy validator = new StrictValidator();
+    private static final ValidateStrategy validator = new NotStrictValidator();
 
     /**
      * fuzzy query

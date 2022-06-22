@@ -42,8 +42,6 @@ public class BaseQuerySql extends SqlConstructor
     @Override
     public String getSql()
     {
-        //TODO validate the format of sql
-
         return sql;
     }
 

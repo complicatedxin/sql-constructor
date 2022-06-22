@@ -34,10 +34,8 @@ public abstract class SqlConstructor
     @Override
     public String toString()
     {
-        return new StringBuilder()
-                .append(Symbol.BRACKET_LEFT).append(Symbol.WHITESPACE)
-                .append(getSql())
-                .append(Symbol.WHITESPACE).append(Symbol.BRACKET_RIGHT)
-                .toString();
+        return Symbol.BRACKET_LEFT + Symbol.WHITESPACE +
+                getSql() +
+                Symbol.WHITESPACE + Symbol.BRACKET_RIGHT;
     }
 }

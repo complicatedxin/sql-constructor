@@ -16,26 +16,59 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.internal.StringUtil;
-import com.zincyanide.sqlconstructor.internal.Symbol;
+import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
+import java.util.LinkedList;
+import java.util.List;
 
-public class Join extends BuilderMinion
+public class Join extends BuilderMinion implements Conditional
 {
-    private static final String ON = "ON ";
+    static final String ON = "ON ";
+
+    final List<To> tos;
+    final List<On> ons;
 
     public Join(BaseQuerySqlBuilder builder)
     {
         super(builder);
+        this.tos = new LinkedList<>();
+        this.ons = new LinkedList<>();
     }
 
-    public JoinCondition on(String joinCondition)
+    void to(String manner, String tab, String alias)
     {
-        StringUtil.requireNonWhite(joinCondition);
+        tos.add(new To(manner, tab, alias));
+    }
 
-        builder.getSqlSB().append(ON)
-                .append(joinCondition)
-                .append(Symbol.WHITESPACE);
+    public On on(String condition)
+    {
+        return on(new PredicateNode(condition));
+    }
 
-        return builder.getMinion(JoinCondition.class);
+    public On on(PredicateNode predicate)
+    {
+        On on = new On(this);
+        on.and(predicate);
+        ons.add(on);
+        return on;
+    }
+
+    @Override
+    public <T extends BuilderMinion> T incarnation()
+    {
+        return (T) this;
+    }
+
+    class To
+    {
+        String manner;
+        String tab;
+        String alias = "";
+
+        public To(String manner, String tab, String alias)
+        {
+            this.manner = manner;
+            this.tab = tab;
+            this.alias = alias;
+        }
     }
 }

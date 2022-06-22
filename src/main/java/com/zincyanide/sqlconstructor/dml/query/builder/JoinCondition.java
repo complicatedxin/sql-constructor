@@ -16,31 +16,46 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-public class JoinCondition extends SingleCondition
+import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
+
+public class JoinCondition extends Condition
 {
-    public JoinCondition(BaseQuerySqlBuilder builder)
+    public JoinCondition(Conditional belongs)
     {
-        super(builder);
+        super(belongs);
     }
 
-    public Join innerJoin(String table, String alias)
+    public JoinCondition and(String condition)
     {
-        return ((From) builder.getMinion(From.class)).innerJoin(table, alias);
+        return and(new PredicateNode(condition));
     }
 
-    public Join leftJoin(String table, String alias)
+    public JoinCondition and(PredicateNode predicate)
     {
-        return ((From) builder.getMinion(From.class)).leftJoin(table, alias);
+        super.and(predicate);
+        return this;
     }
 
-    public Join rightJoin(String table, String alias)
+    public JoinCondition or(String condition)
     {
-        return ((From) builder.getMinion(From.class)).rightJoin(table, alias);
+        return or(new PredicateNode(condition));
+    }
+
+    public JoinCondition or(PredicateNode predicate)
+    {
+        super.or(predicate);
+        return this;
     }
 
     public Where where(String condition)
     {
-        return ((From) builder.getMinion(From.class)).where(condition);
+        return where(new PredicateNode(condition));
     }
 
+    public Where where(PredicateNode predicate)
+    {
+        Where where = belongs.incarnation().chief.getMinion(Where.class);
+        where.and(predicate);
+        return where;
+    }
 }

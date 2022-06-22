@@ -17,48 +17,89 @@
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
-import com.zincyanide.sqlconstructor.internal.Symbol;
+import com.zincyanide.sqlconstructor.internal.ArrayUtil;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
+import com.zincyanide.sqlconstructor.internal.Symbol;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class BaseQuerySqlBuilder implements Serializable
 {
-    protected StringBuilder sqlSB = new StringBuilder();
-
-    Map<Class<? extends BuilderMinion>, BuilderMinion> minions = new HashMap<>();
+    private final Map<Class<? extends BuilderMinion>, BuilderMinion> minions = new HashMap<>();
 
     public BaseQuerySqlBuilder()
     {
-        summonMinions();
+        summon();
     }
 
-    private void summonMinions()
+    private void summon()
     {
         minions.put(Select.class, new Select(this));
         minions.put(From.class, new From(this));
         minions.put(Join.class, new Join(this));
         minions.put(Where.class, new Where(this));
-        minions.put(JoinCondition.class, new JoinCondition(this));
-        minions.put(SingleCondition.class, new SingleCondition(this));
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getMinion(Class<? extends BuilderMinion> clazz)
+    <T extends BuilderMinion> T getMinion(Class<T> clazz)
     {
         return (T) minions.get(clazz);
     }
 
-    public StringBuilder getSqlSB()
-    {
-        return sqlSB;
-    }
-
     public BaseQuerySql build()
     {
-        return new BaseQuerySql(sqlSB.toString());
+        StringBuilder sb = new StringBuilder();
+
+        buildupSelect(sb);
+
+        buildupFrom(sb);
+
+        buildupJoin(sb);
+
+        buildupWhere(sb);
+
+        return new BaseQuerySql(sb.toString());
+    }
+
+    private void buildupSelect(StringBuilder sb)
+    {
+        Select select = getMinion(Select.class);
+        sb.append(SELECT)
+            .append(select.mode)
+            .append(ArrayUtil.asString(select.cols, "", ", ", Symbol.WHITESPACE, e -> false));
+    }
+
+    private void buildupFrom(StringBuilder sb)
+    {
+        From from = getMinion(From.class);
+        sb.append(Select.FROM);
+        if (from.subSql != null)
+            sb.append(from.subSql);
+        else
+            sb.append(from.tab);
+        sb.append(Symbol.WHITESPACE)
+            .append(from.alias).append(Symbol.WHITESPACE);
+    }
+
+    private void buildupJoin(StringBuilder sb)
+    {
+        Join join = getMinion(Join.class);
+        List<Join.To> tos = join.tos;
+        List<On> ons = join.ons;
+        Join.To to;
+        for (int i = 0; i < tos.size(); i++)
+            sb.append((to=tos.get(i)).manner)
+                .append(to.tab).append(Symbol.WHITESPACE)
+                .append(to.alias).append(Symbol.WHITESPACE)
+                .append(Join.ON).append(ons.get(i).getConditions()).append(Symbol.WHITESPACE);
+    }
+
+    private void buildupWhere(StringBuilder sb)
+    {
+        Where where = getMinion(Where.class);
+        String conditions = where.condition.getConditions();
+        if(!StringUtil.isEmpty(conditions))
+            sb.append(From.WHERE).append(conditions);
     }
 
     private static final String SELECT = "SELECT ";
@@ -67,15 +108,14 @@ public class BaseQuerySqlBuilder implements Serializable
     {
         Objects.requireNonNull(columns);
 
-        sqlSB.append(SELECT);
-        for(String column : columns)
-        {
-            StringUtil.requireNonWhite(column);
-            sqlSB.append(column).append(Symbol.COMMA);
-        }
-        sqlSB.replace(sqlSB.length() - 1, sqlSB.length(), Symbol.WHITESPACE);
+        return select(Select.Mode.DEFAULT, Arrays.asList(columns));
+    }
 
-        return getMinion(Select.class);
+    public Select selectDistinct(String... columns)
+    {
+        Objects.requireNonNull(columns);
+
+        return select(Select.Mode.DISTINCT, Arrays.asList(columns));
     }
 
     public Select selectAllCols()
@@ -83,24 +123,28 @@ public class BaseQuerySqlBuilder implements Serializable
         return select("*");
     }
 
+    public Select selectCount()
+    {
+        return select("count(1)");
+    }
+
     public Select selectCount(String in)
     {
         return select("count(" + in + ")");
     }
 
-    public Select selectDistinct(String... columns)
+    private Select select(String mode, List<String> cols)
     {
-        Objects.requireNonNull(columns);
+        cols.forEach(StringUtil::requireNonWhite);
 
-        sqlSB.append(SELECT).append("DISTINCT ");
-        for(String column : columns)
-        {
-            StringUtil.requireNonWhite(column);
-            sqlSB.append(column).append(Symbol.COMMA);
-        }
-        sqlSB.replace(sqlSB.length() - 1, sqlSB.length(), Symbol.WHITESPACE);
+        Select select = getMinion(Select.class);
+        select.mode = mode;
+        select.cols = cols;
 
-        return getMinion(Select.class);
+        return select;
     }
+
+
+    //TODO:  sum(), case when, ...
 
 }

@@ -16,17 +16,21 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
+import com.zincyanide.sqlconstructor.SqlConstructor;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
-import com.zincyanide.sqlconstructor.internal.Symbol;
+import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 
-public class From extends BuilderMinion
+public class From extends BuilderMinion implements DataIndex
 {
-    private static final String WHERE = "WHERE ";
-    private static final String INNER = "INNER";
-    private static final String LEFT = "LEFT";
-    private static final String RIGHT = "RIGHT";
-    private static final String JOIN = " JOIN ";
+    static final String WHERE = "WHERE ";
+    private static final String INNER = "INNER JOIN ";
+    private static final String LEFT = "LEFT JOIN ";
+    private static final String RIGHT = "RIGHT JOIN ";
+
+    String tab;
+    SqlConstructor subSql;
+    String alias;
 
     public From(BaseQuerySqlBuilder builder)
     {
@@ -35,19 +39,19 @@ public class From extends BuilderMinion
 
     public BaseQuerySql build()
     {
-        return builder.build();
+        return chief.build();
     }
 
     public Where where(String condition)
     {
-        if(StringUtil.isWhite(condition))
-            condition = Where.ANYWHERE;
+        return where(new PredicateNode(condition));
+    }
 
-        builder.getSqlSB().append(WHERE)
-                .append(condition)
-                .append(Symbol.WHITESPACE);
-
-        return builder.getMinion(Where.class);
+    public Where where(PredicateNode predicate)
+    {
+        Where where = chief.getMinion(Where.class);
+        where.and(predicate);
+        return where;
     }
 
     public Join innerJoin(String table, String alias)
@@ -69,13 +73,9 @@ public class From extends BuilderMinion
     {
         StringUtil.requireNonWhite(table);
 
-        builder.getSqlSB().append(joinManner).append(JOIN)
-                .append(table)
-                .append(Symbol.WHITESPACE);
+        Join join = chief.getMinion(Join.class);
+        join.to(joinManner, table, alias);
 
-        if(!StringUtil.isEmpty(alias))
-            builder.getSqlSB().append(alias).append(Symbol.WHITESPACE);
-
-        return builder.getMinion(Join.class);
+        return join;
     }
 }

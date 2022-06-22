@@ -21,8 +21,6 @@ import java.util.List;
 
 public interface Criterion
 {
-    String NON_COLUMN = "NonColumnCriteria";
-
     String joint(String column1, String column2);
 
     String equal(String column, Object val);
@@ -53,7 +51,7 @@ public interface Criterion
 
     String likeEndWith(String column, String val);
 
-    String exists(String column, SqlConstructor sqlConstructor);
+    String exists(SqlConstructor sqlConstructor);
 
-    String notExists(String column, SqlConstructor sqlConstructor);
+    String notExists(SqlConstructor sqlConstructor);
 }

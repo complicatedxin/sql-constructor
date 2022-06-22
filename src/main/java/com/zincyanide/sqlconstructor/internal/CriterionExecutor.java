@@ -180,13 +180,13 @@ public class CriterionExecutor implements Criterion
     }
 
     @Override
-    public String exists(String column, SqlConstructor sqlConstructor)
+    public String exists(SqlConstructor sqlConstructor)
     {
         return "EXISTS " + sqlConstructor;
     }
 
     @Override
-    public String notExists(String column, SqlConstructor sqlConstructor)
+    public String notExists(SqlConstructor sqlConstructor)
     {
         return "NOT EXISTS " + sqlConstructor;
     }

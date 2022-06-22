@@ -18,33 +18,53 @@ package com.zincyanide.sqlconstructor.dml.query.wrapper.impl;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
 import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
+import com.zincyanide.sqlconstructor.internal.ArrayUtil;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
 import com.zincyanide.sqlconstructor.internal.Symbol;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 public class GroupSql extends QuerySqlWrapper
 {
+    private final String alias;
     private final String groups[];
+    private List<String> targets;
 
-    public GroupSql(SqlConstructor sqlConstructor, String... groups)
+    public GroupSql(SqlConstructor sqlConstructor, String alias, String... groups)
     {
         super(sqlConstructor);
+        this.alias = alias;
         this.groups = groups;
+        this.targets = new LinkedList<>();
+    }
+
+    public GroupSql select(String... targets)
+    {
+        this.targets.addAll(Arrays.asList(targets));
+        return this;
     }
 
     @Override
     public String getSql()
     {
-        int len;
-        if(groups == null || (len=groups.length) <= 0)
+        if(groups == null || groups.length <= 0)
             return super.getSql();
-        StringBuilder sb = new StringBuilder(super.getSql()).append(" GROUP BY ");
-        for(String col : groups)
+
+        StringBuilder sb;
+        if(targets.size() > 0)
         {
-            if(StringUtil.isEmpty(col))
-                continue;
-            sb.append(col).append(Symbol.COMMA);
+            sb = new StringBuilder("SELECT ");
+            sb.append(ArrayUtil.asString(targets, null, ", ", Symbol.WHITESPACE, StringUtil::isEmpty));
+            sb.append("FROM ").append(sqlConstructor).append(Symbol.WHITESPACE)
+                    .append(alias).append(Symbol.WHITESPACE);
         }
-        sb.replace(sb.length() - 1, sb.length(), Symbol.WHITESPACE);
+        else
+            sb = new StringBuilder(super.getSql());
+
+        sb.append(" GROUP BY ");
+        sb.append(ArrayUtil.asString(groups, null, ", ", Symbol.WHITESPACE, StringUtil::isEmpty));
 
         return sb.toString();
     }

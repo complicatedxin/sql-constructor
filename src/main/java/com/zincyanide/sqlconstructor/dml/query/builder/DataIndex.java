@@ -16,15 +16,15 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import java.io.Serializable;
-
-public abstract class BuilderMinion implements Serializable
+/**
+ *  Determine data range.
+ *  Such as join and/or where
+ */
+public interface DataIndex
 {
-    protected BaseQuerySqlBuilder chief;
+    Join innerJoin(String table, String alias);
+    Join leftJoin(String table, String alias);
+    Join rightJoin(String table, String alias);
 
-    public BuilderMinion(BaseQuerySqlBuilder chief)
-    {
-        this.chief = chief;
-    }
-
+    Where where(String condition);
 }

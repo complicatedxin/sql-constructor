@@ -16,34 +16,43 @@
 
 package com.zincyanide.sqlconstructor.internal.param.validator;
 
+import com.zincyanide.sqlconstructor.SqlConstructor;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
-import java.security.InvalidParameterException;
-import java.util.Collection;
+
+import java.util.List;
 
 public class StrictValidator implements ValidateStrategy
 {
     @Override
-    public boolean validateColumnName(Object[] args)
+    public Boolean validateColumn(String col)
     {
-        Object col = args[0];
-        if(!(col instanceof String)
-                || StringUtil.isWhite((String) col))
-            throw new InvalidParameterException(
-                    "There is invalid column name, it might be null");
+        if(StringUtil.isBlank(col))
+            throw new NullPointerException();
         return true;
     }
 
     @Override
-    public boolean validateConstraint(Object[] args)
+    public Boolean validateArg(Object arg)
     {
-        for(int i = 1; i < args.length ; i++)
-            if (args[i] == null
-                    || (args[i] instanceof String
-                        && StringUtil.isWhite((String) args[i]))
-                    || (args[i] instanceof Collection
-                        && ((Collection<?>) args[i]).isEmpty()))
-                throw new InvalidParameterException(
-                        String.format("Column [%s]'s value at index %s is void", args[0], i));
+        if(arg == null
+                || (arg instanceof String && StringUtil.isBlank((String) arg)))
+            throw new NullPointerException();
+        return true;
+    }
+
+    @Override
+    public Boolean validateArgs(List<Object> args)
+    {
+        if(args == null || args.size() <= 0)
+            throw new NullPointerException();
+        return true;
+    }
+
+    @Override
+    public Boolean validateSubSql(SqlConstructor subSql)
+    {
+        if(subSql != null)
+            throw new NullPointerException();
         return true;
     }
 }

@@ -17,14 +17,14 @@
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
-import com.zincyanide.sqlconstructor.internal.Symbol;
-import com.zincyanide.sqlconstructor.internal.StringUtil;
+import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 
-public class Where extends BuilderMinion
+public class Where extends BuilderMinion implements Conditional
 {
-    public static final String ANYWHERE = "1 = 1";
-    private static final String AND = "AND ";
-    private static final String OR = "OR ";
+    public static final String ANYWHERE = PredicateNode.Manner.ALL;
+    public static final String NOWHERE = PredicateNode.Manner.NONE;
+
+    Condition condition = new Condition(this);
 
     public Where(BaseQuerySqlBuilder builder)
     {
@@ -33,26 +33,33 @@ public class Where extends BuilderMinion
 
     public BaseQuerySql build()
     {
-        return builder.build();
+        return chief.build();
     }
 
     public Condition and(String condition)
     {
-        if (!StringUtil.isEmpty(condition))
-            builder.sqlSB.append(AND)
-                    .append(condition)
-                    .append(Symbol.WHITESPACE);
+        return and(new PredicateNode(condition));
+    }
 
-        return builder.getMinion(SingleCondition.class);
+    public Condition and(PredicateNode predicate)
+    {
+        return this.condition.and(predicate);
     }
 
     public Condition or(String condition)
     {
-        if (!StringUtil.isEmpty(condition))
-            builder.sqlSB.append(OR)
-                    .append(condition)
-                    .append(Symbol.WHITESPACE);
-
-        return builder.getMinion(SingleCondition.class);
+        return or(new PredicateNode(condition));
     }
+
+    public Condition or(PredicateNode predicate)
+    {
+        return this.condition.or(predicate);
+    }
+
+    @Override
+    public <T extends BuilderMinion> T incarnation()
+    {
+        return (T) this;
+    }
+
 }

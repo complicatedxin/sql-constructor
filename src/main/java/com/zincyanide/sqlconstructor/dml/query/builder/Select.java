@@ -18,11 +18,15 @@ package com.zincyanide.sqlconstructor.dml.query.builder;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
-import com.zincyanide.sqlconstructor.internal.Symbol;
+import java.util.List;
 
 public class Select extends BuilderMinion
 {
-    private static final String FROM = "FROM ";
+    static final String FROM = "FROM ";
+
+    String mode = Mode.DEFAULT;
+
+    List<String> cols;
 
     public Select(BaseQuerySqlBuilder builder)
     {
@@ -31,29 +35,34 @@ public class Select extends BuilderMinion
 
     public From from(String table)
     {
-        return from(table, null);
+        return from(table, "");
     }
 
     public From from(String table, String alias)
     {
         StringUtil.requireNonWhite(table);
 
-        builder.getSqlSB().append(FROM).append(table).append(Symbol.WHITESPACE);
+        From from = chief.getMinion(From.class);
+        from.tab = table;
+        from.alias = alias;
 
-        if(!StringUtil.isEmpty(alias))
-            builder.getSqlSB().append(alias)
-                    .append(Symbol.WHITESPACE);
-
-        return builder.getMinion(From.class);
+        return from;
     }
 
     public From from(SqlConstructor sqlConstructor, String alias)
     {
         StringUtil.requireNonWhite(alias, "Derived table should have an alias !");
 
-        builder.getSqlSB().append(FROM).append(sqlConstructor).append(Symbol.WHITESPACE)
-                .append(alias).append(Symbol.WHITESPACE);
+        From from = chief.getMinion(From.class);
+        from.subSql = sqlConstructor;
+        from.alias = alias;
 
-        return builder.getMinion(From.class);
+        return from;
+    }
+
+    interface Mode
+    {
+        String DEFAULT     =   "";
+        String DISTINCT    =   "DISTINCT ";
     }
 }

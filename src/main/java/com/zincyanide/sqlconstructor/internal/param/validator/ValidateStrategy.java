@@ -16,9 +16,17 @@
 
 package com.zincyanide.sqlconstructor.internal.param.validator;
 
+import com.zincyanide.sqlconstructor.SqlConstructor;
+import java.util.List;
+
 public interface ValidateStrategy
 {
-    public boolean validateColumnName(Object[] args);
+    public Boolean validateColumn(String col);
 
-    public boolean validateConstraint(Object[] args);
+    public Boolean validateArg(Object arg);
+
+    public Boolean validateArgs(List<Object> args);
+
+    public Boolean validateSubSql(SqlConstructor subSql);
+
 }

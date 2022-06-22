@@ -16,15 +16,11 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import java.io.Serializable;
-
-public abstract class BuilderMinion implements Serializable
+/**
+ *  A conditional class must have a {@link Condition} obj as prop
+ *  which could get its suzerain by invoking {@link #incarnation()}.
+ */
+public interface Conditional
 {
-    protected BaseQuerySqlBuilder chief;
-
-    public BuilderMinion(BaseQuerySqlBuilder chief)
-    {
-        this.chief = chief;
-    }
-
+    <T extends BuilderMinion> T incarnation();
 }

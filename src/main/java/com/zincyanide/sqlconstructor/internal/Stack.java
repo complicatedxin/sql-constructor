@@ -14,17 +14,37 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.dml.query.builder;
+package com.zincyanide.sqlconstructor.internal;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
-public abstract class BuilderMinion implements Serializable
+/**
+ *  A THREAD-UNSAFE stack
+ */
+public class Stack<E>
 {
-    protected BaseQuerySqlBuilder chief;
+    private ArrayList<E> container = new ArrayList<>();
 
-    public BuilderMinion(BaseQuerySqlBuilder chief)
+    private int top = -1;
+
+    public void push(E e)
     {
-        this.chief = chief;
+        if(++top < container.size())
+            container.set(top, e);
+        container.add(top, e);
     }
+
+    public E pop()
+    {
+        if(top > -1)
+            return container.get(top--);
+        return null;
+    }
+
+    public boolean isEmpty()
+    {
+        return top < 0;
+    }
+
 
 }

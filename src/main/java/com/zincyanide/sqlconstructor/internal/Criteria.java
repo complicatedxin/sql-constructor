@@ -17,41 +17,40 @@
 package com.zincyanide.sqlconstructor.internal;
 
 import com.zincyanide.sqlconstructor.SqlConstructor;
-import com.zincyanide.sqlconstructor.internal.param.validator.NotStrictValidator;
-import com.zincyanide.sqlconstructor.internal.param.validator.ParamValidator;
-import java.lang.reflect.Proxy;
 import java.util.List;
+import java.util.function.Function;
 
 public class Criteria
 {
-    private static final Criterion executor =
-            (Criterion) Proxy.newProxyInstance(
-                    Criterion.class.getClassLoader(),
-                    new Class[]{Criterion.class},
-                    new ParamValidator(new CriterionExecutor(), new NotStrictValidator())
-            );
+    private static final Criterion executor = new CriterionExecutor();
 
     /**
      * all fuzzy query
      */
-    public static String LIKE(String column, String keyword)
+    public static String LIKE(String column, String keyword, Function<String, Boolean> colValid, Function<String, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(keyword))
+            return null;
         return executor.like(column, keyword);
     }
 
     /**
      * prefix fuzzy query
      */
-    public static String LIKE_START_WITH(String column, String keyword)
+    public static String LIKE_START_WITH(String column, String keyword, Function<String, Boolean> colValid, Function<String, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(keyword))
+            return null;
         return executor.likeStartWith(column, keyword);
     }
 
     /**
      * suffix fuzzy query
      */
-    public static String LIKE_END_WITH(String column, String keyword)
+    public static String LIKE_END_WITH(String column, String keyword, Function<String, Boolean> colValid, Function<String, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(keyword))
+            return null;
         return executor.likeEndWith(column, keyword);
     }
 
@@ -61,74 +60,101 @@ public class Criteria
      * @param col2 another columnName
      * @return [col1] = [col2]
      */
-    public static String JOINT(String col1, String col2)
+    public static String JOINT(String col1, String col2, Function<String, Boolean> col1Valid, Function<String, Boolean> col2Valid)
     {
+        if(!col1Valid.apply(col1) || !col2Valid.apply(col2))
+            return null;
         return executor.joint(col1, col2);
     }
 
-    public static String EQUAL(String column, Object val)
+    public static String EQUAL(String column, Object val, Function<String, Boolean> colValid, Function<Object, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(val))
+            return null;
         return executor.equal(column, val);
     }
 
-    public static String UNEQUAL(String column, Object val)
+    public static String UNEQUAL(String column, Object val, Function<String, Boolean> colValid, Function<Object, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(val))
+            return null;
         return executor.unequal(column, val);
     }
 
-    public static String LE(String column, Object val)
+    public static String LE(String column, Object val, Function<String, Boolean> colValid, Function<Object, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(val))
+            return null;
         return executor.lessEqual(column, val);
     }
 
-    public static String LT(String column, Object val)
+    public static String LT(String column, Object val, Function<String, Boolean> colValid, Function<Object, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(val))
+            return null;
         return executor.lessThan(column, val);
     }
 
-    public static String GE(String column, Object val)
+    public static String GE(String column, Object val, Function<String, Boolean> colValid, Function<Object, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(val))
+            return null;
         return executor.greaterEqual(column, val);
     }
 
-    public static String GT(String column, Object val)
+    public static String GT(String column, Object val, Function<String, Boolean> colValid, Function<Object, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(val))
+            return null;
         return executor.greaterThan(column, val);
     }
 
-    public static String BETWEEN(String column, Object leftBound, Object rightBound)
+    public static String BETWEEN(String column, Object leftBound, Object rightBound, Function<String, Boolean> colValid, Function<Object, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(leftBound) || !argValid.apply(rightBound))
+            return null;
         return executor.between(column, leftBound, rightBound);
     }
 
-    public static String IN(String column, List<Object> valList)
+    public static String IN(String column, List<Object> valList, Function<String, Boolean> colValid, Function<List<Object>, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(valList))
+            return null;
         return executor.in(column, valList);
     }
 
-    public static String IN(String column, SqlConstructor sqlConstructor)
+    public static String IN(String column, SqlConstructor sqlConstructor, Function<String, Boolean> colValid, Function<SqlConstructor, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(sqlConstructor))
+            return null;
         return executor.in(column, sqlConstructor);
     }
 
-    public static String NOT_IN(String column, List<Object> valList)
+    public static String NOT_IN(String column, List<Object> valList, Function<String, Boolean> colValid, Function<List<Object>, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(valList))
+            return null;
         return executor.notIn(column, valList);
     }
 
-    public static String NOT_IN(String column, SqlConstructor sqlConstructor)
+    public static String NOT_IN(String column, SqlConstructor sqlConstructor, Function<String, Boolean> colValid, Function<SqlConstructor, Boolean> argValid)
     {
+        if(!colValid.apply(column) || !argValid.apply(sqlConstructor))
+            return null;
         return executor.notIn(column, sqlConstructor);
     }
 
-    public static String EXISTS(SqlConstructor sqlConstructor)
+    public static String EXISTS(SqlConstructor sqlConstructor, Function<SqlConstructor, Boolean> argValid)
     {
-        return executor.exists(Criterion.NON_COLUMN, sqlConstructor);
+        if(!argValid.apply(sqlConstructor))
+            return null;
+        return executor.exists(sqlConstructor);
     }
 
-    public static String NOT_EXISTS(SqlConstructor sqlConstructor)
+    public static String NOT_EXISTS(SqlConstructor sqlConstructor, Function<SqlConstructor, Boolean> argValid)
     {
-        return executor.notExists(Criterion.NON_COLUMN, sqlConstructor);
+        if(!argValid.apply(sqlConstructor))
+            return null;
+        return executor.notExists(sqlConstructor);
     }
-
 }

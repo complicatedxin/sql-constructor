@@ -51,7 +51,7 @@ public class WithAsSql extends QuerySqlWrapper
 
     private void validatePremise() throws SQLException
     {
-        if(StringUtil.isWhite(withName)
+        if(StringUtil.isBlank(withName)
                 || asSqlConstructor == null)
             throw new SQLException("with-as-sql has a null value");
     }
