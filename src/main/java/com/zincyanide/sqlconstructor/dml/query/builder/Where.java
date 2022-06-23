@@ -16,10 +16,11 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
+import com.zincyanide.sqlconstructor.Reusable;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 
-public class Where extends BuilderMinion implements Conditional
+public class Where extends BuilderMinion implements Conditional, Reusable
 {
     public static final String ANYWHERE = PredicateNode.Manner.ALL;
     public static final String NOWHERE = PredicateNode.Manner.NONE;
@@ -62,4 +63,9 @@ public class Where extends BuilderMinion implements Conditional
         return (T) this;
     }
 
+    @Override
+    public void clean()
+    {
+        this.condition = new Condition(this);
+    }
 }

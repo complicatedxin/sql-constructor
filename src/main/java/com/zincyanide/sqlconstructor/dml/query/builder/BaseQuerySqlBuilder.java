@@ -16,6 +16,8 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
+import com.zincyanide.sqlconstructor.Attachable;
+import com.zincyanide.sqlconstructor.Reusable;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.internal.ArrayUtil;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
@@ -23,7 +25,7 @@ import com.zincyanide.sqlconstructor.internal.Symbol;
 import java.io.Serializable;
 import java.util.*;
 
-public class BaseQuerySqlBuilder implements Serializable
+public class BaseQuerySqlBuilder implements Serializable, Attachable, Reusable
 {
     private final Map<Class<? extends BuilderMinion>, BuilderMinion> minions = new HashMap<>();
 
@@ -38,6 +40,12 @@ public class BaseQuerySqlBuilder implements Serializable
         minions.put(From.class, new From(this));
         minions.put(Join.class, new Join(this));
         minions.put(Where.class, new Where(this));
+    }
+
+    @Override
+    public void attach()
+    {
+        Attachable.THREAD_ATTACHMENT.set(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -145,6 +153,42 @@ public class BaseQuerySqlBuilder implements Serializable
     }
 
 
+
+
     //TODO:  sum(), case when, ...
+
+    @Override
+    public void clean()
+    {
+        cleanSelect();
+        cleanFrom();
+        cleanJoin();
+        cleanWhere();
+    }
+
+    public BaseQuerySqlBuilder cleanSelect()
+    {
+        getMinion(Select.class).clean();
+        return this;
+    }
+
+    public Select cleanFrom()
+    {
+        getMinion(From.class).clean();
+        return getMinion(Select.class);
+    }
+
+    public From cleanJoin()
+    {
+        getMinion(Join.class).clean();
+        return getMinion(From.class);
+    }
+
+    public From cleanWhere()
+    {
+        getMinion(Where.class).clean();
+        return getMinion(From.class);
+    }
+
 
 }

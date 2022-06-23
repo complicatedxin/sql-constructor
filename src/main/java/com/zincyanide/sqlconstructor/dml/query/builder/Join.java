@@ -16,16 +16,17 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
+import com.zincyanide.sqlconstructor.Reusable;
 import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Join extends BuilderMinion implements Conditional
+public class Join extends BuilderMinion implements Conditional, Reusable
 {
     static final String ON = "ON ";
 
-    final List<To> tos;
-    final List<On> ons;
+    List<To> tos;
+    List<On> ons;
 
     public Join(BaseQuerySqlBuilder builder)
     {
@@ -56,6 +57,13 @@ public class Join extends BuilderMinion implements Conditional
     public <T extends BuilderMinion> T incarnation()
     {
         return (T) this;
+    }
+
+    @Override
+    public void clean()
+    {
+        this.tos = new LinkedList<>();
+        this.ons = new LinkedList<>();
     }
 
     class To

@@ -2,6 +2,9 @@ package com.zincyanide.sqlconstructor;
 
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
+import com.zincyanide.sqlconstructor.dml.query.builder.factory.BaseQuerySqlBuilderFactory;
+import com.zincyanide.sqlconstructor.dml.query.builder.factory.MySQLBaseQuerySqlBuilderFactory;
+import com.zincyanide.sqlconstructor.dml.query.builder.factory.ReusableBaseQuerySqlBuilderFactory;
 import com.zincyanide.sqlconstructor.internal.Conditions;
 import com.zincyanide.sqlconstructor.internal.Criteria;
 import com.zincyanide.sqlconstructor.internal.Omissibl;
@@ -203,6 +206,41 @@ public class T_01_Query
                 .build().getSql();
 
         System.out.println(sql);
+    }
+
+    @Test
+    public void t_09_baseQuerySqlBuilderFactory()
+    {
+        ReusableBaseQuerySqlBuilderFactory mySqlQuery = MySQLBaseQuerySqlBuilderFactory.getInstance();
+
+        String sql = mySqlQuery.manu()
+                .select("*")
+                .from("emp")
+                .where(Conditions
+                        .first(Omissibl.EQUAL("ename", "SMITH"))
+                        .or(Omissibl.EQUAL("job", "SALESMAN"))
+                        .finish())
+                .and(Omissibl.GE("sal", 1500))
+                .build().getSql();
+        System.out.println(sql);
+
+        String sql1 = mySqlQuery.obtain().build().getSql();
+        System.out.println(sql1);
+
+        String limit;
+        int page = 1;
+        int size = 25;
+        while (page <= 10)
+        {
+            int offset = (page++ - 1) * size;
+            limit = new LimitSql(mySqlQuery.obtain().build(), offset, size).getSql();
+            System.out.println(limit);
+        }
+
+        String newWhere = mySqlQuery.obtain().cleanWhere().where(Where.ANYWHERE).build().getSql();
+        System.out.println(newWhere);
+
+
     }
 
 

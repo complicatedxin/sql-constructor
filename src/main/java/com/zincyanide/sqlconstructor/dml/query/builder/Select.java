@@ -16,11 +16,14 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
+import com.zincyanide.sqlconstructor.Reusable;
 import com.zincyanide.sqlconstructor.SqlConstructor;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
+
+import java.util.LinkedList;
 import java.util.List;
 
-public class Select extends BuilderMinion
+public class Select extends BuilderMinion implements Reusable
 {
     static final String FROM = "FROM ";
 
@@ -58,6 +61,12 @@ public class Select extends BuilderMinion
         from.alias = alias;
 
         return from;
+    }
+
+    @Override
+    public void clean()
+    {
+        this.cols = new LinkedList<>();
     }
 
     interface Mode

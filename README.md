@@ -148,4 +148,45 @@
                 .getSql();
 ```
 
+##### 1.7 BaseQuerySqlBuilderFactory接口
+
+> 目的：创建BaseQuerySqlBuilder
+
+例如创建`MySQLBaseQuerySqlBuilderFactory`
+
+```java
+        BaseQuerySqlBuilderFactory mySqlQuery = MySQLBaseQuerySqlBuilderFactory.getInstance();
+        BaseQuerySqlBuilder sqlBuilder = mySqlQuery.manu();
+```
+###### 1.7.1 ReusableBaseQuerySqlBuilderFactory接口
+
+> 目的：创建可重用的BaseQuerySqlBuilder
+
+`MySQLBaseQuerySqlBuilder`就是可重用的，它实现了Reusable接口，以及Attachable接口，它能与线程绑定以达到可重用。
+
+```java
+        ReusableBaseQuerySqlBuilderFactory mySqlQuery = MySQLBaseQuerySqlBuilderFactory.getInstance();
+        BaseQuerySqlBuilder sqlBuilder = mySqlQuery.obtain();
+```
+
+此方法适用于分页等操作
+```java
+        String limit;
+        int page = 1;
+        int size = 25;
+        while (page <= 10)
+        {
+            int offset = (page++ - 1) * size;
+            limit = new LimitSql(mySqlQuery.obtain().build(), offset, size).getSql();
+        }
+```
+
+支持子句某一部分需要修改，包括select、from、join(on)、where
+```java
+        String newWhere = mySqlQuery.obtain().cleanWhere().where(Where.ANYWHERE).build().getSql();
+```
+
+
+
+
 

@@ -16,12 +16,13 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
+import com.zincyanide.sqlconstructor.Reusable;
 import com.zincyanide.sqlconstructor.SqlConstructor;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
 import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 
-public class From extends BuilderMinion implements DataIndex
+public class From extends BuilderMinion implements DataIndex, Reusable
 {
     static final String WHERE = "WHERE ";
     private static final String INNER = "INNER JOIN ";
@@ -77,5 +78,13 @@ public class From extends BuilderMinion implements DataIndex
         join.to(joinManner, table, alias);
 
         return join;
+    }
+
+    @Override
+    public void clean()
+    {
+        this.tab = null;
+        this.subSql = null;
+        this.alias = null;
     }
 }
