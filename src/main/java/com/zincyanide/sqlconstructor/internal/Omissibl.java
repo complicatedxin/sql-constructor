@@ -16,7 +16,7 @@
 
 package com.zincyanide.sqlconstructor.internal;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.internal.param.validator.NotStrictValidator;
 import com.zincyanide.sqlconstructor.internal.param.validator.ValidateStrategy;
 import java.util.List;
@@ -100,9 +100,9 @@ public class Omissibl
         return Criteria.IN(column, valList, validator::validateColumn, validator::validateArgs);
     }
 
-    public static String IN(String column, SqlConstructor sqlConstructor)
+    public static String IN(String column, QuerySql querySql)
     {
-        return Criteria.IN(column, sqlConstructor, validator::validateColumn, validator::validateSubSql);
+        return Criteria.IN(column, querySql, validator::validateColumn, validator::validateSubSql);
     }
 
     public static String NOT_IN(String column, List<Object> valList)
@@ -110,19 +110,19 @@ public class Omissibl
         return Criteria.NOT_IN(column, valList, validator::validateColumn, validator::validateArgs);
     }
 
-    public static String NOT_IN(String column, SqlConstructor sqlConstructor)
+    public static String NOT_IN(String column, QuerySql querySql)
     {
-        return Criteria.NOT_IN(column, sqlConstructor, validator::validateColumn, validator::validateSubSql);
+        return Criteria.NOT_IN(column, querySql, validator::validateColumn, validator::validateSubSql);
     }
 
-    public static String EXISTS(SqlConstructor sqlConstructor)
+    public static String EXISTS(QuerySql querySql)
     {
-        return Criteria.EXISTS(sqlConstructor, validator::validateSubSql);
+        return Criteria.EXISTS(querySql, validator::validateSubSql);
     }
 
-    public static String NOT_EXISTS(SqlConstructor sqlConstructor)
+    public static String NOT_EXISTS(QuerySql querySql)
     {
-        return Criteria.NOT_EXISTS(sqlConstructor, validator::validateSubSql);
+        return Criteria.NOT_EXISTS(querySql, validator::validateSubSql);
     }
 
 }

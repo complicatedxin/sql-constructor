@@ -16,8 +16,9 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.Reusable;
+import com.zincyanide.sqlconstructor.internal.Reusable;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
+import com.zincyanide.sqlconstructor.internal.Conditional;
 import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 
 public class Where extends BuilderMinion implements Conditional, Reusable

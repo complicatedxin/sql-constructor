@@ -16,6 +16,7 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
+import com.zincyanide.sqlconstructor.internal.Conditional;
 import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 
 public class JoinCondition extends Condition

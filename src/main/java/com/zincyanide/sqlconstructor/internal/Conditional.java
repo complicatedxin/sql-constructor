@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor;
+package com.zincyanide.sqlconstructor.internal;
 
-public interface Reusable
+import com.zincyanide.sqlconstructor.dml.query.builder.BuilderMinion;
+import com.zincyanide.sqlconstructor.dml.query.builder.Condition;
+
+/**
+ *  A conditional class must have a {@link Condition} obj as prop
+ *  which could get its suzerain by invoking {@link #incarnation()}.
+ */
+public interface Conditional
 {
-    void clean();
-
+    <T extends BuilderMinion> T incarnation();
 }

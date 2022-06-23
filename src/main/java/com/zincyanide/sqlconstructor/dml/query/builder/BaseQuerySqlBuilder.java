@@ -16,8 +16,8 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.Attachable;
-import com.zincyanide.sqlconstructor.Reusable;
+import com.zincyanide.sqlconstructor.internal.Attachable;
+import com.zincyanide.sqlconstructor.internal.Reusable;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.internal.ArrayUtil;
 import com.zincyanide.sqlconstructor.internal.StringUtil;

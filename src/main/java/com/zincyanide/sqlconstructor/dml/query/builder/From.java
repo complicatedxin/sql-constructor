@@ -16,9 +16,9 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.Reusable;
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.internal.Reusable;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
 import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 
@@ -30,7 +30,7 @@ public class From extends BuilderMinion implements DataIndex, Reusable
     private static final String RIGHT = "RIGHT JOIN ";
 
     String tab;
-    SqlConstructor subSql;
+    QuerySql subSql;
     String alias;
 
     public From(BaseQuerySqlBuilder builder)

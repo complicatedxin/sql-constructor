@@ -16,7 +16,8 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.Reusable;
+import com.zincyanide.sqlconstructor.internal.Reusable;
+import com.zincyanide.sqlconstructor.internal.Conditional;
 import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 import java.util.LinkedList;
 import java.util.List;

@@ -16,6 +16,8 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
+import com.zincyanide.sqlconstructor.internal.Conditional;
+
 public class On extends JoinCondition implements DataIndex
 {
     public On(Conditional belongs)

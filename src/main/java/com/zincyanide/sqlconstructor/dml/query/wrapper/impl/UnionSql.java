@@ -16,7 +16,7 @@
 
 package com.zincyanide.sqlconstructor.dml.query.wrapper.impl;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
 
 import java.util.LinkedList;
@@ -29,27 +29,27 @@ public class UnionSql extends QuerySqlWrapper
 
     List<UnionSqlEntry> entryList;
 
-    public UnionSql(SqlConstructor sqlConstructor)
+    public UnionSql(QuerySql querySql)
     {
-        super(sqlConstructor);
+        super(querySql);
         this.entryList = new LinkedList<>();
     }
 
-    public UnionSql union(SqlConstructor sqlConstructor)
+    public UnionSql union(QuerySql querySql)
     {
-        entryList.add(new UnionSqlEntry(sqlConstructor, UNION));
+        entryList.add(new UnionSqlEntry(querySql, UNION));
         return this;
     }
 
-    public UnionSql unionAll(SqlConstructor sqlConstructor)
+    public UnionSql unionAll(QuerySql querySql)
     {
-        entryList.add(new UnionSqlEntry(sqlConstructor, UNION_ALL));
+        entryList.add(new UnionSqlEntry(querySql, UNION_ALL));
         return this;
     }
 
     public String getSql()
     {
-        StringBuilder sb = new StringBuilder(sqlConstructor.getSql());
+        StringBuilder sb = new StringBuilder(querySql.getSql());
         for(UnionSqlEntry e : entryList)
             sb.append(e.unionManner).append(e.unionSql.getSql());
         return sb.toString();
@@ -57,10 +57,10 @@ public class UnionSql extends QuerySqlWrapper
 
     private class UnionSqlEntry
     {
-        SqlConstructor unionSql;
+        QuerySql unionSql;
         String unionManner;
 
-        public UnionSqlEntry(SqlConstructor unionSql, String unionManner)
+        public UnionSqlEntry(QuerySql unionSql, String unionManner)
         {
             this.unionSql = unionSql;
             this.unionManner = unionManner;

@@ -24,15 +24,15 @@
     String sqlStr = "SELECT * FROM T";
 ```
 一个基本查询语句`"SELECT * FROM T"`已经被确定了，
-如果要对其扩展，需要先将其包装成一个`SqlConstructor`对象，这里使用具体实现类`BaseQuerySql`来完成。
+如果要对其扩展，需要先将其包装成一个`QuerySql`对象，这里使用具体实现类`BaseQuerySql`来完成。
 ```java
-    SqlConstructor base = new BaseQuerySql(sqlStr);
+    QuerySql base = new BaseQuerySql(sqlStr);
 ```
 之后只需要将`base`以参数方式传入具体扩展语句的构造方法。
 ```java
-    SqlConstructor count = new CountSql(base);
-    SqlConstructor limit = new LimitSql(base, 8, 25);
-    SqlConstructor order = new OrderSql(base, "CREAT_TIME", false);
+    QuerySql count = new CountSql(base);
+    QuerySql limit = new LimitSql(base, 8, 25);
+    QuerySql order = new OrderSql(base, "CREAT_TIME", false);
 ```
 然后调用扩展对象的`getSql()`方法，返回字符串sql。
 ```java
@@ -45,7 +45,7 @@
 
 所以，包装器可以作为参数被传入其他包装器，比如用来当构建`... order by xxx limit y,z`：
 ```java
-    SqlConstructor orderThenLimit = new LimitSql(order, 5, 25);
+    QuerySql orderThenLimit = new LimitSql(order, 5, 25);
     orderThenLimit.getSql();
 ```
 
@@ -70,7 +70,7 @@
 ##### 1.3 Omissibl
 为在条件语句的书写上提供的API
 ```java
-    SqlConstructor querySql = new BaseQuerySqlBuilder()
+    QuerySql querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
                     .innerJoin("EMP_INFO", "i").on(Omissibl.JOINT("t.eid", "i.eid"))
@@ -86,7 +86,7 @@
 ```java
     List<Object> emptyList = Collections.emptyList();
     
-    SqlConstructor querySql = new BaseQuerySqlBuilder()
+    QuerySql querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
                     .innerJoin("EMP_INFO", "i").on(Omissibl.JOINT("t.eid", "i.eid"))
@@ -100,7 +100,7 @@
 ##### 1.4 Essential
 相对于`Omissibl`使得空参条件不拼接，`Essential`会严格校验参数，如果参数为空则抛出异常。
 ```java
-    SqlConstructor querySql = new BaseQuerySqlBuilder()
+    QuerySql querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
                     .innerJoin("EMP_INFO", "i").on(Omissibl.JOINT("t.ei", "i.eid"))
@@ -113,7 +113,7 @@
 
 ##### 1.5 嵌套查询
 ```java
-    SqlConstructor querySql =
+    QuerySql querySql =
             new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP")
@@ -181,7 +181,7 @@
         }
 ```
 
-支持子句某一部分需要修改，包括select、from、join(on)、where
+支持某一部分子句重写，包括select、from、join(on)、where
 ```java
         String newWhere = mySqlQuery.obtain().cleanWhere().where(Where.ANYWHERE).build().getSql();
 ```

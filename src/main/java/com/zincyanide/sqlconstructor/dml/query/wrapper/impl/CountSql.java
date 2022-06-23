@@ -16,14 +16,14 @@
 
 package com.zincyanide.sqlconstructor.dml.query.wrapper.impl;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
 
 public class CountSql extends QuerySqlWrapper
 {
-    public CountSql(SqlConstructor sqlConstructor)
+    public CountSql(QuerySql querySql)
     {
-        super(sqlConstructor);
+        super(querySql);
     }
 
     @Override

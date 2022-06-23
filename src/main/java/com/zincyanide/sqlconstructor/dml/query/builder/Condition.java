@@ -17,6 +17,7 @@
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
+import com.zincyanide.sqlconstructor.internal.Conditional;
 import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 
 public class Condition

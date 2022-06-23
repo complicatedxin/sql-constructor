@@ -16,7 +16,7 @@
 
 package com.zincyanide.sqlconstructor.internal;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import java.util.List;
 
 public interface Criterion
@@ -39,11 +39,11 @@ public interface Criterion
 
     String in(String column, List<Object> valList);
 
-    String in(String column, SqlConstructor sqlConstructor);
+    String in(String column, QuerySql querySql);
 
     String notIn(String column, List<Object> valList);
 
-    String notIn(String column, SqlConstructor sqlConstructor);
+    String notIn(String column, QuerySql querySql);
 
     String like(String column, String val);
 
@@ -51,7 +51,7 @@ public interface Criterion
 
     String likeEndWith(String column, String val);
 
-    String exists(SqlConstructor sqlConstructor);
+    String exists(QuerySql querySql);
 
-    String notExists(SqlConstructor sqlConstructor);
+    String notExists(QuerySql querySql);
 }

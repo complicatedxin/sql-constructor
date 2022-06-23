@@ -16,8 +16,6 @@
 
 package com.zincyanide.sqlconstructor.dml.query;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
-
 /**
  *  A base query sql in this project
  *  is defined as a sql only including
@@ -26,7 +24,7 @@ import com.zincyanide.sqlconstructor.SqlConstructor;
  *  To build a BaseQuerySql, a builder is recommended.
  * @see com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder
  */
-public class BaseQuerySql extends SqlConstructor
+public class BaseQuerySql extends QuerySql
 {
     private String sql;
 

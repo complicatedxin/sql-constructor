@@ -16,7 +16,7 @@
 
 package com.zincyanide.sqlconstructor.internal.param.validator;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public class NotStrictValidator implements ValidateStrategy
     }
 
     @Override
-    public Boolean validateSubSql(SqlConstructor subSql)
+    public Boolean validateSubSql(QuerySql subSql)
     {
         return subSql != null;
     }

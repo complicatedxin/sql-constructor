@@ -1,6 +1,7 @@
 package com.zincyanide.sqlconstructor;
 
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
 import com.zincyanide.sqlconstructor.dml.query.builder.factory.BaseQuerySqlBuilderFactory;
 import com.zincyanide.sqlconstructor.dml.query.builder.factory.MySQLBaseQuerySqlBuilderFactory;
@@ -24,17 +25,17 @@ public class T_01_Query
     public void t_01_wrapper()
     {
         String sqlStr = "SELECT * FROM T";
-        SqlConstructor base = new BaseQuerySql(sqlStr);
-        SqlConstructor count = new CountSql(base);
-        SqlConstructor limit = new LimitSql(base, 8, 25);
-        SqlConstructor order = new OrderSql(base, "CREAT_TIME", false);
+        QuerySql base = new BaseQuerySql(sqlStr);
+        QuerySql count = new CountSql(base);
+        QuerySql limit = new LimitSql(base, 8, 25);
+        QuerySql order = new OrderSql(base, "CREAT_TIME", false);
 
         System.out.println("baseSql: " + base.getSql());
         System.out.println("countSql: " + count.getSql());
         System.out.println("limitSql: " + limit.getSql());
         System.out.println("orderSql: " + order.getSql());
 
-        SqlConstructor orderThenLimit = new LimitSql(order, 5, 25);
+        QuerySql orderThenLimit = new LimitSql(order, 5, 25);
         System.out.println("orderThenLimitSql: " + orderThenLimit.getSql());
 
         //================================
@@ -60,9 +61,9 @@ public class T_01_Query
         System.out.println(querySql.getSql());
 
         //======================
-        SqlConstructor count = new CountSql(querySql);
-        SqlConstructor limit = new LimitSql(querySql, 6, 25);
-        SqlConstructor order = new OrderSql(limit, "CREAT_TIME", true);
+        QuerySql count = new CountSql(querySql);
+        QuerySql limit = new LimitSql(querySql, 6, 25);
+        QuerySql order = new OrderSql(limit, "CREAT_TIME", true);
 
         System.out.println(count.getSql());
         System.out.println(limit.getSql());
@@ -143,35 +144,7 @@ public class T_01_Query
     }
 
     @Test
-    public void t_06_paramValidate()
-    {
-        List<Object> longList = new ArrayList<>();
-        longList.add(1L);
-        longList.add(2L);
-        longList.add(3L);
-
-        List<Object> stringList = new ArrayList<>();
-        stringList.add("w");
-        stringList.add("t");
-        stringList.add("f");
-
-        List<Object> emptyList = Collections.emptyList();
-
-        SqlConstructor querySql = new BaseQuerySqlBuilder()
-                .select("*")
-                .from("EMP_TASK", "t")
-                    .innerJoin("EMP_INFO", "i").on(Criteria.JOINT("t.ei", "i.eid", Objects::nonNull, Objects::nonNull))
-                .where(Where.ANYWHERE)
-                    .and(Criteria.EQUAL("emp_name", null, col -> {return col.equals("emp_name");}, val -> {return val != null;}))
-                    .or(Criteria.LIKE("emp_adr", " ", col -> {return true;}, val -> {return val.equals(" ");}))
-                    .and(Criteria.NOT_IN("emp_status", emptyList, col -> {return true;}, list -> {return list != null && list.size() != 0;}))
-                .build();
-
-        System.out.println(querySql.getSql());
-    }
-
-    @Test
-    public void t_07_nestedSql()
+    public void t_06_nestedSql()
     {
         SqlConstructor querySql =
                 new BaseQuerySqlBuilder()
@@ -193,7 +166,7 @@ public class T_01_Query
     }
 
     @Test
-    public void t_08_multiCondition()
+    public void t_07_multiCondition()
     {
         String sql = new BaseQuerySqlBuilder()
                 .select("*")
@@ -209,7 +182,7 @@ public class T_01_Query
     }
 
     @Test
-    public void t_09_baseQuerySqlBuilderFactory()
+    public void t_08_baseQuerySqlBuilderFactory()
     {
         ReusableBaseQuerySqlBuilderFactory mySqlQuery = MySQLBaseQuerySqlBuilderFactory.getInstance();
 
@@ -239,7 +212,6 @@ public class T_01_Query
 
         String newWhere = mySqlQuery.obtain().cleanWhere().where(Where.ANYWHERE).build().getSql();
         System.out.println(newWhere);
-
 
     }
 

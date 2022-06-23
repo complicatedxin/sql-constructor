@@ -16,7 +16,7 @@
 
 package com.zincyanide.sqlconstructor.internal.param.validator;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import java.util.List;
 
 public interface ValidateStrategy
@@ -27,6 +27,6 @@ public interface ValidateStrategy
 
     public Boolean validateArgs(List<Object> args);
 
-    public Boolean validateSubSql(SqlConstructor subSql);
+    public Boolean validateSubSql(QuerySql subSql);
 
 }

@@ -16,7 +16,7 @@
 
 package com.zincyanide.sqlconstructor.dml.query.wrapper.impl;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
 import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
 import java.sql.SQLException;
@@ -24,14 +24,14 @@ import java.sql.SQLException;
 public class WithAsSql extends QuerySqlWrapper
 {
     private String withName;
-    private SqlConstructor asSqlConstructor;
+    private QuerySql asSql;
 
-    public WithAsSql(SqlConstructor asSqlConstructor, String withName,
-                     SqlConstructor querySqlConstructor)
+    public WithAsSql(QuerySql asSql, String withName,
+                     QuerySql querySql)
     {
-        super(querySqlConstructor);
+        super(querySql);
         this.withName = withName;
-        this.asSqlConstructor = asSqlConstructor;
+        this.asSql = asSql;
     }
 
     @Override
@@ -40,19 +40,19 @@ public class WithAsSql extends QuerySqlWrapper
         try {
             validatePremise();
 
-            return "WITH " + withName + " AS " + asSqlConstructor + " "
+            return "WITH " + withName + " AS " + asSql + " "
                     + super.getSql();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return asSqlConstructor.getSql();
+        return asSql.getSql();
     }
 
     private void validatePremise() throws SQLException
     {
         if(StringUtil.isBlank(withName)
-                || asSqlConstructor == null)
+                || asSql == null)
             throw new SQLException("with-as-sql has a null value");
     }
 }

@@ -16,7 +16,7 @@
 
 package com.zincyanide.sqlconstructor.dml.query.wrapper;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 
 /**
  * An expansion of BaseQuerySql.
@@ -27,17 +27,17 @@ import com.zincyanide.sqlconstructor.SqlConstructor;
  *  + limit
  *  + with as
  */
-public abstract class QuerySqlWrapper extends SqlConstructor
+public abstract class QuerySqlWrapper extends QuerySql
 {
-    protected SqlConstructor sqlConstructor;
+    protected QuerySql querySql;
 
-    public QuerySqlWrapper(SqlConstructor sqlConstructor)
+    public QuerySqlWrapper(QuerySql querySql)
     {
-        this.sqlConstructor = sqlConstructor;
+        this.querySql = querySql;
     }
 
     public String getSql()
     {
-        return this.sqlConstructor.getSql();
+        return this.querySql.getSql();
     }
 }

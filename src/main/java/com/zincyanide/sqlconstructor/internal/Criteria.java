@@ -16,7 +16,8 @@
 
 package com.zincyanide.sqlconstructor.internal;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
+
 import java.util.List;
 import java.util.function.Function;
 
@@ -123,11 +124,11 @@ public class Criteria
         return executor.in(column, valList);
     }
 
-    public static String IN(String column, SqlConstructor sqlConstructor, Function<String, Boolean> colValid, Function<SqlConstructor, Boolean> argValid)
+    public static String IN(String column, QuerySql querySql, Function<String, Boolean> colValid, Function<QuerySql, Boolean> argValid)
     {
-        if(!colValid.apply(column) || !argValid.apply(sqlConstructor))
+        if(!colValid.apply(column) || !argValid.apply(querySql))
             return null;
-        return executor.in(column, sqlConstructor);
+        return executor.in(column, querySql);
     }
 
     public static String NOT_IN(String column, List<Object> valList, Function<String, Boolean> colValid, Function<List<Object>, Boolean> argValid)
@@ -137,24 +138,24 @@ public class Criteria
         return executor.notIn(column, valList);
     }
 
-    public static String NOT_IN(String column, SqlConstructor sqlConstructor, Function<String, Boolean> colValid, Function<SqlConstructor, Boolean> argValid)
+    public static String NOT_IN(String column, QuerySql querySql, Function<String, Boolean> colValid, Function<QuerySql, Boolean> argValid)
     {
-        if(!colValid.apply(column) || !argValid.apply(sqlConstructor))
+        if(!colValid.apply(column) || !argValid.apply(querySql))
             return null;
-        return executor.notIn(column, sqlConstructor);
+        return executor.notIn(column, querySql);
     }
 
-    public static String EXISTS(SqlConstructor sqlConstructor, Function<SqlConstructor, Boolean> argValid)
+    public static String EXISTS(QuerySql querySql, Function<QuerySql, Boolean> argValid)
     {
-        if(!argValid.apply(sqlConstructor))
+        if(!argValid.apply(querySql))
             return null;
-        return executor.exists(sqlConstructor);
+        return executor.exists(querySql);
     }
 
-    public static String NOT_EXISTS(SqlConstructor sqlConstructor, Function<SqlConstructor, Boolean> argValid)
+    public static String NOT_EXISTS(QuerySql querySql, Function<QuerySql, Boolean> argValid)
     {
-        if(!argValid.apply(sqlConstructor))
+        if(!argValid.apply(querySql))
             return null;
-        return executor.notExists(sqlConstructor);
+        return executor.notExists(querySql);
     }
 }

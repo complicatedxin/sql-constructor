@@ -16,7 +16,7 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder.factory;
 
-import com.zincyanide.sqlconstructor.Attachable;
+import com.zincyanide.sqlconstructor.internal.Attachable;
 import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
 
 public class MySQLBaseQuerySqlBuilderFactory implements ReusableBaseQuerySqlBuilderFactory
@@ -47,6 +47,23 @@ public class MySQLBaseQuerySqlBuilderFactory implements ReusableBaseQuerySqlBuil
             sqlBuilder = new BaseQuerySqlBuilder();
             sqlBuilder.attach();
         }
+
+        return sqlBuilder;
+    }
+
+    /**
+     * @return new sqlBuilder or other else even NULL
+     */
+    @Override
+    public BaseQuerySqlBuilder manu(boolean fresh)
+    {
+        BaseQuerySqlBuilder sqlBuilder;
+        if (fresh)
+        {
+            sqlBuilder = new BaseQuerySqlBuilder();
+            sqlBuilder.attach();
+        }
+        sqlBuilder = (BaseQuerySqlBuilder) Attachable.THREAD_ATTACHMENT.get();
 
         return sqlBuilder;
     }

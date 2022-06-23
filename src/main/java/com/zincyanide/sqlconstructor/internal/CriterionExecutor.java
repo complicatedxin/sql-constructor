@@ -16,7 +16,7 @@
 
 package com.zincyanide.sqlconstructor.internal;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class CriterionExecutor implements Criterion
             return val.toString();
     }
 
-    private boolean isStringClass(Class clazz)
+    private boolean isStringClass(Class<?> clazz)
     {
         return clazz == String.class;
     }
@@ -142,9 +142,9 @@ public class CriterionExecutor implements Criterion
     }
 
     @Override
-    public String in(String column, SqlConstructor sqlConstructor)
+    public String in(String column, QuerySql querySql)
     {
-        return column + " IN " + sqlConstructor;
+        return column + " IN " + querySql;
     }
 
     @Override
@@ -156,9 +156,9 @@ public class CriterionExecutor implements Criterion
     }
 
     @Override
-    public String notIn(String column, SqlConstructor sqlConstructor)
+    public String notIn(String column, QuerySql querySql)
     {
-        return column + " NOT IN " + sqlConstructor;
+        return column + " NOT IN " + querySql;
     }
 
     @Override
@@ -180,14 +180,14 @@ public class CriterionExecutor implements Criterion
     }
 
     @Override
-    public String exists(SqlConstructor sqlConstructor)
+    public String exists(QuerySql querySql)
     {
-        return "EXISTS " + sqlConstructor;
+        return "EXISTS " + querySql;
     }
 
     @Override
-    public String notExists(SqlConstructor sqlConstructor)
+    public String notExists(QuerySql querySql)
     {
-        return "NOT EXISTS " + sqlConstructor;
+        return "NOT EXISTS " + querySql;
     }
 }

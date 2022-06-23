@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.dml.query.builder;
+package com.zincyanide.sqlconstructor.internal;
 
-/**
- *  A conditional class must have a {@link Condition} obj as prop
- *  which could get its suzerain by invoking {@link #incarnation()}.
- */
-public interface Conditional
+public interface Attachable
 {
-    <T extends BuilderMinion> T incarnation();
+    ThreadLocal<? super Attachable> THREAD_ATTACHMENT = new ThreadLocal<>();
+
+    void attach();
+
+    default void relieve()
+    {
+        THREAD_ATTACHMENT.remove();
+    }
+
 }

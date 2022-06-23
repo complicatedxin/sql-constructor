@@ -16,8 +16,8 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.Reusable;
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.internal.Reusable;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
 
 import java.util.LinkedList;
@@ -52,12 +52,12 @@ public class Select extends BuilderMinion implements Reusable
         return from;
     }
 
-    public From from(SqlConstructor sqlConstructor, String alias)
+    public From from(QuerySql querySql, String alias)
     {
         StringUtil.requireNonWhite(alias, "Derived table should have an alias !");
 
         From from = chief.getMinion(From.class);
-        from.subSql = sqlConstructor;
+        from.subSql = querySql;
         from.alias = alias;
 
         return from;

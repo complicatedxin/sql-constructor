@@ -16,7 +16,7 @@
 
 package com.zincyanide.sqlconstructor.dml.query.wrapper.impl;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
 import com.zincyanide.sqlconstructor.internal.Symbol;
 
@@ -31,13 +31,13 @@ public class OrderSql extends QuerySqlWrapper
 
     private Map<String, Boolean> orderMap = new LinkedHashMap<>();
 
-    public OrderSql(SqlConstructor sqlConstructor)
+    public OrderSql(QuerySql querySql)
     {
-        super(sqlConstructor);
+        super(querySql);
     }
-    public OrderSql(SqlConstructor sqlConstructor, String orderColumn, boolean isDesc)
+    public OrderSql(QuerySql querySql, String orderColumn, boolean isDesc)
     {
-        super(sqlConstructor);
+        super(querySql);
         orderMap.put(orderColumn, isDesc);
     }
 

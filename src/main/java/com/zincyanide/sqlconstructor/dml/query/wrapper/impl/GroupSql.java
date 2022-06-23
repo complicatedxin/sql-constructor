@@ -16,7 +16,7 @@
 
 package com.zincyanide.sqlconstructor.dml.query.wrapper.impl;
 
-import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
 import com.zincyanide.sqlconstructor.internal.ArrayUtil;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
@@ -32,9 +32,9 @@ public class GroupSql extends QuerySqlWrapper
     private final String groups[];
     private List<String> targets;
 
-    public GroupSql(SqlConstructor sqlConstructor, String alias, String... groups)
+    public GroupSql(QuerySql querySql, String alias, String... groups)
     {
-        super(sqlConstructor);
+        super(querySql);
         this.alias = alias;
         this.groups = groups;
         this.targets = new LinkedList<>();
@@ -57,7 +57,7 @@ public class GroupSql extends QuerySqlWrapper
         {
             sb = new StringBuilder("SELECT ");
             sb.append(ArrayUtil.asString(targets, null, ", ", Symbol.WHITESPACE, StringUtil::isEmpty));
-            sb.append("FROM ").append(sqlConstructor).append(Symbol.WHITESPACE)
+            sb.append("FROM ").append(querySql).append(Symbol.WHITESPACE)
                     .append(alias).append(Symbol.WHITESPACE);
         }
         else

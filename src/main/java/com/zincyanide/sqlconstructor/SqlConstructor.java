@@ -17,7 +17,6 @@
 package com.zincyanide.sqlconstructor;
 
 import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
-import com.zincyanide.sqlconstructor.internal.Symbol;
 
 /**
  * a constructor of sql
@@ -31,11 +30,4 @@ public abstract class SqlConstructor
 {
     public abstract String getSql();
 
-    @Override
-    public String toString()
-    {
-        return Symbol.BRACKET_LEFT + Symbol.WHITESPACE +
-                getSql() +
-                Symbol.WHITESPACE + Symbol.BRACKET_RIGHT;
-    }
 }

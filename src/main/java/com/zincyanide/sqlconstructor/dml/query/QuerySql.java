@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor;
+package com.zincyanide.sqlconstructor.dml.query;
 
-public interface Attachable
+import com.zincyanide.sqlconstructor.SqlConstructor;
+import com.zincyanide.sqlconstructor.internal.Symbol;
+
+public abstract class QuerySql extends SqlConstructor
 {
-    ThreadLocal<? super Attachable> THREAD_ATTACHMENT = new ThreadLocal<>();
-
-    void attach();
-
-    default void relieve()
+    @Override
+    public String toString()
     {
-        THREAD_ATTACHMENT.remove();
+        return Symbol.BRACKET_LEFT + Symbol.WHITESPACE +
+                getSql() +
+                Symbol.WHITESPACE + Symbol.BRACKET_RIGHT;
     }
-
 }
