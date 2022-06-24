@@ -17,33 +17,49 @@
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
 import com.zincyanide.sqlconstructor.internal.Conditional;
+import com.zincyanide.sqlconstructor.internal.condition.Condition;
+import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 
-public class On extends JoinCondition implements DataIndex
+public class On extends Condition implements DataIndex
 {
     public On(Conditional belongs)
     {
         super(belongs);
     }
 
+    private BaseQuerySqlBuilder getChief()
+    {
+        Join join = belongs.incarnation();
+        return join.chief;
+    }
+
     @Override
     public Join innerJoin(String table, String alias)
     {
-        return belongs.incarnation()
-                .chief.getMinion(From.class).innerJoin(table, alias);
+        return getChief().getMinion(From.class).innerJoin(table, alias);
     }
 
     @Override
     public Join leftJoin(String table, String alias)
     {
-        return belongs.incarnation()
-                .chief.getMinion(From.class).leftJoin(table, alias);
+        return getChief().getMinion(From.class).leftJoin(table, alias);
     }
 
     @Override
     public Join rightJoin(String table, String alias)
     {
-        return belongs.incarnation()
-                .chief.getMinion(From.class).rightJoin(table, alias);
+        return getChief().getMinion(From.class).rightJoin(table, alias);
+    }
+
+    @Override
+    public Where where(String condition)
+    {
+        return where(new PredicateNode(condition));
+    }
+
+    public Where where(PredicateNode predicate)
+    {
+        return getChief().getMinion(Where.class).and(predicate);
     }
 
 }

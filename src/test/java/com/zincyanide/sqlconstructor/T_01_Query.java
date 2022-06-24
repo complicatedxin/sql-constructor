@@ -3,20 +3,18 @@ package com.zincyanide.sqlconstructor;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
-import com.zincyanide.sqlconstructor.dml.query.builder.factory.BaseQuerySqlBuilderFactory;
+import com.zincyanide.sqlconstructor.dml.query.builder.Where;
 import com.zincyanide.sqlconstructor.dml.query.builder.factory.MySQLBaseQuerySqlBuilderFactory;
 import com.zincyanide.sqlconstructor.dml.query.builder.factory.ReusableBaseQuerySqlBuilderFactory;
-import com.zincyanide.sqlconstructor.internal.Conditions;
+import com.zincyanide.sqlconstructor.internal.condition.Conditions;
 import com.zincyanide.sqlconstructor.internal.Criteria;
 import com.zincyanide.sqlconstructor.internal.Omissibl;
-import com.zincyanide.sqlconstructor.dml.query.builder.Where;
 import com.zincyanide.sqlconstructor.internal.Essential;
 import com.zincyanide.sqlconstructor.dml.query.wrapper.impl.CountSql;
 import com.zincyanide.sqlconstructor.dml.query.wrapper.impl.LimitSql;
 import com.zincyanide.sqlconstructor.dml.query.wrapper.impl.OrderSql;
 import com.zincyanide.sqlconstructor.dml.query.wrapper.impl.WithAsSql;
 import org.junit.Test;
-
 import java.util.*;
 
 public class T_01_Query

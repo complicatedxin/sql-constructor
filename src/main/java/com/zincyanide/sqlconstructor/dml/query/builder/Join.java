@@ -55,7 +55,7 @@ public class Join extends BuilderMinion implements Conditional, Reusable
     }
 
     @Override
-    public <T extends BuilderMinion> T incarnation()
+    public <T> T incarnation()
     {
         return (T) this;
     }

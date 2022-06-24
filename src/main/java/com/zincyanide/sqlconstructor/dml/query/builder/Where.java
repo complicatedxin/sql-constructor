@@ -16,9 +16,10 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
+import com.zincyanide.sqlconstructor.internal.Conditional;
 import com.zincyanide.sqlconstructor.internal.Reusable;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
-import com.zincyanide.sqlconstructor.internal.Conditional;
+import com.zincyanide.sqlconstructor.internal.condition.Condition;
 import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 
 public class Where extends BuilderMinion implements Conditional, Reusable
@@ -33,33 +34,35 @@ public class Where extends BuilderMinion implements Conditional, Reusable
         super(builder);
     }
 
+    public Where and(String condition)
+    {
+        return and(new PredicateNode(condition));
+    }
+
+    public Where and(PredicateNode predicate)
+    {
+        this.condition.and(predicate);
+        return this;
+    }
+
+    public Where or(String condition)
+    {
+        return or(new PredicateNode(condition));
+    }
+
+    public Where or(PredicateNode predicate)
+    {
+        this.condition.or(predicate);
+        return this;
+    }
+
     public BaseQuerySql build()
     {
         return chief.build();
     }
 
-    public Condition and(String condition)
-    {
-        return and(new PredicateNode(condition));
-    }
-
-    public Condition and(PredicateNode predicate)
-    {
-        return this.condition.and(predicate);
-    }
-
-    public Condition or(String condition)
-    {
-        return or(new PredicateNode(condition));
-    }
-
-    public Condition or(PredicateNode predicate)
-    {
-        return this.condition.or(predicate);
-    }
-
     @Override
-    public <T extends BuilderMinion> T incarnation()
+    public <T> T incarnation()
     {
         return (T) this;
     }
@@ -69,4 +72,5 @@ public class Where extends BuilderMinion implements Conditional, Reusable
     {
         this.condition = new Condition(this);
     }
+
 }

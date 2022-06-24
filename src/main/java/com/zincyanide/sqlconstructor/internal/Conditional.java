@@ -16,14 +16,13 @@
 
 package com.zincyanide.sqlconstructor.internal;
 
-import com.zincyanide.sqlconstructor.dml.query.builder.BuilderMinion;
-import com.zincyanide.sqlconstructor.dml.query.builder.Condition;
+import com.zincyanide.sqlconstructor.internal.condition.Condition;
 
 /**
- *  A conditional class must have a {@link Condition} obj as prop
+ *  A conditional class must has a {@link Condition} obj as prop
  *  which could get its suzerain by invoking {@link #incarnation()}.
  */
 public interface Conditional
 {
-    <T extends BuilderMinion> T incarnation();
+    <T> T incarnation();
 }

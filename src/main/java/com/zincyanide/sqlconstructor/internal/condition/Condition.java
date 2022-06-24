@@ -14,49 +14,49 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.internal;
+package com.zincyanide.sqlconstructor.internal.condition;
 
-import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
+import com.zincyanide.sqlconstructor.internal.Conditional;
 
-public class Conditions
+/**
+ *  用于管理条件树
+ *  以及为Conditional子类提供接口
+ */
+public class Condition
 {
     private PredicateNode root;
 
-    public Conditions(PredicateNode root)
+    protected final Conditional belongs;
+
+    public Condition(Conditional belongs)
     {
-        this.root = root;
+        this.belongs = belongs;
+        this.root = new PredicateNode();
     }
 
-    public static Conditions first(String condition)
+    public void and(String condition)
     {
-        return new Conditions(new PredicateNode(condition));
+        root = root.add(condition, false);
     }
 
-    public Conditions and(String condition)
-    {
-        return and(new PredicateNode(condition));
-    }
-
-    public Conditions and(PredicateNode predicate)
+    public void and(PredicateNode predicate)
     {
         root = root.add(predicate, false);
-        return this;
     }
 
-    public Conditions or(String condition)
+    public void or(String condition)
     {
-        return or(new PredicateNode(condition));
+        root = root.add(condition, true);
     }
 
-    public Conditions or(PredicateNode predicate)
+    public void or(PredicateNode predicate)
     {
         root = root.add(predicate, true);
-        return this;
     }
 
-    public PredicateNode finish()
+    public String getConditions()
     {
-        return root;
+        return root.ignite();
     }
 
 }

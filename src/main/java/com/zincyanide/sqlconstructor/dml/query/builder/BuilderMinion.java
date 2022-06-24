@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 public abstract class BuilderMinion implements Serializable
 {
-    protected BaseQuerySqlBuilder chief;
+    BaseQuerySqlBuilder chief;
 
     public BuilderMinion(BaseQuerySqlBuilder chief)
     {
