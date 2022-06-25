@@ -16,15 +16,42 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
+import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.internal.Conditional;
 import com.zincyanide.sqlconstructor.internal.condition.Condition;
 import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
 
-public class On extends Condition implements DataIndex
+public class On implements DataIndex
 {
+    Condition condition = new Condition();
+
+    private Conditional belongs;
+
     public On(Conditional belongs)
     {
-        super(belongs);
+        this.belongs = belongs;
+    }
+
+    public On and(String condition)
+    {
+        return and(new PredicateNode(condition));
+    }
+
+    public On and(PredicateNode predicate)
+    {
+        this.condition.and(predicate);
+        return this;
+    }
+
+    public On or(String condition)
+    {
+        return or(new PredicateNode(condition));
+    }
+
+    public On or(PredicateNode predicate)
+    {
+        this.condition.or(predicate);
+        return this;
     }
 
     private BaseQuerySqlBuilder getChief()
@@ -60,6 +87,11 @@ public class On extends Condition implements DataIndex
     public Where where(PredicateNode predicate)
     {
         return getChief().getMinion(Where.class).and(predicate);
+    }
+
+    public BaseQuerySql build()
+    {
+        return getChief().build();
     }
 
 }

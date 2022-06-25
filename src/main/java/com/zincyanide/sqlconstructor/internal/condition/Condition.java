@@ -16,8 +16,6 @@
 
 package com.zincyanide.sqlconstructor.internal.condition;
 
-import com.zincyanide.sqlconstructor.internal.Conditional;
-
 /**
  *  用于管理条件树
  *  以及为Conditional子类提供接口
@@ -26,11 +24,8 @@ public class Condition
 {
     private PredicateNode root;
 
-    protected final Conditional belongs;
-
-    public Condition(Conditional belongs)
+    public Condition()
     {
-        this.belongs = belongs;
         this.root = new PredicateNode();
     }
 

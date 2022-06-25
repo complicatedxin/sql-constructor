@@ -27,7 +27,7 @@ public class Where extends BuilderMinion implements Conditional, Reusable
     public static final String ANYWHERE = PredicateNode.Manner.ALL;
     public static final String NOWHERE = PredicateNode.Manner.NONE;
 
-    Condition condition = new Condition(this);
+    Condition condition = new Condition();
 
     public Where(BaseQuerySqlBuilder builder)
     {
@@ -70,7 +70,7 @@ public class Where extends BuilderMinion implements Conditional, Reusable
     @Override
     public void clean()
     {
-        this.condition = new Condition(this);
+        this.condition = new Condition();
     }
 
 }

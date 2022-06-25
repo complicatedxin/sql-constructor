@@ -95,7 +95,7 @@ public class BaseQuerySqlBuilder implements Serializable, Attachable, Reusable
             sb.append((to=tos.get(i)).manner)
                 .append(to.tab).append(Symbol.WHITESPACE)
                 .append(to.alias).append(Symbol.WHITESPACE)
-                .append(Join.ON).append(ons.get(i).getConditions()).append(Symbol.WHITESPACE);
+                .append(Join.ON).append(ons.get(i).condition.getConditions()).append(Symbol.WHITESPACE);
     }
 
     private void buildupWhere(StringBuilder sb)
