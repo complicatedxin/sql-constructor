@@ -17,7 +17,6 @@
 package com.zincyanide.sqlconstructor.internal;
 
 import com.zincyanide.sqlconstructor.dml.query.QuerySql;
-
 import java.util.List;
 import java.util.function.Function;
 
@@ -55,19 +54,6 @@ public class Criteria
         return executor.likeEndWith(column, keyword);
     }
 
-    /**
-     * for join on
-     * @param col1 columnName
-     * @param col2 another columnName
-     * @return [col1] = [col2]
-     */
-    public static String JOINT(String col1, String col2, Function<String, Boolean> col1Valid, Function<String, Boolean> col2Valid)
-    {
-        if(!col1Valid.apply(col1) || !col2Valid.apply(col2))
-            return null;
-        return executor.joint(col1, col2);
-    }
-
     public static String EQUAL(String column, Object val, Function<String, Boolean> colValid, Function<Object, Boolean> argValid)
     {
         if(!colValid.apply(column) || !argValid.apply(val))
@@ -80,6 +66,26 @@ public class Criteria
         if(!colValid.apply(column) || !argValid.apply(val))
             return null;
         return executor.unequal(column, val);
+    }
+
+    /**
+     * for join on
+     * @param col1 columnName
+     * @param col2 another columnName
+     * @return [col1] = [col2]
+     */
+    public static String EQ_JOINT(String col1, String col2, Function<String, Boolean> colValid)
+    {
+        if(!colValid.apply(col1) || !colValid.apply(col2))
+            return null;
+        return executor.equalJoint(col1, col2);
+    }
+
+    public static String UNEQ_JOINT(String col1, String col2, Function<String, Boolean> colValid)
+    {
+        if(!colValid.apply(col1) || !colValid.apply(col2))
+            return null;
+        return executor.unequalJoint(col1, col2);
     }
 
     public static String LE(String column, Object val, Function<String, Boolean> colValid, Function<Object, Boolean> argValid)
@@ -96,6 +102,20 @@ public class Criteria
         return executor.lessThan(column, val);
     }
 
+    public static String LE_JOINT(String col1, String col2, Function<String, Boolean> colValid)
+    {
+        if(!colValid.apply(col1) || !colValid.apply(col2))
+            return null;
+        return executor.lessEqualJoint(col1, col2);
+    }
+
+    public static String LT_JOINT(String col1, String col2, Function<String, Boolean> colValid)
+    {
+        if(!colValid.apply(col1) || !colValid.apply(col2))
+            return null;
+        return executor.lessThanJoint(col1, col2);
+    }
+
     public static String GE(String column, Object val, Function<String, Boolean> colValid, Function<Object, Boolean> argValid)
     {
         if(!colValid.apply(column) || !argValid.apply(val))
@@ -108,6 +128,20 @@ public class Criteria
         if(!colValid.apply(column) || !argValid.apply(val))
             return null;
         return executor.greaterThan(column, val);
+    }
+
+    public static String GE_JOINT(String col1, String col2, Function<String, Boolean> colValid)
+    {
+        if(!colValid.apply(col1) || !colValid.apply(col2))
+            return null;
+        return executor.greaterEqualJoint(col1, col2);
+    }
+
+    public static String GT_JOINT(String col1, String col2, Function<String, Boolean> colValid)
+    {
+        if(!colValid.apply(col1) || !colValid.apply(col2))
+            return null;
+        return executor.greaterThanJoint(col1, col2);
     }
 
     public static String BETWEEN(String column, Object leftBound, Object rightBound, Function<String, Boolean> colValid, Function<Object, Boolean> argValid)

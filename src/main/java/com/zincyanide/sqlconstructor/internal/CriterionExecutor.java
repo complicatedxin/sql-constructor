@@ -84,9 +84,15 @@ public class CriterionExecutor implements Criterion
     }
 
     @Override
-    public String joint(String column1, String column2)
+    public String equalJoint(String column1, String column2)
     {
         return column1 + " = " + column2;
+    }
+
+    @Override
+    public String unequalJoint(String column1, String column2)
+    {
+        return column1 + " != " + column2;
     }
 
     @Override
@@ -114,6 +120,18 @@ public class CriterionExecutor implements Criterion
     }
 
     @Override
+    public String lessEqualJoint(String column1, String column2)
+    {
+        return column1 + " <= " + column2;
+    }
+
+    @Override
+    public String lessThanJoint(String column1, String column2)
+    {
+        return column1 + " < " + column2;
+    }
+
+    @Override
     public String greaterEqual(String column, Object val)
     {
         return column + " >= " + handleObjectVal(val);
@@ -123,6 +141,18 @@ public class CriterionExecutor implements Criterion
     public String greaterThan(String column, Object val)
     {
         return column + " > " + handleObjectVal(val);
+    }
+
+    @Override
+    public String greaterEqualJoint(String column1, String column2)
+    {
+        return column1 + " >= " + column2;
+    }
+
+    @Override
+    public String greaterThanJoint(String column1, String column2)
+    {
+        return column1 + " > " + column2;
     }
 
     @Override

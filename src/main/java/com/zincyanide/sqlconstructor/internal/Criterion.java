@@ -21,19 +21,29 @@ import java.util.List;
 
 public interface Criterion
 {
-    String joint(String column1, String column2);
-
     String equal(String column, Object val);
 
     String unequal(String column, Object val);
+
+    String equalJoint(String column1, String column2);
+
+    String unequalJoint(String column1, String column2);
 
     String lessEqual(String column, Object val);
 
     String lessThan(String column, Object val);
 
+    String lessEqualJoint(String column1, String column2);
+
+    String lessThanJoint(String column1, String column2);
+
     String greaterEqual(String column, Object val);
 
     String greaterThan(String column, Object val);
+
+    String greaterEqualJoint(String column1, String column2);
+
+    String greaterThanJoint(String column1, String column2);
 
     String between(String column, Object leftBound, Object rightBound);
 

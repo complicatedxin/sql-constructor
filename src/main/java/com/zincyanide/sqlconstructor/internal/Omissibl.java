@@ -49,17 +49,6 @@ public class Omissibl
         return Criteria.LIKE_END_WITH(column, keyword, validator::validateColumn, validator::validateArg);
     }
 
-    /**
-     * for join on
-     * @param col1 columnName
-     * @param col2 another columnName
-     * @return [col1] = [col2]
-     */
-    public static String JOINT(String col1, String col2)
-    {
-        return Criteria.JOINT(col1, col2, validator::validateColumn, validator::validateColumn);
-    }
-
     public static String EQUAL(String column, Object val)
     {
         return Criteria.EQUAL(column, val, validator::validateColumn, validator::validateArg);
