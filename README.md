@@ -162,14 +162,13 @@
 
 > 目的：创建可重用的BaseQuerySqlBuilder
 
-`MySQLBaseQuerySqlBuilder`就是可重用的，它实现了Reusable接口，以及Attachable接口，它能与线程绑定以达到可重用。
+`MySQLBaseQuerySqlBuilder`实现了Reusable接口，以及Attachable接口，与线程绑定以达到可重用，减少构建的开销。
 
 ```java
         ReusableBaseQuerySqlBuilderFactory mySqlQuery = MySQLBaseQuerySqlBuilderFactory.getInstance();
         BaseQuerySqlBuilder sqlBuilder = mySqlQuery.obtain();
 ```
 
-此方法适用于分页等操作
 ```java
         String limit;
         int page = 1;
