@@ -37,7 +37,7 @@ public class NotStrictValidator implements ValidateStrategy
     }
 
     @Override
-    public Boolean validateArgs(List<Object> args)
+    public Boolean validateArgs(List<?> args)
     {
         return args != null && args.size() > 0;
     }

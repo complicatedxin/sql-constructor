@@ -58,7 +58,7 @@ public class CriterionExecutor implements Criterion
                 && str.substring(0, 7).equalsIgnoreCase("SELECT ");
     }
 
-    private String handleListVal(List<Object> valList)
+    private String handleListVal(List<?> valList)
     {
         StringBuilder sb = new StringBuilder(Symbol.BRACKET_LEFT);
         if(isStringClass(valList.get(0).getClass())
@@ -164,7 +164,7 @@ public class CriterionExecutor implements Criterion
     }
 
     @Override
-    public String in(String column, List<Object> valList)
+    public String in(String column, List<?> valList)
     {
         if(valList.size() == 0)
             return null;
@@ -178,7 +178,7 @@ public class CriterionExecutor implements Criterion
     }
 
     @Override
-    public String notIn(String column, List<Object> valList)
+    public String notIn(String column, List<?> valList)
     {
         if(valList.size() == 0)
             return null;

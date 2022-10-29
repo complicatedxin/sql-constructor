@@ -114,7 +114,7 @@ public class Essential
         return Criteria.BETWEEN(column, leftBound, rightBound, validator::validateColumn, validator::validateArg);
     }
 
-    public static String IN(String column, List<Object> valList)
+    public static String IN(String column, List<?> valList)
     {
         return Criteria.IN(column, valList, validator::validateColumn, validator::validateArgs);
     }
@@ -124,7 +124,7 @@ public class Essential
         return Criteria.IN(column, querySql, validator::validateColumn, validator::validateSubSql);
     }
 
-    public static String NOT_IN(String column, List<Object> valList)
+    public static String NOT_IN(String column, List<?> valList)
     {
         return Criteria.NOT_IN(column, valList, validator::validateColumn, validator::validateArgs);
     }

@@ -151,7 +151,7 @@ public class Criteria
         return executor.between(column, leftBound, rightBound);
     }
 
-    public static String IN(String column, List<Object> valList, Function<String, Boolean> colValid, Function<List<Object>, Boolean> argValid)
+    public static String IN(String column, List<?> valList, Function<String, Boolean> colValid, Function<List<?>, Boolean> argValid)
     {
         if(!colValid.apply(column) || !argValid.apply(valList))
             return null;
@@ -165,7 +165,7 @@ public class Criteria
         return executor.in(column, querySql);
     }
 
-    public static String NOT_IN(String column, List<Object> valList, Function<String, Boolean> colValid, Function<List<Object>, Boolean> argValid)
+    public static String NOT_IN(String column, List<?> valList, Function<String, Boolean> colValid, Function<List<?>, Boolean> argValid)
     {
         if(!colValid.apply(column) || !argValid.apply(valList))
             return null;

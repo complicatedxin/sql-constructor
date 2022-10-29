@@ -25,7 +25,7 @@ public interface ValidateStrategy
 
     public Boolean validateArg(Object arg);
 
-    public Boolean validateArgs(List<Object> args);
+    public Boolean validateArgs(List<?> args);
 
     public Boolean validateSubSql(QuerySql subSql);
 

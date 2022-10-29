@@ -47,11 +47,11 @@ public interface Criterion
 
     String between(String column, Object leftBound, Object rightBound);
 
-    String in(String column, List<Object> valList);
+    String in(String column, List<?> valList);
 
     String in(String column, QuerySql querySql);
 
-    String notIn(String column, List<Object> valList);
+    String notIn(String column, List<?> valList);
 
     String notIn(String column, QuerySql querySql);
 

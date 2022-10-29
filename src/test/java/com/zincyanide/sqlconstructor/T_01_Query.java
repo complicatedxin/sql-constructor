@@ -75,7 +75,7 @@ public class T_01_Query
         SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                    .innerJoin("EMP_INFO", "i").on(Omissibl.JOINT("t.eid", "i.eid"))
+                    .innerJoin("EMP_INFO", "i").on(Essential.EQ_JOINT("t.eid", "i.eid"))
                 .where("")
                     .and(Omissibl.EQUAL("emp_name", ""))
                     .or(Omissibl.LIKE_START_WITH("emp_adr", " "))
@@ -94,7 +94,7 @@ public class T_01_Query
         longList.add(2L);
         longList.add(3L);
 
-        List<Object> stringList = new ArrayList<>();
+        List<String> stringList = new ArrayList<>();
         stringList.add("w");
         stringList.add("t");
         stringList.add("f");
@@ -104,7 +104,7 @@ public class T_01_Query
         SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                .innerJoin("EMP_INFO", "i").on(Omissibl.JOINT("t.ei", "i.eid"))
+                .innerJoin("EMP_INFO", "i").on(Essential.EQ_JOINT("t.ei", "i.eid"))
                 .where("")
                 .and(Essential.EQUAL("emp_name", null))
                 .or(Essential.LIKE("emp_adr", " "))
@@ -132,10 +132,10 @@ public class T_01_Query
         SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                .innerJoin("EMP_INFO", "i").on(Essential.JOINT("t.ei", "i.eid"))
-                .where(Criteria.EQUAL("emp_name", null, c->{return c!=null && c.length()!=0;}, a->{return a!=null;}))
-                .or(Criteria.LIKE("emp_adr", " ", c->{return c!=null && c.length()!=0;}, a->{return true;}))
-                .and(Criteria.NOT_IN("emp_status", emptyList, c->{return c!=null && c.length()!=0;}, a->{return true;}))
+                .innerJoin("EMP_INFO", "i").on(Essential.EQ_JOINT("t.ei", "i.eid"))
+                .where(Criteria.EQUAL("emp_name", null, c-> c!=null && c.length()!=0, Objects::nonNull))
+                .or(Criteria.LIKE("emp_adr", " ", c-> c!=null && c.length()!=0, a-> true))
+                .and(Criteria.NOT_IN("emp_status", emptyList, c-> c!=null && c.length()!=0, a-> true))
                 .build();
 
         System.out.println(querySql.getSql());

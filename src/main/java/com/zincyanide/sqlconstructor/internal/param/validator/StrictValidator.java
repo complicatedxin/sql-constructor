@@ -40,7 +40,7 @@ public class StrictValidator implements ValidateStrategy
     }
 
     @Override
-    public Boolean validateArgs(List<Object> args)
+    public Boolean validateArgs(List<?> args)
     {
         if(args == null || args.size() <= 0)
             throw new NullPointerException();
