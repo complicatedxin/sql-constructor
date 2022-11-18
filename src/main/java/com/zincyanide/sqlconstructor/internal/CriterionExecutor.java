@@ -17,14 +17,19 @@
 package com.zincyanide.sqlconstructor.internal;
 
 import com.zincyanide.sqlconstructor.dml.query.QuerySql;
+
+import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 public class CriterionExecutor implements Criterion
 {
+    // FIXME
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     private String handleObjectVal(Object val)
     {
-        if(isStringClass(val.getClass()))
+        if(isString(val.getClass()))
         {
             String str = (String) val;
             if(isSql(str))
@@ -32,18 +37,18 @@ public class CriterionExecutor implements Criterion
             else
                 return Symbol.QUOTE_SINGLE + str + Symbol.QUOTE_SINGLE;
         }
-        else if(isDateClass(val))
-            return Symbol.QUOTE_SINGLE + val + Symbol.QUOTE_SINGLE;
+        else if(isDate(val))
+            return Symbol.QUOTE_SINGLE + sdf.format((Date) val) + Symbol.QUOTE_SINGLE;
         else
             return val.toString();
     }
 
-    private boolean isStringClass(Class<?> clazz)
+    private boolean isString(Class<?> clazz)
     {
         return clazz == String.class;
     }
 
-    private boolean isDateClass(Object obj)
+    private boolean isDate(Object obj)
     {
         return obj instanceof Date;
     }
@@ -58,29 +63,27 @@ public class CriterionExecutor implements Criterion
                 && str.substring(0, 7).equalsIgnoreCase("SELECT ");
     }
 
-    private String handleListVal(List<?> valList)
+    private String handleValCollection(Collection<?> vals)
     {
-        StringBuilder sb = new StringBuilder(Symbol.BRACKET_LEFT);
-        if(isStringClass(valList.get(0).getClass())
-                || isDateClass(valList.get(0)))
-        {
-            for(Object o : valList)
-            {
-                sb.append(Symbol.QUOTE_SINGLE)
-                        .append(o)
-                        .append(Symbol.QUOTE_SINGLE)
-                        .append(Symbol.COMMA);
-            }
-        }
+        if(vals.isEmpty())
+            return "( )";
+
+        Object val = vals.iterator().next();
+        if(isString(val.getClass()))
+            return CollectionUtil.asString(
+                    vals,
+                    "(", ")", ",", "'", "'",
+                    null, null);
+        else if(isDate(val))
+            return CollectionUtil.asString(
+                    vals,
+                    "(", ")", ",", "'", "'",
+                    null, (v) -> DateUtil.format((Date) v));
         else
-        {
-            for(Object o : valList)
-            {
-                sb.append(o).append(Symbol.COMMA);
-            }
-        }
-        sb.replace(sb.length()-1, sb.length(), Symbol.BRACKET_RIGHT);
-        return sb.toString();
+            return CollectionUtil.asString(
+                    vals,
+                    "(", ")", ",", "'", "'",
+                    null, null);
     }
 
     @Override
@@ -164,11 +167,11 @@ public class CriterionExecutor implements Criterion
     }
 
     @Override
-    public String in(String column, List<?> valList)
+    public String in(String column, Collection<?> vals)
     {
-        if(valList.size() == 0)
+        if(vals.size() == 0)
             return null;
-        return column + " IN " + handleListVal(valList);
+        return column + " IN " + handleValCollection(vals);
     }
 
     @Override
@@ -178,11 +181,11 @@ public class CriterionExecutor implements Criterion
     }
 
     @Override
-    public String notIn(String column, List<?> valList)
+    public String notIn(String column, Collection<?> vals)
     {
-        if(valList.size() == 0)
+        if(vals.size() == 0)
             return null;
-        return column + " NOT IN " + handleListVal(valList);
+        return column + " NOT IN " + handleValCollection(vals);
     }
 
     @Override

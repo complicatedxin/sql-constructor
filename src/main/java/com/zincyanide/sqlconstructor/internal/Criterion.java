@@ -17,7 +17,8 @@
 package com.zincyanide.sqlconstructor.internal;
 
 import com.zincyanide.sqlconstructor.dml.query.QuerySql;
-import java.util.List;
+
+import java.util.Collection;
 
 public interface Criterion
 {
@@ -47,11 +48,11 @@ public interface Criterion
 
     String between(String column, Object leftBound, Object rightBound);
 
-    String in(String column, List<?> valList);
+    String in(String column, Collection<?> vals);
 
     String in(String column, QuerySql querySql);
 
-    String notIn(String column, List<?> valList);
+    String notIn(String column, Collection<?> vals);
 
     String notIn(String column, QuerySql querySql);
 

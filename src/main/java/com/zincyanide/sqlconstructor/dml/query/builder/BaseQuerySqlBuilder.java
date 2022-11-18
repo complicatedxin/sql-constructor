@@ -70,7 +70,9 @@ public class BaseQuerySqlBuilder implements Serializable, Attachable, Reusable
         Select select = getMinion(Select.class);
         sb.append(SELECT)
             .append(select.mode)
-            .append(ArrayUtil.asString(select.cols, "", ", ", Symbol.WHITESPACE, e -> false));
+            .append(CollectionUtil.asString(select.cols,
+                    "", " ", ", ", "", "",
+                    null, null));
     }
 
     private void buildupFrom(StringBuilder sb)

@@ -80,13 +80,14 @@ public class T_01_Query
                     .and(Omissibl.EQUAL("emp_name", ""))
                     .or(Omissibl.LIKE_START_WITH("emp_adr", " "))
                     .and(Omissibl.LE("createTime", null))
+                    .and(Omissibl.GT("ope_time", new Date()))
                 .build();
 
         System.out.println(querySql.getSql());
 
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public void t_04_essential()
     {
         List<Object> longList = new ArrayList<>();
