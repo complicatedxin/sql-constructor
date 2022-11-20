@@ -17,81 +17,70 @@
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
-import com.zincyanide.sqlconstructor.internal.Conditional;
-import com.zincyanide.sqlconstructor.internal.condition.Condition;
-import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
+import com.zincyanide.sqlconstructor.internal.condition.ConditionalStatement;
+import com.zincyanide.sqlconstructor.internal.condition.ConditionNode;
 
-public class On implements DataIndex
+public class On
 {
-    Condition condition = new Condition();
+    ConditionalStatement conditionalStatement = new ConditionalStatement();
 
-    private Conditional belongs;
+    private From recall;
 
-    public On(Conditional belongs)
+    public On(From recall)
     {
-        this.belongs = belongs;
+        this.recall = recall;
     }
 
     public On and(String condition)
     {
-        return and(new PredicateNode(condition));
+        return and(new ConditionNode(condition));
     }
 
-    public On and(PredicateNode predicate)
+    public On and(ConditionNode predicate)
     {
-        this.condition.and(predicate);
+        this.conditionalStatement.and(predicate);
         return this;
     }
 
     public On or(String condition)
     {
-        return or(new PredicateNode(condition));
+        return or(new ConditionNode(condition));
     }
 
-    public On or(PredicateNode predicate)
+    public On or(ConditionNode predicate)
     {
-        this.condition.or(predicate);
+        this.conditionalStatement.or(predicate);
         return this;
     }
 
-    private BaseQuerySqlBuilder getChief()
-    {
-        Join join = belongs.incarnation();
-        return join.chief;
-    }
-
-    @Override
     public Join innerJoin(String table, String alias)
     {
-        return getChief().getMinion(From.class).innerJoin(table, alias);
+        return recall.innerJoin(table, alias);
     }
 
-    @Override
     public Join leftJoin(String table, String alias)
     {
-        return getChief().getMinion(From.class).leftJoin(table, alias);
+        return recall.leftJoin(table, alias);
     }
 
-    @Override
     public Join rightJoin(String table, String alias)
     {
-        return getChief().getMinion(From.class).rightJoin(table, alias);
+        return recall.rightJoin(table, alias);
     }
 
-    @Override
     public Where where(String condition)
     {
-        return where(new PredicateNode(condition));
+        return recall.where(condition);
     }
 
-    public Where where(PredicateNode predicate)
+    public Where where(ConditionNode node)
     {
-        return getChief().getMinion(Where.class).and(predicate);
+        return recall.where(node);
     }
 
     public BaseQuerySql build()
     {
-        return getChief().build();
+        return recall.build();
     }
 
 }

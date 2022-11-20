@@ -16,10 +16,10 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder.factory;
 
-import com.zincyanide.sqlconstructor.internal.Attachable;
+import com.zincyanide.sqlconstructor.internal.Bindable;
 import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
 
-public class MySQLBaseQuerySqlBuilderFactory implements ReusableBaseQuerySqlBuilderFactory
+public class MySQLBaseQuerySqlBuilderFactory implements CacheableBaseQuerySqlBuilderFactory
 {
     private static volatile MySQLBaseQuerySqlBuilderFactory factory;
 
@@ -40,12 +40,12 @@ public class MySQLBaseQuerySqlBuilderFactory implements ReusableBaseQuerySqlBuil
     @Override
     public BaseQuerySqlBuilder manu()
     {
-        BaseQuerySqlBuilder sqlBuilder = (BaseQuerySqlBuilder) Attachable.THREAD_ATTACHMENT.get();
+        BaseQuerySqlBuilder sqlBuilder = (BaseQuerySqlBuilder) Bindable.THREAD_BIND.get();
 
         if (sqlBuilder == null) //TODO sqlBuilder instanceof MySQLBuilder
         {
             sqlBuilder = new BaseQuerySqlBuilder();
-            sqlBuilder.attach();
+            sqlBuilder.bind();
         }
 
         return sqlBuilder;
@@ -61,9 +61,9 @@ public class MySQLBaseQuerySqlBuilderFactory implements ReusableBaseQuerySqlBuil
         if (fresh)
         {
             sqlBuilder = new BaseQuerySqlBuilder();
-            sqlBuilder.attach();
+            sqlBuilder.bind();
         }
-        sqlBuilder = (BaseQuerySqlBuilder) Attachable.THREAD_ATTACHMENT.get();
+        sqlBuilder = (BaseQuerySqlBuilder) Bindable.THREAD_BIND.get();
 
         return sqlBuilder;
     }
@@ -71,7 +71,7 @@ public class MySQLBaseQuerySqlBuilderFactory implements ReusableBaseQuerySqlBuil
     @Override
     public BaseQuerySqlBuilder obtain()
     {
-        BaseQuerySqlBuilder sqlBuilder = (BaseQuerySqlBuilder) Attachable.THREAD_ATTACHMENT.get();
+        BaseQuerySqlBuilder sqlBuilder = (BaseQuerySqlBuilder) Bindable.THREAD_BIND.get();
 
         if (sqlBuilder == null)
             throw new NullPointerException();

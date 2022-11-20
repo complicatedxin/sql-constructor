@@ -49,12 +49,12 @@ public class Omissibl
         return Criteria.LIKE_END_WITH(column, keyword, validator::validateColumn, validator::validateArg);
     }
 
-    public static String EQUAL(String column, Object val)
+    public static String EQ(String column, Object val)
     {
         return Criteria.EQUAL(column, val, validator::validateColumn, validator::validateArg);
     }
 
-    public static String UNEQUAL(String column, Object val)
+    public static String UNEQ(String column, Object val)
     {
         return Criteria.UNEQUAL(column, val, validator::validateColumn, validator::validateArg);
     }

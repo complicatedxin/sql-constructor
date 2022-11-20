@@ -20,46 +20,71 @@ import com.zincyanide.sqlconstructor.internal.StringUtil;
 import com.zincyanide.sqlconstructor.internal.Symbol;
 import java.util.Objects;
 
-public class PredicateNode
+/**
+ *  与或条件树
+ *  当某一条件不可用时，折叠或替换为代替表达式{@link Manner}
+ *
+ *
+ *
+ *
+ *  {                     #root r
+ *                       /   |  \
+ *                      /    |   \
+ *  #left[ |------ #root p   |  #right[ #root q
+ *         |          |      |          /      \
+ *         |       #next u   |      #left s   #right t ]
+ *         |         |       |
+ *        -> #next v(tail) ] |                          }
+ *                           |
+ *                       #next z
+ *
+ *
+ * the conditional statement is:
+ * "(p and u and v or (s or t)) and z"
+ *
+ *
+ *
+ */
+public class ConditionNode
 {
-    protected String condition;
-    protected PredicateNode left;
-    protected PredicateNode right;
-    protected PredicateNode next;
-    protected PredicateNode tail;
+    protected String condition; // statement
+    protected ConditionNode left; // the left option of "or"
+    protected ConditionNode right; // the right option of "or"
+    protected ConditionNode next; // indicates the next "and"
+    protected ConditionNode tail; // the last "and" of this root
 
-    public PredicateNode()
+    public ConditionNode()
     {   }
-    public PredicateNode(String condition)
+    public ConditionNode(String condition)
     {
         this.condition = condition;
     }
 
-    public PredicateNode add(String condition, boolean branch)
+    public ConditionNode add(String condition, boolean branch)
     {
-        return add(new PredicateNode(condition), branch);
+        return add(new ConditionNode(condition), branch);
     }
 
-    public PredicateNode add(PredicateNode n, boolean branch)
+    public ConditionNode add(ConditionNode n, boolean branch)
     {
         return add(this, n, branch);
     }
 
-    public PredicateNode add(PredicateNode root, PredicateNode successor, boolean branch)
+    public ConditionNode add(ConditionNode root, ConditionNode successor, boolean branch)
     {
         return !branch ? succeed(root, successor) : branch(root, successor);
     }
 
-    protected PredicateNode succeed(PredicateNode root, PredicateNode successor)
+    protected ConditionNode succeed(ConditionNode root, ConditionNode successor)
     {
-        PredicateNode t;
+        ConditionNode t;
         t = ((t = root.tail) == null) ? root : t;
         t.next = successor;
         root.tail = t.next;
         return root;
     }
 
-    protected PredicateNode branch(PredicateNode origin, PredicateNode branch)
+    protected ConditionNode branch(ConditionNode origin, ConditionNode branch)
     {
         return new NodeComponent(origin, branch);
     }
@@ -88,26 +113,26 @@ public class PredicateNode
 
 
 
-    public static class NodeComponent extends PredicateNode
+    public static class NodeComponent extends ConditionNode
     {
-        public NodeComponent(PredicateNode left, PredicateNode right)
+        public NodeComponent(ConditionNode left, ConditionNode right)
         {
             this.left = left;
             this.right = right;
         }
 
         @Override
-        public PredicateNode add(String condition, boolean branch)
+        public ConditionNode add(String condition, boolean branch)
         {
-            return this.add(new PredicateNode(condition), branch);
+            return this.add(new ConditionNode(condition), branch);
         }
 
         @Override
-        public PredicateNode add(PredicateNode c, boolean branch)
+        public ConditionNode add(ConditionNode c, boolean branch)
         {
             if(!branch)
             {
-                this.right = add(this.right, c, false);
+                add(this, c, false);
                 return this;
             }
 
@@ -134,7 +159,6 @@ public class PredicateNode
             if (!l && !r)
                 return this.condition;
 
-
             StringBuilder sb = new StringBuilder(Symbol.BRACKET_LEFT);
             if (l)
                 sb.append(left);
@@ -143,9 +167,9 @@ public class PredicateNode
 
             if (r)
                 sb.append(Manner.OR)
-//                        .append(Symbol.BRACKET_LEFT)
+                        // "OR" + "A AND B" or "A OR B" neither need to be bracketed
                         .append(right);
-//                        .append(Symbol.BRACKET_RIGHT); // OR + "A AND B" or "A OR B" neither need Bracket
+
             sb.append(Symbol.BRACKET_RIGHT);
 
             return sb.toString();

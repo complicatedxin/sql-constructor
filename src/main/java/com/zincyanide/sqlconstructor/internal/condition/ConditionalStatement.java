@@ -17,16 +17,16 @@
 package com.zincyanide.sqlconstructor.internal.condition;
 
 /**
- *  用于管理条件树
+ *  用于操作条件树
  *  以及为Conditional子类提供接口
  */
-public class Condition
+public class ConditionalStatement
 {
-    private PredicateNode root;
+    private ConditionNode root;
 
-    public Condition()
+    public ConditionalStatement()
     {
-        this.root = new PredicateNode();
+        this.root = new ConditionNode();
     }
 
     public void and(String condition)
@@ -34,7 +34,7 @@ public class Condition
         root = root.add(condition, false);
     }
 
-    public void and(PredicateNode predicate)
+    public void and(ConditionNode predicate)
     {
         root = root.add(predicate, false);
     }
@@ -44,12 +44,12 @@ public class Condition
         root = root.add(condition, true);
     }
 
-    public void or(PredicateNode predicate)
+    public void or(ConditionNode predicate)
     {
         root = root.add(predicate, true);
     }
 
-    public String getConditions()
+    public String get()
     {
         return root.ignite();
     }

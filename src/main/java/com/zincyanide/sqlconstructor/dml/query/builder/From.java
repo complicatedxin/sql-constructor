@@ -16,22 +16,21 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.internal.Reusable;
+import com.zincyanide.sqlconstructor.internal.AliasField;
+import com.zincyanide.sqlconstructor.internal.Cacheable;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.dml.query.QuerySql;
-import com.zincyanide.sqlconstructor.internal.StringUtil;
-import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
+import com.zincyanide.sqlconstructor.internal.condition.ConditionNode;
 
-public class From extends BuilderMinion implements DataIndex, Reusable
+public class From extends BuilderMinion implements Cacheable
 {
     static final String WHERE = "WHERE ";
     private static final String INNER = "INNER JOIN ";
     private static final String LEFT = "LEFT JOIN ";
     private static final String RIGHT = "RIGHT JOIN ";
 
-    String tab;
-    QuerySql subSql;
-    String alias;
+    AliasField<String> tableField;
+    AliasField<QuerySql> subSqlField;
 
     public From(BaseQuerySqlBuilder builder)
     {
@@ -45,13 +44,13 @@ public class From extends BuilderMinion implements DataIndex, Reusable
 
     public Where where(String condition)
     {
-        return where(new PredicateNode(condition));
+        return where(new ConditionNode(condition));
     }
 
-    public Where where(PredicateNode predicate)
+    public Where where(ConditionNode node)
     {
         Where where = chief.getMinion(Where.class);
-        where.and(predicate);
+        where.and(node);
         return where;
     }
 
@@ -72,19 +71,36 @@ public class From extends BuilderMinion implements DataIndex, Reusable
 
     protected Join join(String joinManner, String table, String alias)
     {
-        StringUtil.requireNonWhite(table);
-
         Join join = chief.getMinion(Join.class);
         join.to(joinManner, table, alias);
 
         return join;
     }
 
+    void setTable(String table, String alias)
+    {
+        if(this.tableField == null)
+        {
+            this.tableField = new AliasField<>(table, alias);
+        }
+        this.tableField.setField(table);
+        this.tableField.setAlias(alias);
+    }
+
+    void setSubSql(QuerySql subSql, String alias)
+    {
+        if(this.subSqlField == null)
+        {
+            this.subSqlField = new AliasField<>(subSql, alias);
+        }
+        this.subSqlField.setField(subSql);
+        this.subSqlField.setAlias(alias);
+    }
+
     @Override
     public void clean()
     {
-        this.tab = null;
-        this.subSql = null;
-        this.alias = null;
+        this.tableField = null;
+        this.subSqlField = null;
     }
 }

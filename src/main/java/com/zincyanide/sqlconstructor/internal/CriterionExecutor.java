@@ -24,7 +24,7 @@ import java.util.Date;
 
 public class CriterionExecutor implements Criterion
 {
-    // FIXME
+    // FIXME temporary fix
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private String handleObjectVal(Object val)

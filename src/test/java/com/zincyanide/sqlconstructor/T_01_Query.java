@@ -5,7 +5,7 @@ import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
 import com.zincyanide.sqlconstructor.dml.query.builder.Where;
 import com.zincyanide.sqlconstructor.dml.query.builder.factory.MySQLBaseQuerySqlBuilderFactory;
-import com.zincyanide.sqlconstructor.dml.query.builder.factory.ReusableBaseQuerySqlBuilderFactory;
+import com.zincyanide.sqlconstructor.dml.query.builder.factory.CacheableBaseQuerySqlBuilderFactory;
 import com.zincyanide.sqlconstructor.internal.condition.Conditions;
 import com.zincyanide.sqlconstructor.internal.Criteria;
 import com.zincyanide.sqlconstructor.internal.Omissibl;
@@ -75,9 +75,9 @@ public class T_01_Query
         SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                    .innerJoin("EMP_INFO", "i").on(Essential.EQ_JOINT("t.eid", "i.eid"))
+                    .innerJoin("EMP_INFO", "i").on(Essential.JOINT_EQ("t.eid", "i.eid"))
                 .where("")
-                    .and(Omissibl.EQUAL("emp_name", ""))
+                    .and(Omissibl.EQ("emp_name", ""))
                     .or(Omissibl.LIKE_START_WITH("emp_adr", " "))
                     .and(Omissibl.LE("createTime", null))
                     .and(Omissibl.GT("ope_time", new Date()))
@@ -105,9 +105,9 @@ public class T_01_Query
         SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                .innerJoin("EMP_INFO", "i").on(Essential.EQ_JOINT("t.ei", "i.eid"))
+                .innerJoin("EMP_INFO", "i").on(Essential.JOINT_EQ("t.ei", "i.eid"))
                 .where("")
-                .and(Essential.EQUAL("emp_name", null))
+                .and(Essential.EQ("emp_name", null))
                 .or(Essential.LIKE("emp_adr", " "))
                 .and(Essential.NOT_IN("emp_status", emptyList))
                 .build();
@@ -133,7 +133,7 @@ public class T_01_Query
         SqlConstructor querySql = new BaseQuerySqlBuilder()
                 .select("*")
                 .from("EMP_TASK", "t")
-                .innerJoin("EMP_INFO", "i").on(Essential.EQ_JOINT("t.ei", "i.eid"))
+                .innerJoin("EMP_INFO", "i").on(Essential.JOINT_EQ("t.ei", "i.eid"))
                 .where(Criteria.EQUAL("emp_name", null, c-> c!=null && c.length()!=0, Objects::nonNull))
                 .or(Criteria.LIKE("emp_adr", " ", c-> c!=null && c.length()!=0, a-> true))
                 .and(Criteria.NOT_IN("emp_status", emptyList, c-> c!=null && c.length()!=0, a-> true))
@@ -150,7 +150,7 @@ public class T_01_Query
                     .select("*")
                     .from("EMP")
                     .where(Where.ANYWHERE)
-                    .and(Omissibl.EQUAL("emp_name", new BaseQuerySqlBuilder()
+                    .and(Omissibl.EQ("emp_name", new BaseQuerySqlBuilder()
                                                                 .select("ename")
                                                                 .from("USER")
                                                                 .where("uid = 1")
@@ -171,8 +171,8 @@ public class T_01_Query
                 .select("*")
                 .from("emp")
                 .where(Conditions
-                        .first(Omissibl.EQUAL("ename", "SMITH"))
-                        .or(Omissibl.EQUAL("job", "SALESMAN"))
+                        .first(Omissibl.EQ("ename", "SMITH"))
+                        .or(Omissibl.EQ("job", "SALESMAN"))
                         .finish())
                     .and(Omissibl.GE("sal", 1500))
                 .build().getSql();
@@ -183,14 +183,14 @@ public class T_01_Query
     @Test
     public void t_08_baseQuerySqlBuilderFactory()
     {
-        ReusableBaseQuerySqlBuilderFactory mySqlQuery = MySQLBaseQuerySqlBuilderFactory.getInstance();
+        CacheableBaseQuerySqlBuilderFactory mySqlQuery = MySQLBaseQuerySqlBuilderFactory.getInstance();
 
         String sql = mySqlQuery.manu()
                 .select("*")
                 .from("emp")
                 .where(Conditions
-                        .first(Omissibl.EQUAL("ename", "SMITH"))
-                        .or(Omissibl.EQUAL("job", "SALESMAN"))
+                        .first(Omissibl.EQ("ename", "SMITH"))
+                        .or(Omissibl.EQ("job", "SALESMAN"))
                         .finish())
                 .and(Omissibl.GE("sal", 1500))
                 .build().getSql();

@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.internal;
+package com.zincyanide.sqlconstructor.dml.query.builder.factory;
 
-public interface Attachable
+import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
+
+public interface CacheableBaseQuerySqlBuilderFactory
+        extends BaseQuerySqlBuilderFactory
 {
-    ThreadLocal<? super Attachable> THREAD_ATTACHMENT = new ThreadLocal<>();
+    BaseQuerySqlBuilder manu(boolean fresh);
 
-    void attach();
-
-    default void relieve()
-    {
-        THREAD_ATTACHMENT.remove();
-    }
-
+    /**
+     * @return BaseQuerySqlBuilder which implements Reusable
+     * @throw {@link NullPointerException} if not exist
+     * a sqlBuilder within thread
+     */
+    BaseQuerySqlBuilder obtain();
 }

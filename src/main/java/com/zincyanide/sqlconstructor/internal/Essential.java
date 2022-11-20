@@ -49,24 +49,14 @@ public class Essential
         return Criteria.LIKE_END_WITH(column, keyword, validator::validateColumn, validator::validateArg);
     }
 
-    public static String EQUAL(String column, Object val)
+    public static String EQ(String column, Object val)
     {
         return Criteria.EQUAL(column, val, validator::validateColumn, validator::validateArg);
     }
 
-    public static String UNEQUAL(String column, Object val)
+    public static String UNEQ(String column, Object val)
     {
         return Criteria.UNEQUAL(column, val, validator::validateColumn, validator::validateArg);
-    }
-
-    public static String EQ_JOINT(String col1, String col2)
-    {
-        return Criteria.EQ_JOINT(col1, col2, validator::validateColumn);
-    }
-
-    public static String UNEQ_JOINT(String col1, String col2)
-    {
-        return Criteria.UNEQ_JOINT(col1, col2, validator::validateColumn);
     }
 
     public static String LE(String column, Object val)
@@ -79,16 +69,6 @@ public class Essential
         return Criteria.LT(column, val, validator::validateColumn, validator::validateArg);
     }
 
-    public static String LE_JOINT(String col1, String col2)
-    {
-        return Criteria.LE_JOINT(col1, col2, validator::validateColumn);
-    }
-
-    public static String LT_JOINT(String col1, String col2)
-    {
-        return Criteria.LT_JOINT(col1, col2, validator::validateColumn);
-    }
-
     public static String GE(String column, Object val)
     {
         return Criteria.GE(column, val, validator::validateColumn, validator::validateArg);
@@ -97,16 +77,6 @@ public class Essential
     public static String GT(String column, Object val)
     {
         return Criteria.GT(column, val, validator::validateColumn, validator::validateArg);
-    }
-
-    public static String GE_JOINT(String col1, String col2)
-    {
-        return Criteria.GE_JOINT(col1, col2, validator::validateColumn);
-    }
-
-    public static String GT_JOINT(String col1, String col2)
-    {
-        return Criteria.GT_JOINT(col1, col2, validator::validateColumn);
     }
 
     public static String BETWEEN(String column, Object leftBound, Object rightBound)
@@ -144,4 +114,33 @@ public class Essential
         return Criteria.NOT_EXISTS(querySql, validator::validateSubSql);
     }
 
+    public static String JOINT_EQ(String col1, String col2)
+    {
+        return Criteria.EQ_JOINT(col1, col2, validator::validateColumn);
+    }
+
+    public static String JOINT_UNEQ(String col1, String col2)
+    {
+        return Criteria.UNEQ_JOINT(col1, col2, validator::validateColumn);
+    }
+
+    public static String JOINT_LE(String col1, String col2)
+    {
+        return Criteria.LE_JOINT(col1, col2, validator::validateColumn);
+    }
+
+    public static String JOINT_LT(String col1, String col2)
+    {
+        return Criteria.LT_JOINT(col1, col2, validator::validateColumn);
+    }
+
+    public static String JOINT_GE(String col1, String col2)
+    {
+        return Criteria.GE_JOINT(col1, col2, validator::validateColumn);
+    }
+
+    public static String JOINT_GT(String col1, String col2)
+    {
+        return Criteria.GT_JOINT(col1, col2, validator::validateColumn);
+    }
 }

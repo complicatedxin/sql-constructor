@@ -16,13 +16,12 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.internal.Reusable;
-import com.zincyanide.sqlconstructor.internal.Conditional;
-import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
+import com.zincyanide.sqlconstructor.internal.Cacheable;
+import com.zincyanide.sqlconstructor.internal.condition.ConditionNode;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Join extends BuilderMinion implements Conditional, Reusable
+public class Join extends BuilderMinion implements Cacheable
 {
     static final String ON = "ON ";
 
@@ -43,21 +42,15 @@ public class Join extends BuilderMinion implements Conditional, Reusable
 
     public On on(String condition)
     {
-        return on(new PredicateNode(condition));
+        return on(new ConditionNode(condition));
     }
 
-    public On on(PredicateNode predicate)
+    public On on(ConditionNode node)
     {
-        On on = new On(this);
-        on.and(predicate);
+        On on = new On(this.getChief().getMinion(From.class));
+        on.and(node);
         ons.add(on);
         return on;
-    }
-
-    @Override
-    public <T> T incarnation()
-    {
-        return (T) this;
     }
 
     @Override

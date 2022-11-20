@@ -14,19 +14,10 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.dml.query.builder.factory;
+package com.zincyanide.sqlconstructor.internal;
 
-import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
-
-public interface ReusableBaseQuerySqlBuilderFactory
-        extends BaseQuerySqlBuilderFactory
+public interface Cacheable
 {
-    BaseQuerySqlBuilder manu(boolean fresh);
+    void clean();
 
-    /**
-     * @return BaseQuerySqlBuilder which implements Reusable
-     * @throw {@link NullPointerException} if not exist
-     * a sqlBuilder within thread
-     */
-    BaseQuerySqlBuilder obtain();
 }

@@ -16,18 +16,17 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.internal.Conditional;
-import com.zincyanide.sqlconstructor.internal.Reusable;
+import com.zincyanide.sqlconstructor.internal.Cacheable;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
-import com.zincyanide.sqlconstructor.internal.condition.Condition;
-import com.zincyanide.sqlconstructor.internal.condition.PredicateNode;
+import com.zincyanide.sqlconstructor.internal.condition.ConditionalStatement;
+import com.zincyanide.sqlconstructor.internal.condition.ConditionNode;
 
-public class Where extends BuilderMinion implements Conditional, Reusable
+public class Where extends BuilderMinion implements Cacheable
 {
-    public static final String ANYWHERE = PredicateNode.Manner.ALL;
-    public static final String NOWHERE = PredicateNode.Manner.NONE;
+    public static final String ANYWHERE = ConditionNode.Manner.ALL;
+    public static final String NOWHERE = ConditionNode.Manner.NONE;
 
-    Condition condition = new Condition();
+    ConditionalStatement conditionalStatement = new ConditionalStatement();
 
     public Where(BaseQuerySqlBuilder builder)
     {
@@ -36,23 +35,23 @@ public class Where extends BuilderMinion implements Conditional, Reusable
 
     public Where and(String condition)
     {
-        return and(new PredicateNode(condition));
+        return and(new ConditionNode(condition));
     }
 
-    public Where and(PredicateNode predicate)
+    public Where and(ConditionNode predicate)
     {
-        this.condition.and(predicate);
+        this.conditionalStatement.and(predicate);
         return this;
     }
 
     public Where or(String condition)
     {
-        return or(new PredicateNode(condition));
+        return or(new ConditionNode(condition));
     }
 
-    public Where or(PredicateNode predicate)
+    public Where or(ConditionNode predicate)
     {
-        this.condition.or(predicate);
+        this.conditionalStatement.or(predicate);
         return this;
     }
 
@@ -62,15 +61,9 @@ public class Where extends BuilderMinion implements Conditional, Reusable
     }
 
     @Override
-    public <T> T incarnation()
-    {
-        return (T) this;
-    }
-
-    @Override
     public void clean()
     {
-        this.condition = new Condition();
+        this.conditionalStatement = new ConditionalStatement();
     }
 
 }

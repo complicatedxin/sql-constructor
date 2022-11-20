@@ -158,14 +158,14 @@
         BaseQuerySqlBuilderFactory mySqlQuery = MySQLBaseQuerySqlBuilderFactory.getInstance();
         BaseQuerySqlBuilder sqlBuilder = mySqlQuery.manu();
 ```
-###### 1.7.1 ReusableBaseQuerySqlBuilderFactory接口
+###### 1.7.1 CacheableBaseQuerySqlBuilderFactory接口
 
 > 目的：创建可重用的BaseQuerySqlBuilder
 
-`MySQLBaseQuerySqlBuilder`实现了Reusable接口，以及Attachable接口，与线程绑定以达到可重用，减少构建的开销。
+`MySQLBaseQuerySqlBuilder`实现了Cacheable接口，以及Bindable接口，与线程绑定以达到可重用，减少构建的开销。
 
 ```java
-        ReusableBaseQuerySqlBuilderFactory mySqlQuery = MySQLBaseQuerySqlBuilderFactory.getInstance();
+        CacheableBaseQuerySqlBuilderFactory mySqlQuery = MySQLBaseQuerySqlBuilderFactory.getInstance();
         BaseQuerySqlBuilder sqlBuilder = mySqlQuery.obtain();
 ```
 

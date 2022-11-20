@@ -21,7 +21,7 @@ import com.zincyanide.sqlconstructor.internal.*;
 import java.io.Serializable;
 import java.util.*;
 
-public class BaseQuerySqlBuilder implements Serializable, Attachable, Reusable
+public class BaseQuerySqlBuilder implements Serializable, Bindable, Cacheable
 {
     private final Map<Class<? extends BuilderMinion>, BuilderMinion> minions = new HashMap<>();
 
@@ -30,18 +30,18 @@ public class BaseQuerySqlBuilder implements Serializable, Attachable, Reusable
         summon();
     }
 
-    private void summon()
+    protected void summon()
     {
-        minions.put(Select.class, new Select(this));
+        minions.put(Select.class, new Select.Chain(this));
         minions.put(From.class, new From(this));
         minions.put(Join.class, new Join(this));
         minions.put(Where.class, new Where(this));
     }
 
     @Override
-    public void attach()
+    public void bind()
     {
-        Attachable.THREAD_ATTACHMENT.set(this);
+        Bindable.THREAD_BIND.set(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -78,13 +78,14 @@ public class BaseQuerySqlBuilder implements Serializable, Attachable, Reusable
     private void buildupFrom(StringBuilder sb)
     {
         From from = getMinion(From.class);
-        sb.append(Select.FROM);
-        if (from.subSql != null)
-            sb.append(from.subSql);
-        else
-            sb.append(from.tab);
-        sb.append(Symbol.WHITESPACE)
-            .append(from.alias).append(Symbol.WHITESPACE);
+        AliasField<?> af = from.subSqlField;
+        if (af == null)
+            af = from.tableField;
+        sb.append(Select.FROM)
+                .append(af.getField())
+                .append(Symbol.WHITESPACE)
+                .append(af.getAlias())
+                .append(Symbol.WHITESPACE);
     }
 
     private void buildupJoin(StringBuilder sb)
@@ -97,41 +98,53 @@ public class BaseQuerySqlBuilder implements Serializable, Attachable, Reusable
             sb.append((to=tos.get(i)).manner)
                 .append(to.tab).append(Symbol.WHITESPACE)
                 .append(to.alias).append(Symbol.WHITESPACE)
-                .append(Join.ON).append(ons.get(i).condition.getConditions()).append(Symbol.WHITESPACE);
+                .append(Join.ON).append(ons.get(i).conditionalStatement.get()).append(Symbol.WHITESPACE);
     }
 
     private void buildupWhere(StringBuilder sb)
     {
         Where where = getMinion(Where.class);
-        String conditions = where.condition.getConditions();
+        String conditions = where.conditionalStatement.get();
         if(!StringUtil.isEmpty(conditions))
             sb.append(From.WHERE).append(conditions);
     }
 
     private static final String SELECT = "SELECT ";
 
+    public Select.Chain select(String column)
+    {
+        Select select = getMinion(Select.class);
+        select.setMode(Select.Mode.DEFAULT);
+        select.addCol(column);
+        return (Select.Chain) select;
+    }
+
     public Select select(String... columns)
     {
-        Objects.requireNonNull(columns);
-
         return select(Select.Mode.DEFAULT, Arrays.asList(columns));
+    }
+
+    public Select.Chain selectDistinct(String column)
+    {
+        Select select = getMinion(Select.class);
+        select.setMode(Select.Mode.DEFAULT);
+        select.addCol(column);
+        return (Select.Chain) select;
     }
 
     public Select selectDistinct(String... columns)
     {
-        Objects.requireNonNull(columns);
-
         return select(Select.Mode.DISTINCT, Arrays.asList(columns));
     }
 
-    public Select selectAllCols()
+    public Select selectAll()
     {
         return select("*");
     }
 
     public Select selectCount()
     {
-        return select("count(1)");
+        return selectCount("1");
     }
 
     public Select selectCount(String in)
@@ -141,12 +154,9 @@ public class BaseQuerySqlBuilder implements Serializable, Attachable, Reusable
 
     private Select select(String mode, List<String> cols)
     {
-        cols.forEach(StringUtil::requireNonWhite);
-
         Select select = getMinion(Select.class);
-        select.mode = mode;
-        select.cols = cols;
-
+        select.setMode(mode);
+        cols.forEach(select::addCol);
         return select;
     }
 

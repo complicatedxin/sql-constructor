@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.dml.query.builder;
+package com.zincyanide.sqlconstructor.internal;
 
-/**
- *  Determine data range.
- *  Such as join and/or where
- */
-public interface DataIndex
+public interface Bindable
 {
-    Join innerJoin(String table, String alias);
-    Join leftJoin(String table, String alias);
-    Join rightJoin(String table, String alias);
+    ThreadLocal<? super Bindable> THREAD_BIND = new ThreadLocal<>();
 
-    Where where(String condition);
+    void bind();
+
+    default void unbind()
+    {
+        THREAD_BIND.remove();
+    }
+
 }

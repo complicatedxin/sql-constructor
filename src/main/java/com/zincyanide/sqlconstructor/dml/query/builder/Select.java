@@ -16,24 +16,58 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.internal.Reusable;
+import com.zincyanide.sqlconstructor.internal.AliasField;
+import com.zincyanide.sqlconstructor.internal.Cacheable;
 import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
-
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Select extends BuilderMinion implements Reusable
+public class Select extends BuilderMinion implements Cacheable
 {
     static final String FROM = "FROM ";
 
-    String mode = Mode.DEFAULT;
+    String mode;
 
-    List<String> cols;
+    List<AliasField<String>> cols = new LinkedList<>();
+
 
     public Select(BaseQuerySqlBuilder builder)
     {
         super(builder);
+    }
+
+
+    public Select.Chain select(String column)
+    {
+        this.setMode(Select.Mode.DEFAULT);
+        this.addCol(column);
+        return (Chain) this;
+    }
+
+    public Select select(String... columns)
+    {
+        return select(Select.Mode.DEFAULT, Arrays.asList(columns));
+    }
+
+    public Select.Chain selectDistinct(String column)
+    {
+        this.setMode(Select.Mode.DEFAULT);
+        this.addCol(column);
+        return (Chain) this;
+    }
+
+    public Select selectDistinct(String... columns)
+    {
+        return select(Select.Mode.DISTINCT, Arrays.asList(columns));
+    }
+
+    private Select select(String mode, List<String> cols)
+    {
+        this.setMode(mode);
+        cols.forEach(this::addCol);
+        return this;
     }
 
     public From from(String table)
@@ -43,11 +77,8 @@ public class Select extends BuilderMinion implements Reusable
 
     public From from(String table, String alias)
     {
-        StringUtil.requireNonWhite(table);
-
         From from = chief.getMinion(From.class);
-        from.tab = table;
-        from.alias = alias;
+        from.setTable(table, alias);
 
         return from;
     }
@@ -57,10 +88,20 @@ public class Select extends BuilderMinion implements Reusable
         StringUtil.requireNonWhite(alias, "Derived table should have an alias !");
 
         From from = chief.getMinion(From.class);
-        from.subSql = querySql;
-        from.alias = alias;
+        from.setSubSql(querySql, alias);
 
         return from;
+    }
+
+    void setMode(String mode)
+    {
+        if(this.mode == null)
+            this.mode = mode;
+    }
+
+    void addCol(String col)
+    {
+        cols.add(new AliasField<>(col));
     }
 
     @Override
@@ -74,4 +115,21 @@ public class Select extends BuilderMinion implements Reusable
         String DEFAULT     =   "";
         String DISTINCT    =   "DISTINCT ";
     }
+
+    public static class Chain extends Select
+    {
+        public Chain(BaseQuerySqlBuilder builder)
+        {
+            super(builder);
+        }
+
+        public Select as(String alias)
+        {
+            AliasField af = cols.get(cols.size() - 1); // linked-list's optimized
+            af.setAlias(alias);
+            return this;
+        }
+
+    }
+
 }

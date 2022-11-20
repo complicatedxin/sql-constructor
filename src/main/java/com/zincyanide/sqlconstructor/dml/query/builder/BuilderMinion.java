@@ -27,4 +27,9 @@ public abstract class BuilderMinion implements Serializable
         this.chief = chief;
     }
 
+    protected BaseQuerySqlBuilder getChief()
+    {
+        return this.chief;
+    }
+
 }

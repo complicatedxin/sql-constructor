@@ -16,37 +16,48 @@
 
 package com.zincyanide.sqlconstructor.internal;
 
-import java.util.ArrayList;
-
-/**
- *  A THREAD-UNSAFE stack
- * @deprecated never use
- */
-@Deprecated
-public class Stack<E>
+public class AliasField<F>
 {
-    private ArrayList<E> container = new ArrayList<>();
+    private F field;
 
-    private int top = -1;
+    private String alias;
 
-    public void push(E e)
+    public AliasField(F field)
     {
-        if(++top < container.size())
-            container.set(top, e);
-        container.add(top, e);
+        this(field, "");
+    }
+    public AliasField(F field, String alias)
+    {
+        this.field = field;
+        this.alias = alias;
     }
 
-    public E pop()
+    public F getField()
     {
-        if(top > -1)
-            return container.get(top--);
-        return null;
+        return field;
     }
 
-    public boolean isEmpty()
+    public void setField(F field)
     {
-        return top < 0;
+        this.field = field;
     }
 
+    public String getAlias()
+    {
+        return alias;
+    }
 
+    public void setAlias(String alias)
+    {
+        this.alias = alias;
+    }
+
+    @Override
+    public String toString()
+    {
+        if(alias == null || "".equals(alias))
+            return field.toString();
+        else
+            return field + " AS " + alias;
+    }
 }

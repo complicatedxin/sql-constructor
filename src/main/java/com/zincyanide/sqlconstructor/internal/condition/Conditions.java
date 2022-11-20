@@ -18,24 +18,24 @@ package com.zincyanide.sqlconstructor.internal.condition;
 
 public class Conditions
 {
-    private PredicateNode root;
+    private ConditionNode root;
 
-    public Conditions(PredicateNode root)
+    public Conditions(ConditionNode root)
     {
         this.root = root;
     }
 
     public static Conditions first(String condition)
     {
-        return new Conditions(new PredicateNode(condition));
+        return new Conditions(new ConditionNode(condition));
     }
 
     public Conditions and(String condition)
     {
-        return and(new PredicateNode(condition));
+        return and(new ConditionNode(condition));
     }
 
-    public Conditions and(PredicateNode predicate)
+    public Conditions and(ConditionNode predicate)
     {
         root = root.add(predicate, false);
         return this;
@@ -43,16 +43,16 @@ public class Conditions
 
     public Conditions or(String condition)
     {
-        return or(new PredicateNode(condition));
+        return or(new ConditionNode(condition));
     }
 
-    public Conditions or(PredicateNode predicate)
+    public Conditions or(ConditionNode predicate)
     {
         root = root.add(predicate, true);
         return this;
     }
 
-    public PredicateNode finish()
+    public ConditionNode finish()
     {
         return root;
     }
