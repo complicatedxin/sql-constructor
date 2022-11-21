@@ -74,14 +74,14 @@ public class Criteria
      * @param col2 another columnName
      * @return [col1] = [col2]
      */
-    public static String EQ_JOINT(String col1, String col2, Function<String, Boolean> colValid)
+    public static String JOINT_EQ(String col1, String col2, Function<String, Boolean> colValid)
     {
         if(!colValid.apply(col1) || !colValid.apply(col2))
             return null;
         return executor.equalJoint(col1, col2);
     }
 
-    public static String UNEQ_JOINT(String col1, String col2, Function<String, Boolean> colValid)
+    public static String JOINT_UNEQ(String col1, String col2, Function<String, Boolean> colValid)
     {
         if(!colValid.apply(col1) || !colValid.apply(col2))
             return null;
@@ -102,14 +102,14 @@ public class Criteria
         return executor.lessThan(column, val);
     }
 
-    public static String LE_JOINT(String col1, String col2, Function<String, Boolean> colValid)
+    public static String JOINT_LE(String col1, String col2, Function<String, Boolean> colValid)
     {
         if(!colValid.apply(col1) || !colValid.apply(col2))
             return null;
         return executor.lessEqualJoint(col1, col2);
     }
 
-    public static String LT_JOINT(String col1, String col2, Function<String, Boolean> colValid)
+    public static String JOINT_LT(String col1, String col2, Function<String, Boolean> colValid)
     {
         if(!colValid.apply(col1) || !colValid.apply(col2))
             return null;
@@ -130,14 +130,14 @@ public class Criteria
         return executor.greaterThan(column, val);
     }
 
-    public static String GE_JOINT(String col1, String col2, Function<String, Boolean> colValid)
+    public static String JOINT_GE(String col1, String col2, Function<String, Boolean> colValid)
     {
         if(!colValid.apply(col1) || !colValid.apply(col2))
             return null;
         return executor.greaterEqualJoint(col1, col2);
     }
 
-    public static String GT_JOINT(String col1, String col2, Function<String, Boolean> colValid)
+    public static String JOINT_GT(String col1, String col2, Function<String, Boolean> colValid)
     {
         if(!colValid.apply(col1) || !colValid.apply(col2))
             return null;

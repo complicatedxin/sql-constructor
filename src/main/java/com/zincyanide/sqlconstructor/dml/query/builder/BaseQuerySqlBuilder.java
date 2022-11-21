@@ -29,12 +29,11 @@ public class BaseQuerySqlBuilder
         StringBuilder sb = new StringBuilder();
 
         buildupSelect(sb);
-
-        buildupFrom(sb);
-
-        buildupJoin(sb);
-
-        buildupWhere(sb);
+        if(buildupFrom(sb))
+        {
+            buildupJoin(sb);
+            buildupWhere(sb);
+        }
 
         return new BaseQuerySql(sb.toString());
     }
@@ -49,17 +48,20 @@ public class BaseQuerySqlBuilder
                     null, null));
     }
 
-    private void buildupFrom(StringBuilder sb)
+    private boolean buildupFrom(StringBuilder sb)
     {
         QueryFrom queryFrom = getMinion(QueryFrom.class);
         AliasField<?> af = queryFrom.subSqlField;
         if (af == null)
             af = queryFrom.getTableField();
+        if (af == null)
+            return false;
         sb.append(Select.FROM)
                 .append(af.getField())
                 .append(Symbol.WHITESPACE)
                 .append(af.getAlias())
                 .append(Symbol.WHITESPACE);
+        return true;
     }
 
     private void buildupJoin(StringBuilder sb)
@@ -85,6 +87,11 @@ public class BaseQuerySqlBuilder
     }
 
     private static final String SELECT = "SELECT ";
+
+    public Select.Chain select(Select.StringValue col)
+    {
+        return select(col.toString());
+    }
 
     public Select.Chain select(String column)
     {
@@ -135,7 +142,7 @@ public class BaseQuerySqlBuilder
         return select;
     }
 
-
+    @Override
     protected void summon()
     {
         minions.put(Select.class, new Select.Chain(this));

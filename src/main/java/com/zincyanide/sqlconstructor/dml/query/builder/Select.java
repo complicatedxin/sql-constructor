@@ -40,6 +40,16 @@ public class Select extends BuilderMinion implements Cacheable
     }
 
 
+    public QuerySql build()
+    {
+        return ((BaseQuerySqlBuilder) getChief()).build();
+    }
+
+    public Select.Chain select(StringValue col)
+    {
+        return select(col.toString());
+    }
+
     public Select.Chain select(String column)
     {
         this.setMode(Select.Mode.DEFAULT);
@@ -105,6 +115,12 @@ public class Select extends BuilderMinion implements Cacheable
         cols.add(new AliasField<>(col));
     }
 
+    void addCol(StringValue col)
+    {
+        cols.add(new AliasField<>(col.toString()));
+    }
+
+
     @Override
     public void clear()
     {
@@ -131,6 +147,22 @@ public class Select extends BuilderMinion implements Cacheable
             return this;
         }
 
+    }
+
+    public static class StringValue
+    {
+        String val;
+
+        public StringValue(String val)
+        {
+            this.val = val;
+        }
+
+        @Override
+        public String toString()
+        {
+            return "'" + val + "'";
+        }
     }
 
 }

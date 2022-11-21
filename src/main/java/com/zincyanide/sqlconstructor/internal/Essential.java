@@ -116,31 +116,31 @@ public class Essential
 
     public static String JOINT_EQ(String col1, String col2)
     {
-        return Criteria.EQ_JOINT(col1, col2, validator::validateColumn);
+        return Criteria.JOINT_EQ(col1, col2, validator::validateColumn);
     }
 
     public static String JOINT_UNEQ(String col1, String col2)
     {
-        return Criteria.UNEQ_JOINT(col1, col2, validator::validateColumn);
+        return Criteria.JOINT_UNEQ(col1, col2, validator::validateColumn);
     }
 
     public static String JOINT_LE(String col1, String col2)
     {
-        return Criteria.LE_JOINT(col1, col2, validator::validateColumn);
+        return Criteria.JOINT_LE(col1, col2, validator::validateColumn);
     }
 
     public static String JOINT_LT(String col1, String col2)
     {
-        return Criteria.LT_JOINT(col1, col2, validator::validateColumn);
+        return Criteria.JOINT_LT(col1, col2, validator::validateColumn);
     }
 
     public static String JOINT_GE(String col1, String col2)
     {
-        return Criteria.GE_JOINT(col1, col2, validator::validateColumn);
+        return Criteria.JOINT_GE(col1, col2, validator::validateColumn);
     }
 
     public static String JOINT_GT(String col1, String col2)
     {
-        return Criteria.GT_JOINT(col1, col2, validator::validateColumn);
+        return Criteria.JOINT_GT(col1, col2, validator::validateColumn);
     }
 }

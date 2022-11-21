@@ -16,7 +16,7 @@ public class From extends BuilderMinion implements Cacheable
 
     public Where where(ConditionNode node)
     {
-        Where where = getChief().getMinion(Where.class);
+        Where where = getFellow(Where.class);
         where.and(node);
         return where;
     }
