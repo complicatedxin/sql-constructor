@@ -142,7 +142,7 @@ public class Select extends BuilderMinion implements Cacheable
 
         public Select as(String alias)
         {
-            AliasField af = cols.get(cols.size() - 1); // linked-list's optimized
+            AliasField<?> af = cols.get(cols.size() - 1); // linked-list's optimized
             af.setAlias(alias);
             return this;
         }

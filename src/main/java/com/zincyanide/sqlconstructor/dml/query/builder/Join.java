@@ -61,11 +61,11 @@ public class Join extends BuilderMinion implements Cacheable
         this.ons = new LinkedList<>();
     }
 
-    class To
+    static class To
     {
         String manner;
         String tab;
-        String alias = "";
+        String alias;
 
         public To(String manner, String tab, String alias)
         {

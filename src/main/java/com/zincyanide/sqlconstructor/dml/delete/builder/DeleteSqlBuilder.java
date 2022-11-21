@@ -78,7 +78,13 @@ public class DeleteSqlBuilder
     @Override
     public void bind()
     {
-        Bindable.THREAD_BIND.set(this);
+        Bindable.DELETE_BUILDER.set(this);
+    }
+
+    @Override
+    public void unbind()
+    {
+        Bindable.DELETE_BUILDER.remove();
     }
 
     @Override

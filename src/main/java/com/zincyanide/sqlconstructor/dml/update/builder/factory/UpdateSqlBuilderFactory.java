@@ -14,41 +14,41 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.dml.query.builder.factory;
+package com.zincyanide.sqlconstructor.dml.update.builder.factory;
 
+import com.zincyanide.sqlconstructor.dml.update.builder.UpdateSqlBuilder;
 import com.zincyanide.sqlconstructor.factory.ReusableSqlBuilderFactory;
 import com.zincyanide.sqlconstructor.internal.Bindable;
-import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
 import java.util.Objects;
 
-public class BaseQuerySqlBuilderFactory implements ReusableSqlBuilderFactory<BaseQuerySqlBuilder>
+public class UpdateSqlBuilderFactory implements ReusableSqlBuilderFactory<UpdateSqlBuilder>
 {
-    private static volatile BaseQuerySqlBuilderFactory factory;
+    private static volatile UpdateSqlBuilderFactory factory;
 
-    private BaseQuerySqlBuilderFactory()
+    private UpdateSqlBuilderFactory()
     {   }
 
-    public static BaseQuerySqlBuilderFactory getInstance()
+    public static UpdateSqlBuilderFactory getInstance()
     {
         if(factory == null)
-            synchronized (BaseQuerySqlBuilderFactory.class)
+            synchronized (UpdateSqlBuilderFactory.class)
             {
                 if(factory == null)
-                    factory = new BaseQuerySqlBuilderFactory();
+                    factory = new UpdateSqlBuilderFactory();
             }
         return factory;
     }
 
     @Override
-    public BaseQuerySqlBuilder manu()
+    public UpdateSqlBuilder manu()
     {
-        return new BaseQuerySqlBuilder();
+        return new UpdateSqlBuilder();
     }
 
     @Override
-    public BaseQuerySqlBuilder manu(boolean fresh)
+    public UpdateSqlBuilder manu(boolean fresh)
     {
-        BaseQuerySqlBuilder sqlBuilder = (BaseQuerySqlBuilder) Bindable.QUERY_BUILDER.get();
+        UpdateSqlBuilder sqlBuilder = (UpdateSqlBuilder) Bindable.UPDATE_BUILDER.get();
         if(sqlBuilder == null)
         {
             sqlBuilder = manu();
@@ -61,8 +61,9 @@ public class BaseQuerySqlBuilderFactory implements ReusableSqlBuilderFactory<Bas
     }
 
     @Override
-    public BaseQuerySqlBuilder obtain()
+    public UpdateSqlBuilder obtain()
     {
-        return (BaseQuerySqlBuilder) Objects.requireNonNull(Bindable.QUERY_BUILDER.get());
+        return (UpdateSqlBuilder) Objects.requireNonNull(Bindable.UPDATE_BUILDER.get());
     }
+
 }

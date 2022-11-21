@@ -14,24 +14,11 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.internal;
+package com.zincyanide.sqlconstructor.factory;
 
-public interface Bindable
+import com.zincyanide.sqlconstructor.internal.SqlBuilder;
+
+public interface SqlBuilderFactory<B extends SqlBuilder>
 {
-    ThreadLocal<? super Bindable> QUERY_BUILDER = new InheritableThreadLocal<>();
-
-    ThreadLocal<? super Bindable> UPDATE_BUILDER = new InheritableThreadLocal<>();
-
-    ThreadLocal<? super Bindable> DELETE_BUILDER = new InheritableThreadLocal<>();
-
-    void bind();
-
-    void unbind();
-
-    static void unbindAll()
-    {
-        QUERY_BUILDER.remove();
-        UPDATE_BUILDER.remove();
-        DELETE_BUILDER.remove();
-    }
+    B manu();
 }

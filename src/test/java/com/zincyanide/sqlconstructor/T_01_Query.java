@@ -4,8 +4,8 @@ import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
 import com.zincyanide.sqlconstructor.internal.Where;
-import com.zincyanide.sqlconstructor.dml.query.builder.factory.MySQLBaseQuerySqlBuilderFactory;
-import com.zincyanide.sqlconstructor.dml.query.builder.factory.CacheableBaseQuerySqlBuilderFactory;
+import com.zincyanide.sqlconstructor.dml.query.builder.factory.BaseQuerySqlBuilderFactory;
+import com.zincyanide.sqlconstructor.factory.ReusableSqlBuilderFactory;
 import com.zincyanide.sqlconstructor.internal.condition.Conditions;
 import com.zincyanide.sqlconstructor.internal.Criteria;
 import com.zincyanide.sqlconstructor.internal.Omissibl;
@@ -184,9 +184,9 @@ public class T_01_Query
     @Test
     public void t_08_baseQuerySqlBuilderFactory()
     {
-        CacheableBaseQuerySqlBuilderFactory mySqlQuery = MySQLBaseQuerySqlBuilderFactory.getInstance();
+        BaseQuerySqlBuilderFactory queryFactory = BaseQuerySqlBuilderFactory.getInstance();
 
-        String sql = mySqlQuery.manu()
+        String sql = queryFactory.manu()
                 .select("*")
                 .from("emp")
                 .where(Conditions
@@ -197,7 +197,7 @@ public class T_01_Query
                 .build().getSql();
         System.out.println(sql);
 
-        String sql1 = mySqlQuery.obtain().build().getSql();
+        String sql1 = queryFactory.obtain().build().getSql();
         System.out.println(sql1);
 
         String limit;
@@ -206,11 +206,11 @@ public class T_01_Query
         while (page <= 10)
         {
             int offset = (page++ - 1) * size;
-            limit = new LimitSql(mySqlQuery.obtain().build(), offset, size).getSql();
+            limit = new LimitSql(queryFactory.obtain().build(), offset, size).getSql();
             System.out.println(limit);
         }
 
-        String newWhere = mySqlQuery.obtain().clearWhere().where(Where.ANYWHERE).build().getSql();
+        String newWhere = queryFactory.obtain().clearWhere().where(Where.ANYWHERE).build().getSql();
         System.out.println(newWhere);
 
     }

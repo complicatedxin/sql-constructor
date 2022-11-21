@@ -16,13 +16,15 @@
 
 package com.zincyanide.sqlconstructor.dml.query;
 
+import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
+
 /**
  *  A base query sql in this project
  *  is defined as a sql only including
  *  select, from, join and/or where statement.
  *
  *  To build a BaseQuerySql, a builder is recommended.
- * @see com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder
+ *  @see BaseQuerySqlBuilder
  */
 public class BaseQuerySql extends QuerySql
 {

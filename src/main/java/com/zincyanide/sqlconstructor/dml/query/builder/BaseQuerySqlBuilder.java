@@ -21,7 +21,7 @@ import com.zincyanide.sqlconstructor.internal.*;
 import java.util.*;
 
 public class BaseQuerySqlBuilder
-        extends SqlBuilder
+        extends com.zincyanide.sqlconstructor.internal.SqlBuilder
         implements Bindable, Cacheable
 {
     public BaseQuerySql build()
@@ -154,7 +154,13 @@ public class BaseQuerySqlBuilder
     @Override
     public void bind()
     {
-        Bindable.THREAD_BIND.set(this);
+        Bindable.QUERY_BUILDER.set(this);
+    }
+
+    @Override
+    public void unbind()
+    {
+        Bindable.QUERY_BUILDER.remove();
     }
 
     @Override

@@ -6,7 +6,7 @@
 
     <groupId>com.zincyanide</groupId>
     <artifactId>sql-constructor</artifactId>
-    <version>0.2.3-SNAPSHOT</version>
+    <version>0.2.4-SNAPSHOT</version>
 
     <name>sql-constructor</name>
 

@@ -14,41 +14,41 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.dml.query.builder.factory;
+package com.zincyanide.sqlconstructor.dml.delete.builder.factory;
 
+import com.zincyanide.sqlconstructor.dml.delete.builder.DeleteSqlBuilder;
 import com.zincyanide.sqlconstructor.factory.ReusableSqlBuilderFactory;
 import com.zincyanide.sqlconstructor.internal.Bindable;
-import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
 import java.util.Objects;
 
-public class BaseQuerySqlBuilderFactory implements ReusableSqlBuilderFactory<BaseQuerySqlBuilder>
+public class DeleteSqlBuilderFactory implements ReusableSqlBuilderFactory<DeleteSqlBuilder>
 {
-    private static volatile BaseQuerySqlBuilderFactory factory;
+    private static volatile DeleteSqlBuilderFactory factory;
 
-    private BaseQuerySqlBuilderFactory()
+    private DeleteSqlBuilderFactory()
     {   }
 
-    public static BaseQuerySqlBuilderFactory getInstance()
+    public static DeleteSqlBuilderFactory getInstance()
     {
         if(factory == null)
-            synchronized (BaseQuerySqlBuilderFactory.class)
+            synchronized (DeleteSqlBuilderFactory.class)
             {
                 if(factory == null)
-                    factory = new BaseQuerySqlBuilderFactory();
+                    factory = new DeleteSqlBuilderFactory();
             }
         return factory;
     }
 
     @Override
-    public BaseQuerySqlBuilder manu()
+    public DeleteSqlBuilder manu()
     {
-        return new BaseQuerySqlBuilder();
+        return new DeleteSqlBuilder();
     }
 
     @Override
-    public BaseQuerySqlBuilder manu(boolean fresh)
+    public DeleteSqlBuilder manu(boolean fresh)
     {
-        BaseQuerySqlBuilder sqlBuilder = (BaseQuerySqlBuilder) Bindable.QUERY_BUILDER.get();
+        DeleteSqlBuilder sqlBuilder = (DeleteSqlBuilder) Bindable.DELETE_BUILDER.get();
         if(sqlBuilder == null)
         {
             sqlBuilder = manu();
@@ -61,8 +61,9 @@ public class BaseQuerySqlBuilderFactory implements ReusableSqlBuilderFactory<Bas
     }
 
     @Override
-    public BaseQuerySqlBuilder obtain()
+    public DeleteSqlBuilder obtain()
     {
-        return (BaseQuerySqlBuilder) Objects.requireNonNull(Bindable.QUERY_BUILDER.get());
+        return (DeleteSqlBuilder) Objects.requireNonNull(Bindable.DELETE_BUILDER.get());
     }
+
 }

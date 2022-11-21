@@ -96,7 +96,13 @@ public class UpdateSqlBuilder
     @Override
     public void bind()
     {
-        THREAD_BIND.set(this);
+        Bindable.UPDATE_BUILDER.set(this);
+    }
+
+    @Override
+    public void unbind()
+    {
+        Bindable.UPDATE_BUILDER.remove();
     }
 
     @Override
