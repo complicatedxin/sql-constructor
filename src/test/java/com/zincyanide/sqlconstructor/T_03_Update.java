@@ -9,7 +9,6 @@ import com.zincyanide.sqlconstructor.dml.update.builder.UpdateSqlBuilder;
 import com.zincyanide.sqlconstructor.internal.Essential;
 import com.zincyanide.sqlconstructor.internal.Joint;
 import org.junit.Test;
-
 import java.util.Date;
 
 public class T_03_Update

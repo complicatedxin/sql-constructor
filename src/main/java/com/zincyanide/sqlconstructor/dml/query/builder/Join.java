@@ -18,7 +18,6 @@ package com.zincyanide.sqlconstructor.dml.query.builder;
 
 import com.zincyanide.sqlconstructor.internal.BuilderMinion;
 import com.zincyanide.sqlconstructor.internal.Cacheable;
-import com.zincyanide.sqlconstructor.internal.From;
 import com.zincyanide.sqlconstructor.internal.condition.ConditionNode;
 import java.util.LinkedList;
 import java.util.List;
