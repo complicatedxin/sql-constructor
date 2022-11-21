@@ -17,6 +17,7 @@
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
+import com.zincyanide.sqlconstructor.internal.Where;
 import com.zincyanide.sqlconstructor.internal.condition.ConditionalStatement;
 import com.zincyanide.sqlconstructor.internal.condition.ConditionNode;
 
@@ -24,9 +25,9 @@ public class On
 {
     ConditionalStatement conditionalStatement = new ConditionalStatement();
 
-    private From recall;
+    private QueryFrom recall;
 
-    public On(From recall)
+    public On(QueryFrom recall)
     {
         this.recall = recall;
     }

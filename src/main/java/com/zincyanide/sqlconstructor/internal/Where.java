@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.dml.query.builder;
+package com.zincyanide.sqlconstructor.internal;
 
-import com.zincyanide.sqlconstructor.internal.Cacheable;
-import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
+import com.zincyanide.sqlconstructor.SqlConstructor;
 import com.zincyanide.sqlconstructor.internal.condition.ConditionalStatement;
 import com.zincyanide.sqlconstructor.internal.condition.ConditionNode;
 
@@ -28,9 +27,9 @@ public class Where extends BuilderMinion implements Cacheable
 
     ConditionalStatement conditionalStatement = new ConditionalStatement();
 
-    public Where(BaseQuerySqlBuilder builder)
+    public Where(SqlBuilder chief)
     {
-        super(builder);
+        super(chief);
     }
 
     public Where and(String condition)
@@ -55,15 +54,19 @@ public class Where extends BuilderMinion implements Cacheable
         return this;
     }
 
-    public BaseQuerySql build()
+    public SqlConstructor build()
     {
-        return chief.build();
+        return getChief().build();
     }
 
     @Override
-    public void clean()
+    public void clear()
     {
         this.conditionalStatement = new ConditionalStatement();
     }
 
+    public ConditionalStatement getConditionalStatement()
+    {
+        return conditionalStatement;
+    }
 }

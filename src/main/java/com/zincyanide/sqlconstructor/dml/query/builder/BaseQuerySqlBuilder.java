@@ -18,38 +18,12 @@ package com.zincyanide.sqlconstructor.dml.query.builder;
 
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.internal.*;
-import java.io.Serializable;
 import java.util.*;
 
-public class BaseQuerySqlBuilder implements Serializable, Bindable, Cacheable
+public class BaseQuerySqlBuilder
+        extends SqlBuilder
+        implements Bindable, Cacheable
 {
-    private final Map<Class<? extends BuilderMinion>, BuilderMinion> minions = new HashMap<>();
-
-    public BaseQuerySqlBuilder()
-    {
-        summon();
-    }
-
-    protected void summon()
-    {
-        minions.put(Select.class, new Select.Chain(this));
-        minions.put(From.class, new From(this));
-        minions.put(Join.class, new Join(this));
-        minions.put(Where.class, new Where(this));
-    }
-
-    @Override
-    public void bind()
-    {
-        Bindable.THREAD_BIND.set(this);
-    }
-
-    @SuppressWarnings("unchecked")
-    <T extends BuilderMinion> T getMinion(Class<T> clazz)
-    {
-        return (T) minions.get(clazz);
-    }
-
     public BaseQuerySql build()
     {
         StringBuilder sb = new StringBuilder();
@@ -77,10 +51,10 @@ public class BaseQuerySqlBuilder implements Serializable, Bindable, Cacheable
 
     private void buildupFrom(StringBuilder sb)
     {
-        From from = getMinion(From.class);
-        AliasField<?> af = from.subSqlField;
+        QueryFrom queryFrom = getMinion(QueryFrom.class);
+        AliasField<?> af = queryFrom.subSqlField;
         if (af == null)
-            af = from.tableField;
+            af = queryFrom.getTableField();
         sb.append(Select.FROM)
                 .append(af.getField())
                 .append(Symbol.WHITESPACE)
@@ -96,15 +70,16 @@ public class BaseQuerySqlBuilder implements Serializable, Bindable, Cacheable
         Join.To to;
         for (int i = 0; i < tos.size(); i++)
             sb.append((to=tos.get(i)).manner)
-                .append(to.tab).append(Symbol.WHITESPACE)
-                .append(to.alias).append(Symbol.WHITESPACE)
-                .append(Join.ON).append(ons.get(i).conditionalStatement.get()).append(Symbol.WHITESPACE);
+                    .append(to.tab).append(Symbol.WHITESPACE)
+                    .append(to.alias).append(Symbol.WHITESPACE)
+                    .append(Join.ON)
+                    .append(ons.get(i).conditionalStatement.get()).append(Symbol.WHITESPACE);
     }
 
     private void buildupWhere(StringBuilder sb)
     {
         Where where = getMinion(Where.class);
-        String conditions = where.conditionalStatement.get();
+        String conditions = where.getConditionalStatement().get();
         if(!StringUtil.isEmpty(conditions))
             sb.append(From.WHERE).append(conditions);
     }
@@ -161,41 +136,51 @@ public class BaseQuerySqlBuilder implements Serializable, Bindable, Cacheable
     }
 
 
-
-
-    //TODO:  sum(), case when, ...
-
-    @Override
-    public void clean()
+    protected void summon()
     {
-        cleanSelect();
-        cleanFrom();
-        cleanJoin();
-        cleanWhere();
+        minions.put(Select.class, new Select.Chain(this));
+        minions.put(QueryFrom.class, new QueryFrom(this));
+        minions.put(Join.class, new Join(this));
+        minions.put(Where.class, new Where(this));
     }
 
-    public BaseQuerySqlBuilder cleanSelect()
+    @Override
+    public void bind()
     {
-        getMinion(Select.class).clean();
+        Bindable.THREAD_BIND.set(this);
+    }
+
+    @Override
+    public void clear()
+    {
+        clearSelect();
+        clearFrom();
+        clearJoin();
+        clearWhere();
+    }
+
+    public BaseQuerySqlBuilder clearSelect()
+    {
+        getMinion(Select.class).clear();
         return this;
     }
 
-    public Select cleanFrom()
+    public Select clearFrom()
     {
-        getMinion(From.class).clean();
+        getMinion(QueryFrom.class).clear();
         return getMinion(Select.class);
     }
 
-    public From cleanJoin()
+    public QueryFrom clearJoin()
     {
-        getMinion(Join.class).clean();
-        return getMinion(From.class);
+        getMinion(Join.class).clear();
+        return getMinion(QueryFrom.class);
     }
 
-    public From cleanWhere()
+    public QueryFrom clearWhere()
     {
-        getMinion(Where.class).clean();
-        return getMinion(From.class);
+        getMinion(Where.class).clear();
+        return getMinion(QueryFrom.class);
     }
 
 

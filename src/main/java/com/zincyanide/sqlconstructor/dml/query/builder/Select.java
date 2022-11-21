@@ -17,6 +17,7 @@
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
 import com.zincyanide.sqlconstructor.internal.AliasField;
+import com.zincyanide.sqlconstructor.internal.BuilderMinion;
 import com.zincyanide.sqlconstructor.internal.Cacheable;
 import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.internal.StringUtil;
@@ -70,27 +71,27 @@ public class Select extends BuilderMinion implements Cacheable
         return this;
     }
 
-    public From from(String table)
+    public QueryFrom from(String table)
     {
         return from(table, "");
     }
 
-    public From from(String table, String alias)
+    public QueryFrom from(String table, String alias)
     {
-        From from = chief.getMinion(From.class);
-        from.setTable(table, alias);
+        QueryFrom queryFrom = getFellow(QueryFrom.class);
+        queryFrom.setTable(table, alias);
 
-        return from;
+        return queryFrom;
     }
 
-    public From from(QuerySql querySql, String alias)
+    public QueryFrom from(QuerySql querySql, String alias)
     {
         StringUtil.requireNonWhite(alias, "Derived table should have an alias !");
 
-        From from = chief.getMinion(From.class);
-        from.setSubSql(querySql, alias);
+        QueryFrom queryFrom = getFellow(QueryFrom.class);
+        queryFrom.setSubSql(querySql, alias);
 
-        return from;
+        return queryFrom;
     }
 
     void setMode(String mode)
@@ -105,7 +106,7 @@ public class Select extends BuilderMinion implements Cacheable
     }
 
     @Override
-    public void clean()
+    public void clear()
     {
         this.cols = new LinkedList<>();
     }

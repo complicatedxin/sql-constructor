@@ -16,7 +16,9 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
+import com.zincyanide.sqlconstructor.internal.BuilderMinion;
 import com.zincyanide.sqlconstructor.internal.Cacheable;
+import com.zincyanide.sqlconstructor.internal.From;
 import com.zincyanide.sqlconstructor.internal.condition.ConditionNode;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,14 +49,14 @@ public class Join extends BuilderMinion implements Cacheable
 
     public On on(ConditionNode node)
     {
-        On on = new On(this.getChief().getMinion(From.class));
+        On on = new On(getFellow(QueryFrom.class));
         on.and(node);
         ons.add(on);
         return on;
     }
 
     @Override
-    public void clean()
+    public void clear()
     {
         this.tos = new LinkedList<>();
         this.ons = new LinkedList<>();

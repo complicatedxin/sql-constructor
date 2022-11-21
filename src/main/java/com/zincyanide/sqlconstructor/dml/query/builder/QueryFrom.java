@@ -16,42 +16,26 @@
 
 package com.zincyanide.sqlconstructor.dml.query.builder;
 
-import com.zincyanide.sqlconstructor.internal.AliasField;
-import com.zincyanide.sqlconstructor.internal.Cacheable;
+import com.zincyanide.sqlconstructor.internal.*;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.dml.query.QuerySql;
-import com.zincyanide.sqlconstructor.internal.condition.ConditionNode;
 
-public class From extends BuilderMinion implements Cacheable
+public class QueryFrom extends From
 {
-    static final String WHERE = "WHERE ";
     private static final String INNER = "INNER JOIN ";
     private static final String LEFT = "LEFT JOIN ";
     private static final String RIGHT = "RIGHT JOIN ";
 
-    AliasField<String> tableField;
     AliasField<QuerySql> subSqlField;
 
-    public From(BaseQuerySqlBuilder builder)
+    public QueryFrom(BaseQuerySqlBuilder builder)
     {
         super(builder);
     }
 
     public BaseQuerySql build()
     {
-        return chief.build();
-    }
-
-    public Where where(String condition)
-    {
-        return where(new ConditionNode(condition));
-    }
-
-    public Where where(ConditionNode node)
-    {
-        Where where = chief.getMinion(Where.class);
-        where.and(node);
-        return where;
+        return (BaseQuerySql) getChief().build();
     }
 
     public Join innerJoin(String table, String alias)
@@ -71,23 +55,13 @@ public class From extends BuilderMinion implements Cacheable
 
     protected Join join(String joinManner, String table, String alias)
     {
-        Join join = chief.getMinion(Join.class);
+        Join join = getFellow(Join.class);
         join.to(joinManner, table, alias);
 
         return join;
     }
 
-    void setTable(String table, String alias)
-    {
-        if(this.tableField == null)
-        {
-            this.tableField = new AliasField<>(table, alias);
-        }
-        this.tableField.setField(table);
-        this.tableField.setAlias(alias);
-    }
-
-    void setSubSql(QuerySql subSql, String alias)
+    public void setSubSql(QuerySql subSql, String alias)
     {
         if(this.subSqlField == null)
         {
@@ -97,10 +71,15 @@ public class From extends BuilderMinion implements Cacheable
         this.subSqlField.setAlias(alias);
     }
 
-    @Override
-    public void clean()
+    public AliasField<QuerySql> getSubSqlField()
     {
-        this.tableField = null;
+        return subSqlField;
+    }
+
+    @Override
+    public void clear()
+    {
+        super.clear();
         this.subSqlField = null;
     }
 }

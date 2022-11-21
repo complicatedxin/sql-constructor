@@ -18,6 +18,6 @@ package com.zincyanide.sqlconstructor.internal;
 
 public interface Cacheable
 {
-    void clean();
+    void clear();
 
 }

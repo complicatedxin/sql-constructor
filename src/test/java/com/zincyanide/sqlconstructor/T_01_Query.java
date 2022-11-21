@@ -3,7 +3,7 @@ package com.zincyanide.sqlconstructor;
 import com.zincyanide.sqlconstructor.dml.query.BaseQuerySql;
 import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.dml.query.builder.BaseQuerySqlBuilder;
-import com.zincyanide.sqlconstructor.dml.query.builder.Where;
+import com.zincyanide.sqlconstructor.internal.Where;
 import com.zincyanide.sqlconstructor.dml.query.builder.factory.MySQLBaseQuerySqlBuilderFactory;
 import com.zincyanide.sqlconstructor.dml.query.builder.factory.CacheableBaseQuerySqlBuilderFactory;
 import com.zincyanide.sqlconstructor.internal.condition.Conditions;
@@ -45,7 +45,7 @@ public class T_01_Query
     @Test
     public void t_02_builder()
     {
-        BaseQuerySql querySql = new BaseQuerySqlBuilder()
+        BaseQuerySql querySql = (BaseQuerySql) new BaseQuerySqlBuilder()
                 .select("et.ID", "et.CREATE_TIME", "et.TASK_TYPE")
                 .from("EMP_TASK", "et")
                     .innerJoin("EMP_INFO", "ei").on("et.eid = ei.eid")
@@ -55,6 +55,7 @@ public class T_01_Query
                     .and("XXX = xxx")
                     .or("YYY = yyy")
                 .build();
+
 
         System.out.println(querySql.getSql());
 
@@ -209,7 +210,7 @@ public class T_01_Query
             System.out.println(limit);
         }
 
-        String newWhere = mySqlQuery.obtain().cleanWhere().where(Where.ANYWHERE).build().getSql();
+        String newWhere = mySqlQuery.obtain().clearWhere().where(Where.ANYWHERE).build().getSql();
         System.out.println(newWhere);
 
     }

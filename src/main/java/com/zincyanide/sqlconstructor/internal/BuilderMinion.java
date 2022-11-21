@@ -14,22 +14,27 @@
  * limitations under the License.
  */
 
-package com.zincyanide.sqlconstructor.dml.query.builder;
+package com.zincyanide.sqlconstructor.internal;
 
 import java.io.Serializable;
 
 public abstract class BuilderMinion implements Serializable
 {
-    BaseQuerySqlBuilder chief;
+    private SqlBuilder chief;
 
-    public BuilderMinion(BaseQuerySqlBuilder chief)
+    public BuilderMinion(SqlBuilder chief)
     {
         this.chief = chief;
     }
 
-    protected BaseQuerySqlBuilder getChief()
+    protected SqlBuilder getChief()
     {
         return this.chief;
+    }
+
+    protected <T extends BuilderMinion> T getFellow(Class<T> clazz)
+    {
+        return getChief().getMinion(clazz);
     }
 
 }

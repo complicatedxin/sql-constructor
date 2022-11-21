@@ -32,6 +32,12 @@ public class AliasField<F>
         this.alias = alias;
     }
 
+    public String as(String alias)
+    {
+        this.alias = alias;
+        return this.toString();
+    }
+
     public F getField()
     {
         return field;
