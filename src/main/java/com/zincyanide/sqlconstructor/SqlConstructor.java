@@ -25,6 +25,13 @@ import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
  *  + query sql:
  * @see com.zincyanide.sqlconstructor.dml.query.BaseQuerySql
  * @see QuerySqlWrapper
+ *  + update sql:
+ * @see com.zincyanide.sqlconstructor.dml.update.UpdateSql
+ *  + delete sql:
+ * @see com.zincyanide.sqlconstructor.dml.delete.DeleteSql
+ *
+ * we do not tend to implement insert, it would be
+ * more appropriate for orm to handle it
  */
 public abstract class SqlConstructor
 {
