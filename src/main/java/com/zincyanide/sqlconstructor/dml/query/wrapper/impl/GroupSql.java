@@ -19,8 +19,9 @@ package com.zincyanide.sqlconstructor.dml.query.wrapper.impl;
 import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
 import com.zincyanide.sqlconstructor.internal.CollectionUtil;
-import com.zincyanide.sqlconstructor.internal.StringUtil;
 import com.zincyanide.sqlconstructor.internal.Symbol;
+import com.zincyanide.sqlconstructor.internal.condition.ConditionNode;
+import com.zincyanide.sqlconstructor.internal.condition.ConditionalStatement;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -30,7 +31,8 @@ public class GroupSql extends QuerySqlWrapper
 {
     private final String alias;
     private final String groups[];
-    private List<String> targets;
+    List<String> targets;
+    ConditionalStatement conditionalStatement = new ConditionalStatement();
 
     public GroupSql(QuerySql querySql, String alias, String... groups)
     {
@@ -43,6 +45,34 @@ public class GroupSql extends QuerySqlWrapper
     public GroupSql select(String... targets)
     {
         this.targets.addAll(Arrays.asList(targets));
+        return this;
+    }
+
+    public GroupSql having(String condition)
+    {
+        conditionalStatement.and(condition);
+        return this;
+    }
+
+    public GroupSql and(String condition)
+    {
+        return and(new ConditionNode(condition));
+    }
+
+    public GroupSql and(ConditionNode predicate)
+    {
+        this.conditionalStatement.and(predicate);
+        return this;
+    }
+
+    public GroupSql or(String condition)
+    {
+        return or(new ConditionNode(condition));
+    }
+
+    public GroupSql or(ConditionNode predicate)
+    {
+        this.conditionalStatement.or(predicate);
         return this;
     }
 
@@ -65,11 +95,15 @@ public class GroupSql extends QuerySqlWrapper
         else
             sb = new StringBuilder(super.getSql());
 
-        sb.append(" GROUP BY ");
-        sb.append(CollectionUtil.asString(groups,
-                "", " ", ", ", "", "",
-                null, null));
+        sb.append("GROUP BY ")
+                .append(CollectionUtil.asString(groups,
+                    "", " ", ", ", "", "",
+                    null, null));
+
+        sb.append("HAVING ")
+                .append(conditionalStatement.get());
 
         return sb.toString();
     }
+
 }
