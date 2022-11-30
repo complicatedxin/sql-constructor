@@ -49,6 +49,9 @@ public class ConditionalStatement
         root = root.add(predicate, true);
     }
 
+    /**
+     * @return null if {@link #root} has no content and child
+     */
     public String get()
     {
         return root.ignite();

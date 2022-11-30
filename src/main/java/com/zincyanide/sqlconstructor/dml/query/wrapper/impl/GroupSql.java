@@ -19,6 +19,7 @@ package com.zincyanide.sqlconstructor.dml.query.wrapper.impl;
 import com.zincyanide.sqlconstructor.dml.query.QuerySql;
 import com.zincyanide.sqlconstructor.dml.query.wrapper.QuerySqlWrapper;
 import com.zincyanide.sqlconstructor.internal.CollectionUtil;
+import com.zincyanide.sqlconstructor.internal.StringUtil;
 import com.zincyanide.sqlconstructor.internal.Symbol;
 import com.zincyanide.sqlconstructor.internal.condition.ConditionNode;
 import com.zincyanide.sqlconstructor.internal.condition.ConditionalStatement;
@@ -100,8 +101,10 @@ public class GroupSql extends QuerySqlWrapper
                     "", " ", ", ", "", "",
                     null, null));
 
-        sb.append("HAVING ")
-                .append(conditionalStatement.get());
+        String conditions = conditionalStatement.get();
+        if(!StringUtil.isEmpty(conditions))
+            sb.append("HAVING ")
+                    .append(conditions);
 
         return sb.toString();
     }
