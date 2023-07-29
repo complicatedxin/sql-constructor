@@ -42,28 +42,19 @@ public class DeleteSqlBuilderFactory implements ReusableSqlBuilderFactory<Delete
     @Override
     public DeleteSqlBuilder manu()
     {
-        return new DeleteSqlBuilder();
-    }
-
-    @Override
-    public DeleteSqlBuilder manu(boolean fresh)
-    {
-        DeleteSqlBuilder sqlBuilder = (DeleteSqlBuilder) Bindable.DELETE_BUILDER.get();
-        if(sqlBuilder == null)
-        {
-            sqlBuilder = manu();
-            sqlBuilder.bind();
-        }
-        else if (fresh)
-            sqlBuilder.clear();
-
+        DeleteSqlBuilder sqlBuilder = new DeleteSqlBuilder();
+        sqlBuilder.bind();
         return sqlBuilder;
     }
 
+
     @Override
-    public DeleteSqlBuilder obtain()
+    public DeleteSqlBuilder obtain(boolean fresh)
     {
-        return (DeleteSqlBuilder) Objects.requireNonNull(Bindable.DELETE_BUILDER.get());
+        DeleteSqlBuilder sqlBuilder = (DeleteSqlBuilder) Objects.requireNonNull(Bindable.DELETE_BUILDER.get());
+        if(fresh)
+            sqlBuilder.clear();
+        return sqlBuilder;
     }
 
 }

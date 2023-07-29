@@ -24,14 +24,8 @@ public interface ReusableSqlBuilderFactory<B extends SqlBuilder>
         extends SqlBuilderFactory<B>
 {
     /**
-     * @return obtain from thread local
+     * @return BaseQuerySqlBuilder which implements {@link Bindable}, {@link Cacheable},
+     * or else throws {@link NullPointerException} if not exist in thread local
      */
-    B manu(boolean fresh);
-
-    /**
-     * @return BaseQuerySqlBuilder which implements {@link Bindable}, {@link Cacheable}
-     * @throw {@link NullPointerException} if not exist
-     *        in thread local
-     */
-    B obtain();
+    B obtain(boolean fresh);
 }

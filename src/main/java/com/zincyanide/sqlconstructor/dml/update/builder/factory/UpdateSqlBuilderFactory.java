@@ -42,28 +42,18 @@ public class UpdateSqlBuilderFactory implements ReusableSqlBuilderFactory<Update
     @Override
     public UpdateSqlBuilder manu()
     {
-        return new UpdateSqlBuilder();
-    }
-
-    @Override
-    public UpdateSqlBuilder manu(boolean fresh)
-    {
-        UpdateSqlBuilder sqlBuilder = (UpdateSqlBuilder) Bindable.UPDATE_BUILDER.get();
-        if(sqlBuilder == null)
-        {
-            sqlBuilder = manu();
-            sqlBuilder.bind();
-        }
-        else if (fresh)
-            sqlBuilder.clear();
-
+        UpdateSqlBuilder sqlBuilder = new UpdateSqlBuilder();
+        sqlBuilder.bind();
         return sqlBuilder;
     }
 
     @Override
-    public UpdateSqlBuilder obtain()
+    public UpdateSqlBuilder obtain(boolean fresh)
     {
-        return (UpdateSqlBuilder) Objects.requireNonNull(Bindable.UPDATE_BUILDER.get());
+        UpdateSqlBuilder sqlBuilder = (UpdateSqlBuilder) Objects.requireNonNull(Bindable.UPDATE_BUILDER.get());
+        if(fresh)
+            sqlBuilder.clear();
+        return sqlBuilder;
     }
 
 }

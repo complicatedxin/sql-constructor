@@ -197,7 +197,7 @@ public class T_01_Query
                 .build().getSql();
         System.out.println(sql);
 
-        String sql1 = queryFactory.obtain().build().getSql();
+        String sql1 = queryFactory.obtain(false).build().getSql();
         System.out.println(sql1);
 
         String limit;
@@ -206,11 +206,11 @@ public class T_01_Query
         while (page <= 10)
         {
             int offset = (page++ - 1) * size;
-            limit = new LimitSql(queryFactory.obtain().build(), offset, size).getSql();
+            limit = new LimitSql(queryFactory.obtain(false).build(), offset, size).getSql();
             System.out.println(limit);
         }
 
-        String newWhere = queryFactory.obtain().clearWhere().where(Where.ANYWHERE).build().getSql();
+        String newWhere = queryFactory.obtain(false).clearWhere().where(Where.ANYWHERE).build().getSql();
         System.out.println(newWhere);
 
     }

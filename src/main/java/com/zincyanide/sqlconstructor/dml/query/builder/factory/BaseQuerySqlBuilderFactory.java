@@ -42,27 +42,17 @@ public class BaseQuerySqlBuilderFactory implements ReusableSqlBuilderFactory<Bas
     @Override
     public BaseQuerySqlBuilder manu()
     {
-        return new BaseQuerySqlBuilder();
-    }
-
-    @Override
-    public BaseQuerySqlBuilder manu(boolean fresh)
-    {
-        BaseQuerySqlBuilder sqlBuilder = (BaseQuerySqlBuilder) Bindable.QUERY_BUILDER.get();
-        if(sqlBuilder == null)
-        {
-            sqlBuilder = manu();
-            sqlBuilder.bind();
-        }
-        else if (fresh)
-            sqlBuilder.clear();
-
+        BaseQuerySqlBuilder sqlBuilder = new BaseQuerySqlBuilder();
+        sqlBuilder.bind();
         return sqlBuilder;
     }
 
     @Override
-    public BaseQuerySqlBuilder obtain()
+    public BaseQuerySqlBuilder obtain(boolean fresh)
     {
-        return (BaseQuerySqlBuilder) Objects.requireNonNull(Bindable.QUERY_BUILDER.get());
+        BaseQuerySqlBuilder sqlBuilder = (BaseQuerySqlBuilder) Objects.requireNonNull(Bindable.QUERY_BUILDER.get());
+        if(fresh)
+            sqlBuilder.clear();
+        return sqlBuilder;
     }
 }
